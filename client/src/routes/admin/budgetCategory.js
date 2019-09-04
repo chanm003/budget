@@ -14,7 +14,6 @@ export const crateCreate = {
   auth: true,
   role: params.user.roles.admin
 }
-
 export const crateEdit = {
   path: (id = ':id') => (`/admin/crate/${ id }/edit`),
   component: CrateCreateOrEdit,

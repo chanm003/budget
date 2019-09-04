@@ -1,10 +1,10 @@
-import Home from '../modules/Home';
+import Home from '../modules/Home/Home';
 
 // Home routes
 export default {
-  home: {
-    path: '/',
-    component: Home,
-    exact: true
-  }
+    home: {
+        path: '/',
+        component: Home,
+        exact: true
+    }
 }

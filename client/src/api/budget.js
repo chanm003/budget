@@ -9,7 +9,7 @@ const getBudgetCategories = async () => {
                 }
             }
         `;
-    
+
     return await sendRequest(gql);
 }
 

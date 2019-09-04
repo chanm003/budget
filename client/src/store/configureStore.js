@@ -1,16 +1,10 @@
-﻿import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
+import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
+import budgetCategoryReducer from './budgetCategory';
 import thunk from 'redux-thunk';
-import * as SideMenu from "./SideMenu";
-import * as UserManagement from "./UserManagement";
-import * as SearchStore from "./SearchStore";
-import budgetCategoryReducer from './BudgetCategory';
 
-export default function configureStore() {
+export function configureStore() {
   const reducers = {
-    budgetCategory: budgetCategoryReducer,
-    sideMenu: SideMenu.reducer,
-    userManagement: UserManagement.reducer,
-    searchStore: SearchStore.reducer,
+    budgetCategory: budgetCategoryReducer
   };
 
   const rootReducer = combineReducers({
@@ -18,8 +12,7 @@ export default function configureStore() {
   });
 
   const composeEnhancers =
-    (process.env.NODE_ENV !== 'production' && typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || 
-    compose;
+      (process.env.NODE_ENV !== 'production' && typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose;
 
   return createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));
 }
