@@ -5,23 +5,23 @@ const INITIAL_STATE = {
     items: []
 };
 
-const LOAD_BUDGET_CATEGORIES = 'LOAD_BUDGET_CATEGORIES';
+const LOAD_DIRECTORATES = 'LOAD_DIRECTORATES';
 
 export const {
-    loadBudgetCategories
+    loadDirectorates
 } = createActions(
-    LOAD_BUDGET_CATEGORIES);
+    LOAD_DIRECTORATES);
 
-export const fetchBudgetCategories = () => async (dispatch, getState) => {
+export const fetchDirectorates = () => async (dispatch, getState) => {
     //dispatch action to show loader
-    const response = await budgetApi.getBudgetCategories();
-    dispatch(loadBudgetCategories(response.budgetCategories));
+    const response = await budgetApi.getDirectorates();
+    dispatch(loadDirectorates(response.directorates));
     //dispatch action to hide loader
 };
 
 export default handleActions(
     {
-        LOAD_BUDGET_CATEGORIES: (state, action) => {
+        LOAD_DIRECTORATES: (state, action) => {
             return {
                 ...state,
                 items: action.payload,

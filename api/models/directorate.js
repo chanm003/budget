@@ -9,4 +9,4 @@ const schema = new Schema({
   }
 });
 
-module.exports = mongoose.model('BudgetCategory', schema);
+module.exports = mongoose.model('Directorate', schema);

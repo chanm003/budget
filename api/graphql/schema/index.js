@@ -1,13 +1,13 @@
 const { buildSchema } = require('graphql');
 
 module.exports = buildSchema(`
-type BudgetCategory {
+type Directorate {
     _id: ID!
     title: String!
 }
 
 type RootQuery {
-    budgetCategories: [BudgetCategory!]!
+    directorates: [Directorate!]!
 }
 
 schema {

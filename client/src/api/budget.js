@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-const getBudgetCategories = async () => {
+const getDirectorates = async () => {
     const gql = `
             {
-                budgetCategories {
+                directorates {
                     _id
                     title
                 }
@@ -34,5 +34,5 @@ const sendRequest = async (query, variables) => {
 }
 
 export default {
-    getBudgetCategories
+    getDirectorates
 }

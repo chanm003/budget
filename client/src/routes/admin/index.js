@@ -1,8 +1,8 @@
-import * as budgetCategory from './budgetCategory'
+import * as directorate from './directorate'
 
 // Admin routes
 const admin = {
-  ...budgetCategory
+  ...directorate
 }
 
 export default admin

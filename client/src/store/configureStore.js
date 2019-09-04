@@ -1,10 +1,10 @@
 import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
-import budgetCategoryReducer from './budgetCategory';
+import directorateReducer from './directorate';
 import thunk from 'redux-thunk';
 
 export function configureStore() {
   const reducers = {
-    budgetCategory: budgetCategoryReducer
+    directorate: directorateReducer
   };
 
   const rootReducer = combineReducers({

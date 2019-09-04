@@ -1,17 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Table, Container, Header } from 'semantic-ui-react'
-import { fetchBudgetCategories } from '../../../store/budgetCategory';
+import { fetchDirectorates } from '../../../store/directorate';
 
-class BudgetCategoryList extends React.Component {
+class DirectorateList extends React.Component {
     componentDidMount() {
-        this.props.fetchBudgetCategories();
+        this.props.fetchDirectorates();
     }
     render() {
-        const { categories } = this.props;
+        const { directorates } = this.props;
         return (
             <Container fluid>
-                <Header as='h2'>Budget Categories</Header>
+                <Header as='h2'>Directorates</Header>
                 <Table celled fixed>
                     <Table.Header>
                         <Table.Row>
@@ -21,7 +21,7 @@ class BudgetCategoryList extends React.Component {
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>
-                        {categories.map(({ _id, title }) => (
+                        {directorates.map(({ _id, title }) => (
                             <Table.Row key={_id}>
                                 <Table.Cell>{title}</Table.Cell>
                             </Table.Row>
@@ -33,14 +33,14 @@ class BudgetCategoryList extends React.Component {
     }
 }
 
-const mapStateToProps = ({ budgetCategory }) => {
-    console.log(budgetCategory)
+const mapStateToProps = ({ directorate }) => {
+    console.log(directorate)
     return {
-        categories: budgetCategory.items
+        directorates: directorate.items
     };
 };
 
 export default connect(
     mapStateToProps,
-    { fetchBudgetCategories }
-)(BudgetCategoryList);
+    { fetchDirectorates }
+)(DirectorateList);

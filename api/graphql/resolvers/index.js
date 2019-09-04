@@ -1,5 +1,5 @@
-const budgetCategoryResolver = require('./budgetCategory')
+const directorateResolver = require('./directorate')
 
 module.exports = {
-    ...budgetCategoryResolver
+    ...directorateResolver
 }

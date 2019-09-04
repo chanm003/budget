@@ -1,9 +1,9 @@
-import BudgetCategoryList from '../../modules/admin/budgetCategory/List';
+import DirectorateList from '../../modules/admin/directorate/List';
 
 // Admin crate routes
-export const budgetCategoryList = {
-  path: '/admin/budgetCategories',
-  component: BudgetCategoryList,
+export const directorateList = {
+  path: '/admin/directorates',
+  component: DirectorateList,
   auth: true
 }
 
