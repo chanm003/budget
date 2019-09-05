@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import Home from '../../Home/Home';
 import { AppLayout } from './AppLayout/AppLayout';
-import { Route, Switch } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import { routes } from '../../../routes';
 
 class App extends Component {
