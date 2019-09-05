@@ -1,10 +1,10 @@
 import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
-import directorateReducer from './directorate';
+import directorateReducer from '../modules/admin/directorate/state';
 import thunk from 'redux-thunk';
 
 export function configureStore() {
   const reducers = {
-    directorate: directorateReducer
+    ...directorateReducer
   };
 
   const rootReducer = combineReducers({
