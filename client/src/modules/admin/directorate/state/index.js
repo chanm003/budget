@@ -1,27 +1,41 @@
-import { createSelector} from 'reselect';
+import { createSelector } from 'reselect';
 import { createActions, handleActions } from 'redux-actions';
 
-import { addItemsToMap, fromMapToArray } from '../../../../store';
+import { addItemsToMap, fromMapToArray, removeItemFromMap } from '../../../../store';
 import budgetApi from '../../../../api/budget';
-
+import { actions as common } from '../../../../modules/common/state';
 export const LOAD_DIRECTORATES_REQUEST = 'LOAD_DIRECTORATES_REQUEST';
 export const LOAD_DIRECTORATES_SUCCESS = 'LOAD_DIRECTORATES_SUCCESS';
 export const LOAD_DIRECTORATES_FAILURE = 'LOAD_DIRECTORATES_FAILURE';
 
+export const DELETE_DIRECTORATE_SUCCESS = 'DELETE_DIRECTORATE_SUCCESS';
+
 const {
+    deleteDirectorateSuccess,
     loadDirectoratesRequest,
     loadDirectoratesSuccess,
     loadDirectoratesFailure
 } = createActions(
+    DELETE_DIRECTORATE_SUCCESS,
     LOAD_DIRECTORATES_REQUEST,
     LOAD_DIRECTORATES_SUCCESS,
     LOAD_DIRECTORATES_FAILURE);
+
+export const deleteDirectorate = (id) => async (dispatch, getState) => {
+    try {
+        const deleted = await budgetApi.deleteDirectorate(id);
+        dispatch(deleteDirectorateSuccess(deleted));
+        dispatch(common.showSuccessMessage({title: 'Directorate deleted', description: `'${deleted.title}' has been deleted.`}));
+    } catch (err) {
+        dispatch(common.showErrorMessage({title: 'Error', description: `Action could not be performed. Please try again at a later time.`}));
+    }
+};
 
 export const fetchDirectorates = () => async (dispatch, getState) => {
     try {
         dispatch(loadDirectoratesRequest());
         const response = await budgetApi.getDirectorates();
-        dispatch(loadDirectoratesSuccess(response.directorates));
+        dispatch(loadDirectoratesSuccess(response));
     } catch (err) {
         dispatch(loadDirectoratesFailure(err));
     }
@@ -35,6 +49,12 @@ const INITIAL_STATE = {
 
 const directorates = handleActions(
     {
+        DELETE_DIRECTORATE_SUCCESS: (prevState, action) => {
+            return {
+                ...prevState,
+                byId: removeItemFromMap(prevState.byId, action.payload._id)
+            };
+        },
         LOAD_DIRECTORATES_REQUEST: (prevState, action) => {
             return {
                 ...prevState,
@@ -70,4 +90,4 @@ export default { directorates };
 export const getDirectorates = createSelector(
     state => state.directorates,
     ({ byId, isLoading, error }) => ({ items: fromMapToArray(byId), isLoading, error })
-  );
+);

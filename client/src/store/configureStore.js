@@ -1,9 +1,11 @@
 import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
 import directorateReducer from '../modules/admin/directorate/state';
+import commonReducer from '../modules/common/state';
 import thunk from 'redux-thunk';
 
 export function configureStore() {
   const reducers = {
+    ...commonReducer,
     ...directorateReducer
   };
 

@@ -10,7 +10,12 @@ type RootQuery {
     directorates: [Directorate!]!
 }
 
+type RootMutation {
+    removeDirectorate(id: ID!): Directorate!
+}
+
 schema {
     query: RootQuery
+    mutation: RootMutation
 }
 `);

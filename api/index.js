@@ -20,6 +20,7 @@ app.use((req, res, next) => {
     next();
 });
 
+mongoose.set('useFindAndModify', false);
 mongoose.connection.on("error", error => {
     console.log("Database connection error:", error);
 });

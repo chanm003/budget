@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Table, Container, Button, Icon } from 'semantic-ui-react'
 import admin from '../../../routes/admin';
-import { fetchDirectorates, getDirectorates } from '../../../modules/admin/directorate/state';
+import { deleteDirectorate, fetchDirectorates, getDirectorates } from '../../../modules/admin/directorate/state';
 import LoadingSegment from '../../../modules/common/components/LoadingSegment/LoadingSegment';
 import DeleteButton from '../../../modules/common/components/DeleteButton/DeleteButton';
 import { Link } from 'react-router-dom';
@@ -23,7 +23,7 @@ class List extends React.Component {
     }
 
     render() {
-        const { directorates: { items, isLoading } } = this.props;
+        const { directorates: { items, isLoading }, deleteDirectorate } = this.props;
         return (
             <Container fluid>
                 <LoadingSegment heading="Directorates" headingActions={this.renderActionButtons()} isLoading={isLoading}>
@@ -47,7 +47,7 @@ class List extends React.Component {
                                                     <Link to={admin.directorateEdit.path(_id)}>
                                                         <Button icon='pencil' primary />
                                                     </Link>
-                                                    <DeleteButton guid={_id} onDeleteConfirm={(guid) => console.log('Parent Deleting...', guid)}/>
+                                                    <DeleteButton guid={_id} onDeleteConfirm={(guid) => deleteDirectorate(guid)}/>
                                                 </Table.Cell>
                                             </Table.Row>
                                         ))
@@ -72,5 +72,5 @@ const mapStateToProps = (state) => {
 
 export default connect(
     mapStateToProps,
-    { fetchDirectorates }
+    { fetchDirectorates, deleteDirectorate }
 )(List);

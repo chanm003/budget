@@ -10,7 +10,22 @@ const getDirectorates = async () => {
             }
         `;
 
-    return await sendRequest(gql);
+    const response = await sendRequest(gql);
+    return response.directorates;
+}
+
+const deleteDirectorate = async (id) => {
+    const gql = `
+            mutation RemoveDirectorate($id: ID!) {
+                removeDirectorate(id: $id) {
+                    _id
+                    title
+                }
+            }
+        `;
+
+    const response = await sendRequest(gql, { id });
+    return response.removeDirectorate;
 }
 
 const sendRequest = async (query, variables) => {
@@ -34,5 +49,6 @@ const sendRequest = async (query, variables) => {
 }
 
 export default {
-    getDirectorates
+    getDirectorates,
+    deleteDirectorate
 }

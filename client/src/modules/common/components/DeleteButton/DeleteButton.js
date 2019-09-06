@@ -1,6 +1,5 @@
 import React from 'react';
 import { Button, Confirm } from 'semantic-ui-react';
-import { toast } from 'react-semantic-toasts';
 
 export default class DeleteButton extends React.Component {
     state = { open: false }
@@ -11,13 +10,6 @@ export default class DeleteButton extends React.Component {
         onDeleteConfirm(guid);
         //.then() hide modal then show taste
         this.setState({ open: false });
-        toast({
-            type: 'success',
-            title: this.props.toastHeader || 'Item Deleted',
-            description: this.props.toastMessage || 'This item has been deleted',
-            size: 'small',
-            time: 5000
-        });
     }
     handleCancel = () => this.setState({ open: false })
 
