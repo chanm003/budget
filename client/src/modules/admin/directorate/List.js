@@ -4,6 +4,7 @@ import { Table, Container, Button, Icon } from 'semantic-ui-react'
 import admin from '../../../routes/admin';
 import { fetchDirectorates, getDirectorates } from '../../../modules/admin/directorate/state';
 import LoadingSegment from '../../../modules/common/components/LoadingSegment/LoadingSegment';
+import DeleteButton from '../../../modules/common/components/DeleteButton/DeleteButton';
 import { Link } from 'react-router-dom';
 
 class List extends React.Component {
@@ -21,19 +22,12 @@ class List extends React.Component {
         );
     }
 
-    remove = (id) => {
-        let check = window.confirm('Are you sure you want to delete this item?')
-
-        if (check) {
-            console.log('Deleting...', id)
-        }
-    }
     render() {
         const { directorates: { items, isLoading } } = this.props;
         return (
             <Container fluid>
                 <LoadingSegment heading="Directorates" headingActions={this.renderActionButtons()} isLoading={isLoading}>
-                    <Table celled>
+                    <Table celled compact='very'>
                         <Table.Header>
                             <Table.Row>
                                 <Table.HeaderCell>
@@ -53,7 +47,7 @@ class List extends React.Component {
                                                     <Link to={admin.directorateEdit.path(_id)}>
                                                         <Button icon='pencil' primary />
                                                     </Link>
-                                                    <Button color='red' icon='delete' onClick={() => this.remove(_id)} />
+                                                    <DeleteButton guid={_id} onDeleteConfirm={(guid) => console.log('Parent Deleting...', guid)}/>
                                                 </Table.Cell>
                                             </Table.Row>
                                         ))
