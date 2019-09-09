@@ -2,8 +2,13 @@ import { createSelector } from 'reselect';
 import { createActions, handleActions } from 'redux-actions';
 
 import { addItemsToMap, fromMapToArray, removeItemFromMap } from '../../../../store';
-import budgetApi from '../../../../api/budget';
+import budgetApi from '../../../../api';
 import { actions as common } from '../../../../modules/common/state';
+
+export const LOAD_DIRECTORATE_REQUEST = 'LOAD_DIRECTORATE_REQUEST';
+export const LOAD_DIRECTORATE_SUCCESS = 'LOAD_DIRECTORATE_SUCCESS';
+export const LOAD_DIRECTORATE_FAILURE = 'LOAD_DIRECTORATE_FAILURE';
+
 export const LOAD_DIRECTORATES_REQUEST = 'LOAD_DIRECTORATES_REQUEST';
 export const LOAD_DIRECTORATES_SUCCESS = 'LOAD_DIRECTORATES_SUCCESS';
 export const LOAD_DIRECTORATES_FAILURE = 'LOAD_DIRECTORATES_FAILURE';
@@ -12,14 +17,28 @@ export const DELETE_DIRECTORATE_SUCCESS = 'DELETE_DIRECTORATE_SUCCESS';
 
 const {
     deleteDirectorateSuccess,
+    loadDirectorateRequest,
+    loadDirectorateSuccess,
+    loadDirectorateFailure,
     loadDirectoratesRequest,
     loadDirectoratesSuccess,
     loadDirectoratesFailure
 } = createActions(
     DELETE_DIRECTORATE_SUCCESS,
+    LOAD_DIRECTORATE_REQUEST,
+    LOAD_DIRECTORATE_SUCCESS,
+    LOAD_DIRECTORATE_FAILURE,
     LOAD_DIRECTORATES_REQUEST,
     LOAD_DIRECTORATES_SUCCESS,
     LOAD_DIRECTORATES_FAILURE);
+
+export const fetchDirectorate = id => async (dispatch, getState) => {
+    try {
+        const item = await budgetApi.getDirectorate(id);
+        dispatch(loadDirectorateSuccess(item));
+    } catch (err) {
+    }
+};
 
 export const deleteDirectorate = (id) => async (dispatch, getState) => {
     try {
@@ -60,6 +79,14 @@ const directorates = handleActions(
                 ...prevState,
                 isLoading: true,
                 error: null
+            };
+        },
+        LOAD_DIRECTORATE_SUCCESS: (prevState, action) => {
+            return {
+                ...prevState,
+                error: null,
+                isLoading: false,
+                byId: addItemsToMap(prevState.byId, [action.payload])
             };
         },
         LOAD_DIRECTORATES_SUCCESS: (prevState, action) => {

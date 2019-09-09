@@ -8,6 +8,7 @@ type Directorate {
 
 type RootQuery {
     directorates: [Directorate!]!
+    directorate(id: ID!): Directorate!
 }
 
 type RootMutation {
