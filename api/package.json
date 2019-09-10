@@ -10,6 +10,9 @@
     "express-graphql": "^0.7.1",
     "graphql": "^14.0.2",
     "mongoose": "^5.5.12",
+    "faker": "^4.1.0"
+  },
+  "devDependencies": {
     "nodemon": "^1.19.1"
   }
 }
