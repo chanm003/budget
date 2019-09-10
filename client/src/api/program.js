@@ -3,7 +3,7 @@ import { sendRequest } from './index';
 const getItem = async (id) => {
     const gql = `
             query GetItem($id: ID!) {
-                directorate(id: $id) {
+                program(id: $id) {
                     _id
                     title
                 }
@@ -11,13 +11,13 @@ const getItem = async (id) => {
         `;
 
     const response = await sendRequest(gql, { id });
-    return response.directorate;
+    return response.program;
 }
 
 const getItems = async () => {
     const gql = `
             {
-                directorates {
+                programs {
                     _id
                     title
                 }
@@ -25,13 +25,13 @@ const getItems = async () => {
         `;
 
     const response = await sendRequest(gql);
-    return response.directorates;
+    return response.programs;
 }
 
 const createItem = async ({ title }) => {
     const gql = `
             mutation CreateItem($title: String!) {
-                createDirectorate(input: {title: $title }) {
+                createProgram(input: {title: $title }) {
                     _id
                     title
                 }
@@ -39,13 +39,13 @@ const createItem = async ({ title }) => {
         `;
 
     const response = await sendRequest(gql, { title });
-    return response.createDirectorate;
+    return response.createProgram;
 }
 
 const updateItem = async (id, { title }) => {
     const gql = `
             mutation UpdateItem($id: ID!, $title: String!) {
-                updateDirectorate(id: $id, input: {title: $title }) {
+                updateProgram(id: $id, input: {title: $title }) {
                     _id
                     title
                 }
@@ -53,13 +53,13 @@ const updateItem = async (id, { title }) => {
         `;
 
     const response = await sendRequest(gql, { id, title });
-    return response.updateDirectorate;
+    return response.updateProgram;
 }
 
 const deleteItem = async (id) => {
     const gql = `
             mutation RemoveItem($id: ID!) {
-                removeDirectorate(id: $id) {
+                removeProgram(id: $id) {
                     _id
                     title
                 }
@@ -67,8 +67,9 @@ const deleteItem = async (id) => {
         `;
 
     const response = await sendRequest(gql, { id });
-    return response.removeDirectorate;
+    return response.removeProgram;
 }
+
 
 export default {
     getItem,

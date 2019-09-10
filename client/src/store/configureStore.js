@@ -1,5 +1,6 @@
 import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
 import directorateReducer from '../modules/admin/directorate/state';
+import programReducer from '../modules/admin/program/state';
 import commonReducer from '../modules/common/state';
 import thunk from 'redux-thunk';
 import { reducer as reduxFormReducer } from 'redux-form';
@@ -7,7 +8,8 @@ import { reducer as reduxFormReducer } from 'redux-form';
 export function configureStore() {
   const reducers = {
     ...commonReducer,
-    ...directorateReducer
+    directorates: directorateReducer,
+    programs: programReducer,
   };
 
   const rootReducer = combineReducers({

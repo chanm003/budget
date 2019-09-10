@@ -1,5 +1,5 @@
 import React from 'react';
-import { fetchDirectorate, createDirectorate, updateDirectorate } from '../directorate/state';
+import { fetchItem, createItem, updateItem } from '../directorate/state';
 import { connect } from 'react-redux';
 import Form from './Form';
 import _ from 'lodash';
@@ -55,4 +55,4 @@ const mapStateToProps = (state, ownProps) => {
     }
 }
 
-export default connect(mapStateToProps, { fetchItem: fetchDirectorate, createItem: createDirectorate, updateItem: updateDirectorate })(CreateOrEdit)
+export default connect(mapStateToProps, { fetchItem, createItem, updateItem })(CreateOrEdit)

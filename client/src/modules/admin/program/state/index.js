@@ -4,22 +4,22 @@ import { browserHistory } from '../../../../index';
 import admin from '../../../../routes/admin';
 import { generateBaseActions, generateBaseActionHandlers, baseThunks } from '../../../../store';
 import { fromMapToArray } from '../../../../store';
-import api from '../../../../api/directorate';
+import api from '../../../../api/program';
 
 const {
-    createDirectorateSuccess: createItemSuccess,
-    updateDirectorateSuccess: updateItemSuccess,
-    deleteDirectorateSuccess: deleteItemSuccess,
-    loadDirectorateSuccess: loadItemSuccess,
-    loadDirectoratesRequest: loadItemsRequest,
-    loadDirectoratesSuccess: loadItemsSuccess,
-    loadDirectoratesFailure: loadItemsFailure
-} = generateBaseActions('DIRECTORATE', 'DIRECTORATES');
+    createProgramSuccess: createItemSuccess,
+    updateProgramSuccess: updateItemSuccess,
+    deleteProgramSuccess: deleteItemSuccess,
+    loadProgramSuccess: loadItemSuccess,
+    loadProgramsRequest: loadItemsRequest,
+    loadProgramsSuccess: loadItemsSuccess,
+    loadProgramsFailure: loadItemsFailure
+} = generateBaseActions('PROGRAM', 'PROGRAMS');
 
-const redirectUser = () => browserHistory.push(admin.directorateList.path);
-const generateCreateItemSuccessToast = (item) => ({ title: 'Directorate created', description: `'${item.title}' has been created.` });
-const generateUpdateItemSuccessToast = (item) => ({ title: 'Directorate updated', description: `Your changes have been saved.` })
-const generateDeleteItemSuccessToast = (deleted) => ({ title: 'Directorate deleted', description: `'${deleted.title}' has been deleted.` });
+const redirectUser = () => browserHistory.push(admin.programList.path);
+const generateCreateItemSuccessToast = (item) => ({ title: 'Program created', description: `'${item.title}' has been created.` });
+const generateUpdateItemSuccessToast = (item) => ({ title: 'Program updated', description: `Your changes have been saved.` })
+const generateDeleteItemSuccessToast = (deleted) => ({ title: 'Program deleted', description: `'${deleted.title}' has been deleted.` });
 
 export const createItem = baseThunks.createItem(api.createItem, createItemSuccess, generateCreateItemSuccessToast, redirectUser);
 export const updateItem = baseThunks.updateItem(api.updateItem, updateItemSuccess, generateUpdateItemSuccessToast, redirectUser);
@@ -35,7 +35,7 @@ const INITIAL_STATE = {
 
 export default handleActions(
     {
-        ...generateBaseActionHandlers('DIRECTORATE', 'DIRECTORATES')
+        ...generateBaseActionHandlers('PROGRAM', 'PROGRAMS')
     },
     INITIAL_STATE
 );
@@ -44,7 +44,7 @@ export default handleActions(
 *   Selectors
 * */
 
-export const getDirectorates = createSelector(
-    state => state.directorates,
+export const getPrograms = createSelector(
+    state => state.programs,
     ({ byId, isLoading, error }) => ({ items: fromMapToArray(byId), isLoading, error })
 );
