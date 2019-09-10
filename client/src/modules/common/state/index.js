@@ -1,4 +1,3 @@
-import { createSelector } from 'reselect';
 import { createActions, handleActions } from 'redux-actions';
 
 export const SHOW_SUCCESS_MESSAGE = 'SHOW_SUCCESS_MESSAGE';

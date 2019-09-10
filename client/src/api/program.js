@@ -70,7 +70,6 @@ const deleteItem = async (id) => {
     return response.removeProgram;
 }
 
-
 export default {
     getItem,
     getItems,

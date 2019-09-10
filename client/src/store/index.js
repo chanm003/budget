@@ -1,7 +1,6 @@
 import * as _ from 'lodash';
 import { createActions } from 'redux-actions';
 import { actions as common } from '../modules/common/state';
-import { browserHistory } from '../index';
 
 export function addItemsToMap(existingMap, items) {
     const itemMapping = items.reduce((accumulator, item) => {
