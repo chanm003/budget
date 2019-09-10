@@ -1,7 +1,8 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
+import { Form, Label, Input } from 'semantic-ui-react';
 
-class Form extends React.Component {
+class DataEntryForm extends React.Component {
     onSubmit = (formValues) => {
         this.props.onSubmit(formValues);
     }
@@ -9,9 +10,9 @@ class Form extends React.Component {
     renderError = ({ error, touched }) => {
         if (touched && error) {
             return (
-                <div className="ui error message">
-                    <div className="header">{error}</div>
-                </div>
+                <Label basic color='red' pointing>
+                    {error}
+                </Label>
             );
         }
     }
@@ -19,20 +20,25 @@ class Form extends React.Component {
     renderInput = ({ input, meta, label }) => {
         const className = `field ${meta.error && meta.touched ? 'error' : ''}`
         return (
-            <div className={className}>
+            <Form.Field className={className}>
                 <label>{label}</label>
-                <input {...input} autoComplete="off" />
+                <Input {...input} autoComplete="off" placeholder={label}/>
                 {this.renderError(meta)}
-            </div>
+            </Form.Field>
         );
     }
 
     render() {
+        const disabled = !this.props.valid;
         return (
-            <form onSubmit={this.props.handleSubmit(this.onSubmit)} className="ui form error">
-                <Field name="title" component={this.renderInput} label="Enter Title" />
-                <button className="ui button primary">Submit</button>
-            </form>
+            <Form onSubmit={this.props.handleSubmit(this.onSubmit)}>
+                <Form.Group widths="equal">
+                    <Field name="title" component={this.renderInput} label="Title" />
+                </Form.Group>
+                <Form.Group inline>
+                    <Form.Button disabled={disabled} primary>Submit</Form.Button>
+                </Form.Group>
+            </Form>
         );
     }
 }
@@ -50,4 +56,4 @@ const validate = (formValues) => {
 export default reduxForm({
     form: 'directorateForm',
     validate
-})(Form);
+})(DataEntryForm);
