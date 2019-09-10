@@ -1,24 +1,15 @@
 const { buildSchema } = require('graphql');
+const directorateSchema = require('./directorate');
 
 module.exports = buildSchema(`
-type Directorate {
-    _id: ID!
-    title: String!
-}
-
-input DirectorateInput {
-    title: String!
-}
+${directorateSchema.types}
 
 type RootQuery {
-    directorates: [Directorate!]!
-    directorate(id: ID!): Directorate!
+    ${directorateSchema.queries}
 }
 
 type RootMutation {
-    createDirectorate(input: DirectorateInput): Directorate!
-    updateDirectorate(id: ID!, input: DirectorateInput!): Directorate!
-    removeDirectorate(id: ID!): Directorate!
+    ${directorateSchema.mutations} 
 }
 
 schema {
