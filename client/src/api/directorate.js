@@ -42,6 +42,20 @@ export const createItem = async ({ title }) => {
     return response.createDirectorate;
 }
 
+export const updateItem = async (id, { title }) => {
+    const gql = `
+            mutation UpdateItem($id: ID!, $title: String!) {
+                updateDirectorate(id: $id, input: {title: $title }) {
+                    _id
+                    title
+                }
+            }
+        `;
+
+    const response = await sendRequest(gql, { id, title });
+    return response.updateDirectorate;
+}
+
 export const deleteItem = async (id) => {
     const gql = `
             mutation RemoveItem($id: ID!) {

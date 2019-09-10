@@ -10,11 +10,14 @@ module.exports = {
         return items;
     },
     createDirectorate: async (args, req) => {
-        const { title } = args.input;
         const item = new Directorate({
-            title
+            ...args.input
         });
         const result = await item.save();
+        return result;
+    },
+    updateDirectorate: async (args, req) => {
+        const result = await Directorate.findByIdAndUpdate(args.id, args.input, { new: true })
         return result;
     },
     removeDirectorate: async (args, req) => {

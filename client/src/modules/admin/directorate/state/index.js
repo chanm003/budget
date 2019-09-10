@@ -7,19 +7,19 @@ import { addItemsToMap, fromMapToArray, removeItemFromMap } from '../../../../st
 import budgetApi from '../../../../api';
 import { actions as common } from '../../../../modules/common/state';
 
-export const LOAD_DIRECTORATE_REQUEST = 'LOAD_DIRECTORATE_REQUEST';
-export const LOAD_DIRECTORATE_SUCCESS = 'LOAD_DIRECTORATE_SUCCESS';
-export const LOAD_DIRECTORATE_FAILURE = 'LOAD_DIRECTORATE_FAILURE';
+const LOAD_DIRECTORATE_SUCCESS = 'LOAD_DIRECTORATE_SUCCESS';
 
-export const LOAD_DIRECTORATES_REQUEST = 'LOAD_DIRECTORATES_REQUEST';
-export const LOAD_DIRECTORATES_SUCCESS = 'LOAD_DIRECTORATES_SUCCESS';
-export const LOAD_DIRECTORATES_FAILURE = 'LOAD_DIRECTORATES_FAILURE';
+const LOAD_DIRECTORATES_REQUEST = 'LOAD_DIRECTORATES_REQUEST';
+const LOAD_DIRECTORATES_SUCCESS = 'LOAD_DIRECTORATES_SUCCESS';
+const LOAD_DIRECTORATES_FAILURE = 'LOAD_DIRECTORATES_FAILURE';
 
-export const DELETE_DIRECTORATE_SUCCESS = 'DELETE_DIRECTORATE_SUCCESS';
-export const CREATE_DIRECTORATE_SUCCESS = 'CREATE_DIRECTORATE_SUCCESS';
+const DELETE_DIRECTORATE_SUCCESS = 'DELETE_DIRECTORATE_SUCCESS';
+const CREATE_DIRECTORATE_SUCCESS = 'CREATE_DIRECTORATE_SUCCESS';
+const UPDATE_DIRECTORATE_SUCCESS = 'UPDATE_DIRECTORATE_SUCCESS';
 
 const {
     createDirectorateSuccess,
+    updateDirectorateSuccess,
     deleteDirectorateSuccess,
     loadDirectorateSuccess,
     loadDirectoratesRequest,
@@ -27,6 +27,7 @@ const {
     loadDirectoratesFailure
 } = createActions(
     CREATE_DIRECTORATE_SUCCESS,
+    UPDATE_DIRECTORATE_SUCCESS,
     DELETE_DIRECTORATE_SUCCESS,
     LOAD_DIRECTORATE_SUCCESS,
     LOAD_DIRECTORATES_REQUEST,
@@ -41,6 +42,18 @@ export const createDirectorate = formValues => async (dispatch, getState) => {
         browserHistory.push(admin.directorateList.path);
         dispatch(common.showSuccessMessage({ title: 'Directorate created', description: `'${item.title}' has been created.` }));
     } catch (err) {
+        dispatch(common.showErrorMessage({ title: 'Error', description: `Error occured while trying to create this directorate. Please try again at a later time.` }));
+    }
+};
+
+export const updateDirectorate = (id, formValues) => async (dispatch, getState) => {
+    try {
+        const item = await budgetApi.updateDirectorate(id, formValues);
+        dispatch(updateDirectorateSuccess(item));
+        browserHistory.push(admin.directorateList.path);
+        dispatch(common.showSuccessMessage({ title: 'Directorate updated', description: `Your changes have been saved.` }));
+    } catch (err) {
+        console.log(err)
         dispatch(common.showErrorMessage({ title: 'Error', description: `Error occured while trying to create this directorate. Please try again at a later time.` }));
     }
 };
@@ -82,6 +95,13 @@ const INITIAL_STATE = {
 const directorates = handleActions(
     {
         CREATE_DIRECTORATE_SUCCESS: (prevState, action) => {
+            return {
+                ...prevState,
+                byId: addItemsToMap(prevState.byId, [action.payload])
+            };
+        },
+        UPDATE_DIRECTORATE_SUCCESS: (prevState, action) => {
+            console.log(action.payload)
             return {
                 ...prevState,
                 byId: addItemsToMap(prevState.byId, [action.payload])

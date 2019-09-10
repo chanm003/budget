@@ -16,7 +16,8 @@ type RootQuery {
 }
 
 type RootMutation {
-    createDirectorate(input: DirectorateInput): Directorate
+    createDirectorate(input: DirectorateInput): Directorate!
+    updateDirectorate(id: ID!, input: DirectorateInput!): Directorate!
     removeDirectorate(id: ID!): Directorate!
 }
 

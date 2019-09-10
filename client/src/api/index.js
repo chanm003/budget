@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {
     createItem as createDirectorate,
+    updateItem as updateDirectorate,
     getItem as getDirectorate,
     getItems as getDirectorates,
     deleteItem as deleteDirectorate
@@ -10,6 +11,7 @@ export default {
     createDirectorate,
     getDirectorate,
     getDirectorates,
+    updateDirectorate,
     deleteDirectorate
 }
 

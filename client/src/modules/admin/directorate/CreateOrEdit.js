@@ -1,5 +1,5 @@
 import React from 'react';
-import { fetchDirectorate, createDirectorate } from '../directorate/state';
+import { fetchDirectorate, createDirectorate, updateDirectorate } from '../directorate/state';
 import { connect } from 'react-redux';
 import Form from './Form';
 import _ from 'lodash';
@@ -13,8 +13,10 @@ class CreateOrEdit extends React.Component {
     }
 
     onSubmit = formValues => {
-        const { itemToEditGuid, createItem } = this.props;
-        if (!itemToEditGuid){
+        const { itemToEditGuid, createItem, updateItem } = this.props;
+        if (itemToEditGuid){
+            updateItem(itemToEditGuid, formValues);
+        } else {
             createItem(formValues);
         }
     }
@@ -53,4 +55,4 @@ const mapStateToProps = (state, ownProps) => {
     }
 }
 
-export default connect(mapStateToProps, { fetchItem: fetchDirectorate, createItem: createDirectorate })(CreateOrEdit)
+export default connect(mapStateToProps, { fetchItem: fetchDirectorate, createItem: createDirectorate, updateItem: updateDirectorate })(CreateOrEdit)
