@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect';
 import { createActions, handleActions } from 'redux-actions';
-import { history } from '../../../../index';
+import { browserHistory } from '../../../../index';
+import admin from '../../../../routes/admin';
 
 import { addItemsToMap, fromMapToArray, removeItemFromMap } from '../../../../store';
 import budgetApi from '../../../../api';
@@ -20,27 +21,24 @@ export const CREATE_DIRECTORATE_SUCCESS = 'CREATE_DIRECTORATE_SUCCESS';
 const {
     createDirectorateSuccess,
     deleteDirectorateSuccess,
-    loadDirectorateRequest,
     loadDirectorateSuccess,
-    loadDirectorateFailure,
     loadDirectoratesRequest,
     loadDirectoratesSuccess,
     loadDirectoratesFailure
 } = createActions(
     CREATE_DIRECTORATE_SUCCESS,
     DELETE_DIRECTORATE_SUCCESS,
-    LOAD_DIRECTORATE_REQUEST,
     LOAD_DIRECTORATE_SUCCESS,
-    LOAD_DIRECTORATE_FAILURE,
     LOAD_DIRECTORATES_REQUEST,
     LOAD_DIRECTORATES_SUCCESS,
     LOAD_DIRECTORATES_FAILURE);
 
+    
 export const createDirectorate = formValues => async (dispatch, getState) => {
     try {
         const item = await budgetApi.createDirectorate(formValues);
         dispatch(createDirectorateSuccess(item));
-        history.push('/admin/directorates');
+        browserHistory.push(admin.directorateList.path);
         dispatch(common.showSuccessMessage({ title: 'Directorate created', description: `'${item.title}' has been created.` }));
     } catch (err) {
         dispatch(common.showErrorMessage({ title: 'Error', description: `Error occured while trying to create this directorate. Please try again at a later time.` }));

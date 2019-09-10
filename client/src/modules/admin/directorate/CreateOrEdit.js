@@ -14,7 +14,9 @@ class CreateOrEdit extends React.Component {
 
     onSubmit = formValues => {
         const { itemToEditGuid, createItem } = this.props;
-        createItem(formValues);
+        if (!itemToEditGuid){
+            createItem(formValues);
+        }
     }
 
     render() {
