@@ -1,26 +1,54 @@
 import React from 'react';
-import { fetchDirectorate } from '../directorate/state';
+import { fetchDirectorate, createDirectorate } from '../directorate/state';
 import { connect } from 'react-redux';
+import Form from './Form';
+import _ from 'lodash';
 
 class CreateOrEdit extends React.Component {
     componentDidMount() {
-        const id = this.props.match.params.id;
-        if (id) {
-            this.props.fetchDirectorate(id);
+        const { itemToEditGuid, fetchItem } = this.props;
+        if (itemToEditGuid) {
+            fetchItem(itemToEditGuid);
         }
     }
 
+    onSubmit = formValues => {
+        const { itemToEditGuid, createItem } = this.props;
+        createItem(formValues);
+    }
+
     render() {
+        const { itemToEditGuid, itemToEdit } = this.props;
         return (
-            <div>{this.props.itemToEdit ? this.props.itemToEdit.title : '' }</div>
+            <div>
+                {itemToEditGuid ? this.renderEditForm(itemToEdit) : this.renderCreateForm()}
+            </div>
+        );
+    }
+
+    renderCreateForm() {
+        return (
+            <Form onSubmit={this.onSubmit}></Form>
+        );
+    }
+
+    renderEditForm(itemToEdit) {
+        return (
+            <Form initialValues={identifyEditableFields(itemToEdit)} onSubmit={this.onSubmit}></Form>
         );
     }
 }
 
+const identifyEditableFields = itemToEdit => {
+    return _.pick(itemToEdit, 'title');
+}
+
 const mapStateToProps = (state, ownProps) => {
+    const itemToEditGuid = ownProps.match.params.id;
     return {
-        itemToEdit: state.directorates.byId[ownProps.match.params.id]
+        itemToEditGuid,
+        itemToEdit: state.directorates.byId[itemToEditGuid]
     }
 }
 
-export default connect(mapStateToProps, { fetchDirectorate })(CreateOrEdit)
+export default connect(mapStateToProps, { fetchItem: fetchDirectorate, createItem: createDirectorate })(CreateOrEdit)

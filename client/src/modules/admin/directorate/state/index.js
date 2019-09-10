@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect';
 import { createActions, handleActions } from 'redux-actions';
+import { history } from '../../../../index';
 
 import { addItemsToMap, fromMapToArray, removeItemFromMap } from '../../../../store';
 import budgetApi from '../../../../api';
@@ -14,8 +15,10 @@ export const LOAD_DIRECTORATES_SUCCESS = 'LOAD_DIRECTORATES_SUCCESS';
 export const LOAD_DIRECTORATES_FAILURE = 'LOAD_DIRECTORATES_FAILURE';
 
 export const DELETE_DIRECTORATE_SUCCESS = 'DELETE_DIRECTORATE_SUCCESS';
+export const CREATE_DIRECTORATE_SUCCESS = 'CREATE_DIRECTORATE_SUCCESS';
 
 const {
+    createDirectorateSuccess,
     deleteDirectorateSuccess,
     loadDirectorateRequest,
     loadDirectorateSuccess,
@@ -24,6 +27,7 @@ const {
     loadDirectoratesSuccess,
     loadDirectoratesFailure
 } = createActions(
+    CREATE_DIRECTORATE_SUCCESS,
     DELETE_DIRECTORATE_SUCCESS,
     LOAD_DIRECTORATE_REQUEST,
     LOAD_DIRECTORATE_SUCCESS,
@@ -31,6 +35,17 @@ const {
     LOAD_DIRECTORATES_REQUEST,
     LOAD_DIRECTORATES_SUCCESS,
     LOAD_DIRECTORATES_FAILURE);
+
+export const createDirectorate = formValues => async (dispatch, getState) => {
+    try {
+        const item = await budgetApi.createDirectorate(formValues);
+        dispatch(createDirectorateSuccess(item));
+        history.push('/admin/directorates');
+        dispatch(common.showSuccessMessage({ title: 'Directorate created', description: `'${item.title}' has been created.` }));
+    } catch (err) {
+        dispatch(common.showErrorMessage({ title: 'Error', description: `Error occured while trying to create this directorate. Please try again at a later time.` }));
+    }
+};
 
 export const fetchDirectorate = id => async (dispatch, getState) => {
     try {
@@ -44,9 +59,9 @@ export const deleteDirectorate = (id) => async (dispatch, getState) => {
     try {
         const deleted = await budgetApi.deleteDirectorate(id);
         dispatch(deleteDirectorateSuccess(deleted));
-        dispatch(common.showSuccessMessage({title: 'Directorate deleted', description: `'${deleted.title}' has been deleted.`}));
+        dispatch(common.showSuccessMessage({ title: 'Directorate deleted', description: `'${deleted.title}' has been deleted.` }));
     } catch (err) {
-        dispatch(common.showErrorMessage({title: 'Error', description: `Action could not be performed. Please try again at a later time.`}));
+        dispatch(common.showErrorMessage({ title: 'Error', description: `Error occured while trying to delete this directorate. Please try again at a later time.` }));
     }
 };
 
@@ -68,6 +83,12 @@ const INITIAL_STATE = {
 
 const directorates = handleActions(
     {
+        CREATE_DIRECTORATE_SUCCESS: (prevState, action) => {
+            return {
+                ...prevState,
+                byId: addItemsToMap(prevState.byId, [action.payload])
+            };
+        },
         DELETE_DIRECTORATE_SUCCESS: (prevState, action) => {
             return {
                 ...prevState,

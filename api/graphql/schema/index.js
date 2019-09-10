@@ -6,12 +6,17 @@ type Directorate {
     title: String!
 }
 
+input DirectorateInput {
+    title: String!
+}
+
 type RootQuery {
     directorates: [Directorate!]!
     directorate(id: ID!): Directorate!
 }
 
 type RootMutation {
+    createDirectorate(input: DirectorateInput): Directorate
     removeDirectorate(id: ID!): Directorate!
 }
 

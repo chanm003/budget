@@ -2,6 +2,7 @@ import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
 import directorateReducer from '../modules/admin/directorate/state';
 import commonReducer from '../modules/common/state';
 import thunk from 'redux-thunk';
+import { reducer as reduxFormReducer } from 'redux-form';
 
 export function configureStore() {
   const reducers = {
@@ -10,7 +11,8 @@ export function configureStore() {
   };
 
   const rootReducer = combineReducers({
-    ...reducers
+    ...reducers,
+    form: reduxFormReducer
   });
 
   const composeEnhancers =

@@ -9,6 +9,14 @@ module.exports = {
         const items = await Directorate.find();
         return items;
     },
+    createDirectorate: async (args, req) => {
+        const { title } = args.input;
+        const item = new Directorate({
+            title
+        });
+        const result = await item.save();
+        return result;
+    },
     removeDirectorate: async (args, req) => {
         const deletedItem = await Directorate.findByIdAndRemove(args.id);
         return deletedItem
