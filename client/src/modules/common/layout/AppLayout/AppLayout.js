@@ -6,6 +6,7 @@ import { SideBar } from '../SideBar/SideBar';
 import { SemanticToastContainer, toast } from 'react-semantic-toasts';
 import 'react-semantic-toasts/styles/react-semantic-alert.css';
 import { actions as common } from '../../state';
+import ScrollToTop from '../ScrollToTop/ScrollToTop';
 
 class AppLayout extends React.Component {
     componentDidUpdate(prevProps) {
@@ -24,14 +25,16 @@ class AppLayout extends React.Component {
 
     render() {
         return (
-            <div className='app-layout'>
-                <HeaderNav />
-                <SideBar />
-                <div className='main'>
-                    {this.props.children}
-                    <SemanticToastContainer className="container" position="top-right"/>
+            <ScrollToTop>
+                <div className='app-layout'>
+                    <HeaderNav />
+                    <SideBar />
+                    <div className='main'>
+                        {this.props.children}
+                        <SemanticToastContainer className="container" position="top-right"/>
+                    </div>
                 </div>
-            </div>
+            </ScrollToTop>
         );
     }
 }
