@@ -19,6 +19,14 @@ export function removeItemFromMap(existingMap, key) {
     return _.omit(existingMap, key); 
 }
 
+export function generateBaseIntitialState() {
+    return {
+        isLoading: false,
+        error: null,
+        byId: {}
+    };
+}
+
 export function generateBaseActions(entityName, entityNamePlural) {
     return createActions(
         `CREATE_${entityName}_SUCCESS`,

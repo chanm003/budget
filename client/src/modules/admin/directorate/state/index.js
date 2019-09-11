@@ -2,7 +2,7 @@ import { createSelector } from 'reselect';
 import { handleActions } from 'redux-actions';
 import { browserHistory } from '../../../../index';
 import admin from '../../../../routes/admin';
-import { generateBaseActions, generateBaseActionHandlers, baseThunks } from '../../../../store';
+import { generateBaseActions, generateBaseActionHandlers, generateBaseIntitialState, baseThunks } from '../../../../store';
 import { fromMapToArray } from '../../../../store';
 import api from '../../../../api/directorate';
 
@@ -28,9 +28,7 @@ export const deleteItem = baseThunks.deleteItems(api.deleteItem, deleteItemSucce
 export const fetchItems = baseThunks.fetchItems(api.getItems, loadItemsRequest, loadItemsSuccess, loadItemsFailure);
 
 const INITIAL_STATE = {
-    isLoading: false,
-    error: null,
-    byId: {}
+    ...generateBaseIntitialState()
 };
 
 export default handleActions(
