@@ -1,20 +1,20 @@
 /**
  * On WINDOWS EXECUTE IN GIT BASH as administrator:
- *      winpty docker exec -it budget_api_1 //bin//sh
+ *      winpty docker exec -it budget_api_1 //bin//sh (on Linux docker exec -it budget_api_1 sh )
  *      cd seed
  *      node dataToSeed.js
  */
-const faker = require('faker');
+var chance = require('chance').Chance();
 const seeder = require('./seeder');
-const Directorate = require('../models/Directorate');
-const Program = require('../models/Program');
+const Directorate = require('../models/directorate');
+const Program = require('../models/program');
 
 const createItems = (num, createFunc) => {
     return Array.from({ length: num }).map(createFunc);
 }
 
 const createPrograms = num => {
-    return createItems(num, (item, index) => ( new Program({ title: `Program ${faker.hacker.abbreviation()}` })));
+    return createItems(num, (item, index) => ( new Program({ title: `Program ${chance.radio()}` })));
 }
 
 const dataToSeed = [
