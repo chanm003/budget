@@ -1,4 +1,3 @@
-import React from 'react';
 import { fetchItem, createItem, updateItem } from '../program/state';
 import { connect } from 'react-redux';
 import Form from './Form';

@@ -1,27 +1,22 @@
 import React from 'react';
-import {SideBarItem} from './SideBarItem/SideBarItem';
+import SideBarItem from './SideBarItem/SideBarItem';
 import {Menu, Divider} from 'semantic-ui-react';
 import './SideBar.scss';
 import {SideBarHeader} from './SideBarHeader/SideBarHeader';
+import admin from '../../../../routes/admin';
 
 export class SideBar extends React.Component {
   render() {
     return (
       <Menu borderless vertical stackable fixed='left' className='side-nav'>
         
-        <SideBarItem highlight={true}  label='Home' icon='home'/>
-        <SideBarItem label='Trending' icon='fire'/>
-        <SideBarItem label='Followers' icon='spy'/>
+        <SideBarItem path='/' label='Home' icon='home'/>
         
         <Divider/>
         
-        <SideBarHeader title='Library'/>
-        <SideBarItem label='History' icon='history'/>
-        <SideBarItem label='Watch later' icon='clock'/>
-        <SideBarItem label='Liked videos' icon='thumbs up'/>
-        
-        <SideBarHeader title='More from Youtube'/>
-        <SideBarItem label='Movies and Shows' icon='film'/>
+        <SideBarHeader title='Administration'/>
+        <SideBarItem path={admin.directorateList.path} label='Directorates' icon='history'/>
+        <SideBarItem path={admin.programList.path} label='Programs' icon='clock'/>
         
         <Divider/>
         
