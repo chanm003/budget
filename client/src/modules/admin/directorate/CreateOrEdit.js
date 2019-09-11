@@ -1,47 +1,9 @@
-import React from 'react';
 import { fetchItem, createItem, updateItem } from '../directorate/state';
 import { connect } from 'react-redux';
 import Form from './Form';
 import _ from 'lodash';
+import { generateCreateEditForm } from '../../common/components/generateCreateEditForm/generateCreateEditForm';
 
-class CreateOrEdit extends React.Component {
-    componentDidMount() {
-        const { itemToEditGuid, fetchItem } = this.props;
-        if (itemToEditGuid) {
-            fetchItem(itemToEditGuid);
-        }
-    }
-
-    onSubmit = formValues => {
-        const { itemToEditGuid, createItem, updateItem } = this.props;
-        if (itemToEditGuid){
-            updateItem(itemToEditGuid, formValues);
-        } else {
-            createItem(formValues);
-        }
-    }
-
-    render() {
-        const { itemToEditGuid, itemToEdit } = this.props;
-        return (
-            <div>
-                {itemToEditGuid ? this.renderEditForm(itemToEdit) : this.renderCreateForm()}
-            </div>
-        );
-    }
-
-    renderCreateForm() {
-        return (
-            <Form onSubmit={this.onSubmit}></Form>
-        );
-    }
-
-    renderEditForm(itemToEdit) {
-        return (
-            <Form initialValues={identifyEditableFields(itemToEdit)} onSubmit={this.onSubmit}></Form>
-        );
-    }
-}
 
 const identifyEditableFields = itemToEdit => {
     return _.pick(itemToEdit, 'title');
@@ -55,4 +17,5 @@ const mapStateToProps = (state, ownProps) => {
     }
 }
 
-export default connect(mapStateToProps, { fetchItem, createItem, updateItem })(CreateOrEdit)
+const createEditForm = generateCreateEditForm(Form, identifyEditableFields);
+export default connect(mapStateToProps, { fetchItem, createItem, updateItem })(createEditForm);

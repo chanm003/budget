@@ -1,42 +1,18 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
-import { Form, Label, Input } from 'semantic-ui-react';
+import { Form } from 'semantic-ui-react';
+import { renderTextInput } from '../../common/helpers/semanticUiFields';
 
 class DataEntryForm extends React.Component {
-    onSubmit = (formValues) => {
-        this.props.onSubmit(formValues);
-    }
-
-    renderError = ({ error, touched }) => {
-        if (touched && error) {
-            return (
-                <Label basic color='red' pointing>
-                    {error}
-                </Label>
-            );
-        }
-    }
-
-    renderInput = ({ input, meta, label }) => {
-        const className = `field ${meta.error && meta.touched ? 'error' : ''}`
-        return (
-            <Form.Field className={className}>
-                <label>{label}</label>
-                <Input {...input} autoComplete="off" placeholder={label}/>
-                {this.renderError(meta)}
-            </Form.Field>
-        );
-    }
-
     render() {
-        const disabled = !this.props.valid;
+        const { valid, handleSubmit, onSubmit } = this.props;
         return (
-            <Form onSubmit={this.props.handleSubmit(this.onSubmit)}>
+            <Form onSubmit={handleSubmit((formValues) => onSubmit(formValues))}>
                 <Form.Group widths="equal">
-                    <Field name="title" component={this.renderInput} label="Title" />
+                    <Field name="title" component={renderTextInput} label="Title" />
                 </Form.Group>
                 <Form.Group inline>
-                    <Form.Button disabled={disabled} primary>Submit</Form.Button>
+                    <Form.Button disabled={!valid} primary>Submit</Form.Button>
                 </Form.Group>
             </Form>
         );

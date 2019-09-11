@@ -1,22 +1,22 @@
-import DirectorateList from '../../modules/admin/directorate/List';
-import DirectorateCreateOrEdit from '../../modules/admin/directorate/CreateOrEdit';
+import List from '../../modules/admin/directorate/List';
+import CreateOrEdit from '../../modules/admin/directorate/CreateOrEdit';
 
 export const directorateList = {
   path: '/admin/directorates',
-  component: DirectorateList,
+  component: List,
   exact: true,
   auth: true
 }
 
 export const directorateCreate = {
   path: '/admin/directorates/create',
-  component: DirectorateCreateOrEdit,
+  component: CreateOrEdit,
   auth: true
   //role: params.user.roles.admin
 }
 
 export const directorateEdit = {
   path: (id = ':id') => (`/admin/directorates/${ id }/edit`),
-  component: DirectorateCreateOrEdit,
+  component: CreateOrEdit,
   auth: true
 }
