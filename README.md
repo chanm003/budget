@@ -15,7 +15,7 @@ docker-compose up
 
 ### Connect to Mongo container to seed data (optional)
 ```
-docker exec -it budget_api_1 sh
+sudo docker exec -it budget_api_1 sh
 cd seed
 node dataToSeed.js
 ```
