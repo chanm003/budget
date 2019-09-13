@@ -4,8 +4,6 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile.dev
-    ports:
-      - "3000:3000"
     volumes:
       - /client/node_modules
       - ./client:/client
@@ -32,6 +30,7 @@ services:
       - 27017:27017
     command: mongod --noauth
   nginx:
+    restart: always
     build:
       context: ./nginx
       dockerfile: Dockerfile.dev
