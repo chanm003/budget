@@ -1,10 +1,10 @@
-version: '3'
+version: "3"
 services:
   client:
     build:
       context: ./client
       dockerfile: Dockerfile.dev
-    ports: 
+    ports:
       - "3000:3000"
     volumes:
       - /client/node_modules
@@ -15,7 +15,7 @@ services:
     build:
       context: ./api
       dockerfile: Dockerfile.dev
-    ports: 
+    ports:
       - "9000:9000"
     volumes:
       - /api/node_modules
@@ -25,9 +25,15 @@ services:
     environment:
       WAIT_HOSTS: mongodb:27017
     links:
-      - mongodb  
+      - mongodb
   mongodb:
-        image: mongo
-        ports:
-            - 27017:27017
-        command: mongod --noauth
+    image: mongo
+    ports:
+      - 27017:27017
+    command: mongod --noauth
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile.dev
+    ports:
+      - "8000:443"
