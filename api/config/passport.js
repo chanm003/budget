@@ -35,10 +35,11 @@ module.exports = function (app) {
     app.use(passport.session());
 
     app.use((req, res, next) => {
-        if (req.isUnauthenticated()) {
+        if (req.isAuthenticated()) {
+            next();
+        } else {
             console.log('Authenticate function invoked imperatively');
             require('passport').authenticate('parseHttpHeader')(req, res, next);
         }
-        next();
     })
 }
