@@ -1,9 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const graphqlHttp = require('express-graphql');
-
-const graphQlSchema = require('./graphql/schema/index');
-const graphQlResolvers = require('./graphql/resolvers/index');
+const setupGraphQL = require('./graphql/index');
 const connectToDatabase = require('./db/index');
 
 const app = express();
@@ -19,14 +16,7 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use(
-    '/graphql',
-    graphqlHttp({
-        schema: graphQlSchema,
-        rootValue: graphQlResolvers,
-        graphiql: true
-    })
-);
+setupGraphQL(app);
 
 connectToDatabase(
     () => {
