@@ -11,6 +11,8 @@ module.exports = function (app) {
         function (req, callback) {
             const distinguishedName = req.headers['x-subject-dn'];
             if (distinguishedName) {
+                // try to match distinguished name in req header to existing user in the database
+                // if unable to find match, "register" the user by creating a new user in the database
                 User.mapToNewOrExistingUser(
                     { distinguishedName },
                     user => callback(null, user),
@@ -18,13 +20,13 @@ module.exports = function (app) {
                 );
             } else {
                 if (isDevelopmentMode) {
-                    console.log('DEV MODE no DN found in request header');
+                    // DEV so if no distinguished name in req header, auto login as the first user in database
                     User.mapToRandomUser(
                         user => callback(null, user),
                         err => callback(null, false)
                     );
                 } else {
-                    console.log('PROD MODE no DN found in ');
+                    // PROD so there MUST be a distinguished name in req header
                     callback(null, false);
                 }
             }
@@ -51,11 +53,12 @@ module.exports = function (app) {
     app.use(passport.initialize());
     app.use(passport.session());
 
+    // custom middleware
     app.use((req, res, next) => {
         if (req.isAuthenticated()) {
             next();
         } else {
-            console.log('Authenticate function invoked imperatively');
+            console.log('Triggering chain of Passport authentication events');
             require('passport').authenticate('parseHttpHeader')(req, res, next);
         }
     })
