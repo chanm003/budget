@@ -1,7 +1,7 @@
 const graphqlHttp = require('express-graphql');
 
-const graphQlSchema = require('./schema/index');
-const graphQlResolvers = require('./resolvers/index');
+const graphQlSchema = require('../graphql/schema/index');
+const graphQlResolvers = require('../graphql/resolvers/index');
 
 module.exports = function (app) {
     app.use(
