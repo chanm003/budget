@@ -4,7 +4,8 @@ const schema = new mongoose.Schema(
     {
         distinguishedName: {
             type: String,
-            required: true
+            required: true,
+            index: true
         },
         lastLoggedIn: {
             type: Date,
