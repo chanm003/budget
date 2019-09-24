@@ -53,7 +53,7 @@ module.exports = function (app) {
     app.use(passport.initialize());
     app.use(passport.session());
 
-    app.get('/login',
+    app.get('/api/login',
         passport.authenticate('parseHttpHeader'),
         function (req, res) {
             console.log('User was logged in via Passport');
