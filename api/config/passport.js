@@ -53,13 +53,22 @@ module.exports = function (app) {
     app.use(passport.initialize());
     app.use(passport.session());
 
+    app.get('/login',
+        passport.authenticate('parseHttpHeader'),
+        function (req, res) {
+            console.log('User was logged in via Passport');
+            res.json(req.user);
+        }
+    );
+
     // custom middleware
     app.use((req, res, next) => {
         if (req.isAuthenticated()) {
+            console.log('middleware running...Authenticated')
             next();
         } else {
-            console.log('Triggering chain of Passport authentication events');
-            require('passport').authenticate('parseHttpHeader')(req, res, next);
+            console.log('middleware running...NOT Authenticated')
+            res.status(401).send('Unauthorized');
         }
     })
 }

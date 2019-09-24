@@ -27,8 +27,9 @@ schema.statics.mapToNewOrExistingUser = function (params, success, fail) {
         .then(newOrExistingUser => {
             newOrExistingUser.lastLoggedIn = new Date();
             newOrExistingUser.save()
-                .then(result => {
-                    success(result);
+                .then(user => {
+                    console.log('Certificate detected mapped to new or existing user ', user._id)
+                    success(user);
                 });
         })
         .catch(err => fail(err.message));
@@ -38,10 +39,10 @@ schema.statics.mapToRandomUser = function (success, fail) {
     this.findOne()
         .then(firstUser => {
             if (firstUser) {
-                console.log('mapped to random user ', firstUser._id)
+                console.log('No certificate detected but mapped to random user ', firstUser._id)
                 success(firstUser);
             } else {
-                const message = 'Unable to assign random user since there are ZERO documents in the "users" collection';
+                const message = 'No certificate detected.  Unable to map to random user since there are ZERO documents in the "users" collection';
                 console.log(message);
                 fail({ message });
             }
