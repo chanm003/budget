@@ -5,19 +5,19 @@ export const programList = {
   path: '/admin/programs',
   component: List,
   exact: true,
-  auth: true
+  auth: false
 }
 
 export const programCreate = {
   path: '/admin/programs/create',
   component: CreateOrEdit,
-  auth: true
+  auth: false
   //role: params.user.roles.admin
 }
 
 export const programEdit = {
-  path: (id = ':id') => (`/admin/programs/${ id }/edit`),
+  path: (id = ':id') => (`/admin/programs/${id}/edit`),
   component: CreateOrEdit,
-  auth: true
+  auth: false
 }
 

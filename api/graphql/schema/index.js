@@ -1,23 +1,18 @@
-const { buildSchema } = require('graphql');
 const directorateSchema = require('./directorate');
 const programSchema = require('./program');
 
-module.exports = buildSchema(`
-${directorateSchema.types}
-${programSchema.types}
-
-type RootQuery {
+module.exports = `
+type Query {
     ${directorateSchema.queries}
     ${programSchema.queries}
 }
 
-type RootMutation {
+type Mutation {
     ${directorateSchema.mutations}
-    ${programSchema.mutations} 
+    ${programSchema.mutations}
 }
 
-schema {
-    query: RootQuery
-    mutation: RootMutation
-}
-`);
+#Schema Types
+${directorateSchema.types}
+${programSchema.types}
+`;
