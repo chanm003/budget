@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 module.exports = function (success, err) {
     mongoose.set('useFindAndModify', false);
+    mongoose.set('useUnifiedTopology', true);
 
     mongoose.connection.on("error", error => {
         console.log("Database connection error:", error);

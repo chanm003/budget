@@ -1,0 +1,19 @@
+type Program {
+    _id: ID!
+    title: String!
+}
+
+input ProgramInput {
+    title: String!
+}
+
+type Query {
+    programs: [Program!]!
+    program(id: ID!): Program!  
+}
+
+type Mutation {
+    createProgram(input: ProgramInput): Program!
+    updateProgram(id: ID!, input: ProgramInput!): Program!
+    removeProgram(id: ID!): Program!
+}
