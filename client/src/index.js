@@ -5,18 +5,19 @@ import App from "./modules/common/layout/App";
 import * as serviceWorker from "./serviceWorker";
 import { Router } from "react-router-dom";
 import { createBrowserHistory } from "history";
-import { configureStore } from "./store/configureStore";
-import { Provider } from "react-redux";
-
-const store = configureStore();
+import { ApolloProvider } from '@apollo/react-hooks';
+import ApolloClient from 'apollo-boost';
+const client = new ApolloClient({
+  uri: '/graphql',
+});
 export const browserHistory = createBrowserHistory();
 
 ReactDOM.render(
-  <Provider store={store}>
+  <ApolloProvider client={client}>
     <Router history={browserHistory}>
       <App />
     </Router>
-  </Provider>,
+  </ApolloProvider>,
   document.getElementById("root")
 );
 

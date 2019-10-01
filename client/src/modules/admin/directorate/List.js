@@ -1,18 +1,17 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { useQuery, useMutation } from '@apollo/react-hooks';
 import { Container, Button, Table } from 'semantic-ui-react'
-import admin from '../../../routes/admin';
-import { deleteItem, fetchItems, getDirectorates } from '../../../modules/admin/directorate/state';
 import DeleteButton from '../../../modules/common/components/DeleteButton/DeleteButton';
 import { Link } from 'react-router-dom';
 import ItemsTabular from '../../common/components/Table/Table';
+import admin from '../../../routes/admin';
+import { GET_ITEMS, DELETE_ITEM, deleteMutationOptions } from './api';
 
-class List extends React.Component {
-    componentDidMount() {
-        this.props.fetchItems();
-    }
+export default function () {
+    const { loading, error, data } = useQuery(GET_ITEMS);
+    const [deleteItem] = useMutation(DELETE_ITEM, deleteMutationOptions);
 
-    tableHeaderRowRender = () => (
+    const tableHeaderRowRender = () => (
         <Table.Row>
             <Table.HeaderCell>
                 Title
@@ -22,49 +21,37 @@ class List extends React.Component {
         </Table.Row>
     )
 
-    tableRowRender = ({ _id, title }) => (
-        <Table.Row key={_id}>
+    const tableRowRender = ({ id, title }) => (
+        <Table.Row key={id}>
             <Table.Cell>{title}</Table.Cell>
             <Table.Cell collapsing textAlign='right'>
-                <Link to={admin.directorateEdit.path(_id)}>
+                <Link to={admin.directorateEdit.path(id)}>
                     <Button icon='pencil' primary />
                 </Link>
-                <DeleteButton guid={_id} onDeleteConfirm={(guid) => this.props.deleteItem(guid)}/>
+                <DeleteButton guid={id} onDeleteConfirm={onDeleteClicked} />
             </Table.Cell>
         </Table.Row>
     )
 
-    tableRowNoItemsMessage = () => (
+    const tableRowNoItemsMessage = () => (
         <Table.Row>
             <Table.Cell colSpan='2'>No directorates have been added by an administrator</Table.Cell>
         </Table.Row>
     );
 
-    render() {
-        const { items, isLoading } = this.props;
-        return (
-            <Container fluid>
-                <ItemsTabular 
-                    heading="Directorates"
-                    isLoading={isLoading}
-                    items={items}
-                    createItemPath={admin.directorateCreate.path}
-                    tableHeaderRowRender={this.tableHeaderRowRender}
-                    tableRowRender={this.tableRowRender}
-                    tableRowNoItemsMessage={this.tableRowNoItemsMessage}>
-                </ItemsTabular>
-            </Container>
-        );
-    }
+    const onDeleteClicked = (guid) => deleteItem({ variables: { id: guid } });
+
+    return (
+        <Container fluid>
+            <ItemsTabular
+                heading="Directorates"
+                isLoading={loading}
+                items={data ? data.directorates : []}
+                createItemPath={admin.directorateCreate.path}
+                tableHeaderRowRender={tableHeaderRowRender}
+                tableRowRender={tableRowRender}
+                tableRowNoItemsMessage={tableRowNoItemsMessage}>
+            </ItemsTabular>
+        </Container>
+    );
 }
-
-const mapStateToProps = (state) => {
-    return {
-        ...getDirectorates(state)
-    };
-};
-
-export default connect(
-    mapStateToProps,
-    { fetchItems, deleteItem }
-)(List);

@@ -1,21 +1,28 @@
-import { fetchItem, createItem, updateItem } from '../directorate/state';
-import { connect } from 'react-redux';
-import Form from './Form';
+import React from 'react';
+import { useQuery } from '@apollo/react-hooks';
+import { GET_ITEM } from './api';
 import _ from 'lodash';
-import { generateCreateEditForm } from '../../common/components/generateCreateEditForm/generateCreateEditForm';
-
+import Form from './Form';
+import { Header } from 'semantic-ui-react';
 
 const identifyEditableFields = itemToEdit => {
     return _.pick(itemToEdit, 'title');
 }
 
-const mapStateToProps = (state, ownProps) => {
-    const itemToEditGuid = ownProps.match.params.id;
-    return {
-        itemToEditGuid,
-        itemToEdit: state.directorates.byId[itemToEditGuid]
-    }
-}
+export default props => {
+    const { id } = props.match.params;
+    let formToRender = null;
 
-const createEditForm = generateCreateEditForm(Form, identifyEditableFields);
-export default connect(mapStateToProps, { fetchItem, createItem, updateItem })(createEditForm);
+    if (id) {
+        const { loading, error, data } = useQuery(GET_ITEM, { variables: { id } });
+        if (loading) { return null; }
+        const initialValues = identifyEditableFields(data.directorate)
+        formToRender = <Header as='h2'>Edit Form</Header>;
+    } else {
+        formToRender = <Header as='h2'>New Form</Header>;
+    }
+
+    return (
+        <div>{formToRender}<Form /></div>
+    );
+}

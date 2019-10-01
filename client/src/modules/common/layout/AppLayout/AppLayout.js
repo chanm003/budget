@@ -1,11 +1,9 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import './AppLayout.scss';
 import HeaderNav from '../HeaderNav/HeaderNav';
 import { SideBar } from '../SideBar/SideBar';
 import { SemanticToastContainer, toast } from 'react-semantic-toasts';
 import 'react-semantic-toasts/styles/react-semantic-alert.css';
-import { actions as common } from '../../state';
 import ScrollToTop from '../ScrollToTop/ScrollToTop';
 
 class AppLayout extends React.Component {
@@ -31,7 +29,7 @@ class AppLayout extends React.Component {
                     <SideBar />
                     <div className='main'>
                         {this.props.children}
-                        <SemanticToastContainer className="container" position="top-right"/>
+                        <SemanticToastContainer className="container" position="top-right" />
                     </div>
                 </div>
             </ScrollToTop>
@@ -39,15 +37,4 @@ class AppLayout extends React.Component {
     }
 }
 
-
-const mapStateToProps = (state) => {
-    return {
-        message: state.common.message,
-        directorates: state
-    };
-};
-
-export default connect(
-    mapStateToProps,
-    { clearMessage: common.clearMessage }
-)(AppLayout);
+export default AppLayout;

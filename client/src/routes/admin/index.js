@@ -1,10 +1,10 @@
 import * as directorate from './directorate';
-import * as program from './program';
+//import * as program from './program';
 
 // Admin routes
 const admin = {
-  ...directorate,
-  ...program
+    ...directorate,
+    //...program
 }
 
 export default admin
