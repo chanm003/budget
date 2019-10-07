@@ -6,10 +6,29 @@ import * as serviceWorker from "./serviceWorker";
 import { Router } from "react-router-dom";
 import { createBrowserHistory } from "history";
 import { ApolloProvider } from '@apollo/react-hooks';
-import ApolloClient from 'apollo-boost';
-const client = new ApolloClient({
-  uri: '/graphql',
+import ApolloClient from 'apollo-client';
+import { InMemoryCache } from 'apollo-cache-inmemory';
+import { createHttpLink } from 'apollo-link-http';
+import { setContext } from 'apollo-link-context';
+
+const httpLink = createHttpLink({
+  uri: '/graphql'
 });
+
+const authLink = setContext(() => {
+  const token = localStorage.getItem('jwtToken');
+  return {
+    headers: {
+      Authorization: token ? `Bearer ${token}` : ''
+    }
+  };
+});
+
+const client = new ApolloClient({
+  link: authLink.concat(httpLink),
+  cache: new InMemoryCache()
+});
+
 export const browserHistory = createBrowserHistory();
 
 ReactDOM.render(

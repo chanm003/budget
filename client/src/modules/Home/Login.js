@@ -25,13 +25,10 @@ class Login extends React.Component {
                     <Segment>
                         <Form size="large">
                             <Button color="blue" fluid size="large">
-                                Login
+                                Login with your CAC Card
                             </Button>
                         </Form>
                     </Segment>
-                    <Message>
-                        Not registered yet? <a href="#">Sign Up</a>
-                    </Message>
                 </Grid.Column>
             </Grid>
         );
