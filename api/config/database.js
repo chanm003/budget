@@ -16,7 +16,7 @@ module.exports = {
             console.log("Connected to Database!");
         });
 
-        mongoose.connect('mongodb://mongodb:27017/budget', { useNewUrlParser: true })
+        mongoose.connect('mongodb://mongodb:27017/budget', { useNewUrlParser: true, useCreateIndex: true })
             .then(() => {
                 success();
             })

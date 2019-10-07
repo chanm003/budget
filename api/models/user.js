@@ -27,14 +27,14 @@ schema.statics.mapToNewOrExistingUser = async function (params) {
     newOrExistingUser = await this.findOneAndUpdate({ distinguishedName }, update, options);
     newOrExistingUser.lastLoggedIn = new Date();
     const result = await newOrExistingUser.save();
-    console.log('Certificate detected mapped to new or existing user ', result)
+    console.log('Certificate detected mapped to new or existing user ', result.id)
     return result;
 }
 
 schema.statics.mapToRandomUser = async function () {
     const firstUser = await this.findOne();
     if (firstUser) {
-        console.log('No certificate detected but mapped to random user ', firstUser)
+        console.log('No certificate detected but mapped to random user ', firstUser.id)
         return firstUser;
     } else {
         const message = 'No certificate detected.  Unable to map to random user since there are ZERO documents in the "users" collection';

@@ -15,35 +15,39 @@ const startOptions = {
 }
 
 const attemptToLoginUser = async function (req, res) {
-    let user = null;
-    const distinguishedName = req.headers['x-subject-dn'];
-    if (distinguishedName) {
-        // CERTIFICATE FOUND
-        user = await User.mapToNewOrExistingUser({ distinguishedName });
-    } else {
-        // UNABLE TO FIND CERTIFICATE
-        if (isDevelopmentMode) {
-            user = await User.mapToRandomUser();
+    try {
+        let user = null;
+        const distinguishedName = req.headers['x-subject-dn'];
+        if (distinguishedName) {
+            // CERTIFICATE FOUND
+            user = await User.mapToNewOrExistingUser({ distinguishedName });
         } else {
-            throw new Error('Unable to detect valid certificate.  Please ensure CAC or SIPR token is inserted into reader');
+            // UNABLE TO FIND CERTIFICATE
+            if (isDevelopmentMode) {
+                user = await User.mapToRandomUser();
+            } else {
+                res.status(500).send('Unable to detect valid certificate.  Please ensure CAC or SIPR token is inserted into reader');
+            }
         }
+
+        const token = jwt.sign({ user }, jsonWebTokenSecret, { expiresIn: "1m" })
+
+        res.json({
+            user,
+            token
+        });
+    } catch (err) {
+        res.status(500).send(err.message)
     }
-
-    const token = jwt.sign({ user }, jsonWebTokenSecret, { expiresIn: "1m" })
-
-    res.json({
-        user,
-        token
-    });
 }
 
 const createServer = () => {
     const server = new GraphQLServer({
         typeDefs: graphQlSchema,
         resolvers: graphQlResolvers,
-        context: request => {
+        context: req => {
             return {
-                ...request,
+                req,
                 models,
             }
         }
