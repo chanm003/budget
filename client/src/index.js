@@ -10,6 +10,7 @@ import ApolloClient from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { createHttpLink } from 'apollo-link-http';
 import { setContext } from 'apollo-link-context';
+import { AuthProvider } from './context/auth';
 
 const httpLink = createHttpLink({
   uri: '/graphql'
@@ -33,9 +34,11 @@ export const browserHistory = createBrowserHistory();
 
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <Router history={browserHistory}>
-      <App />
-    </Router>
+    <AuthProvider>
+      <Router history={browserHistory}>
+        <App />
+      </Router>
+    </AuthProvider>
   </ApolloProvider>,
   document.getElementById("root")
 );

@@ -26,14 +26,17 @@ const attemptToLoginUser = async function (req, res) {
             if (isDevelopmentMode) {
                 user = await User.mapToRandomUser();
             } else {
-                res.status(500).send('Unable to detect valid certificate.  Please ensure CAC or SIPR token is inserted into reader');
+                res.status(500).send('Unable to detect valid certificate.  Please token is inserted into the card reader.');
             }
         }
 
         const token = jwt.sign({ user }, jsonWebTokenSecret, { expiresIn: "1m" })
 
         res.json({
-            user,
+            user: {
+                ...user._doc,
+                id: user._id
+            },
             token
         });
     } catch (err) {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import {
     Button,
     Form,
@@ -7,32 +7,45 @@ import {
     Message,
     Segment,
 } from 'semantic-ui-react';
+import axios from 'axios';
 
-class Login extends React.Component {
-    state = {
-        redirectToReferer: false
+import { AuthContext } from '../../context/auth';
+
+export default (props) => {
+    const { redirectedFrom } = props.location.state || { redirectedFrom: { pathname: '/' } };
+    const [loginError, setLoginError] = useState('')
+    const context = useContext(AuthContext);
+
+    const onLoginButtonClicked = async () => {
+        try {
+            setLoginError('')
+            const { data } = await axios.get('/api/login');
+            context.login(data);
+            props.history.push('/');
+        } catch (err) {
+            setLoginError(err.response.data);
+        }
     }
 
-    render() {
-        const { redirectedFrom } = this.props.location.state || { redirectedFrom: { pathname: '/' } };
-        console.log(redirectedFrom);
-        return (
-            <Grid centered columns={2}>
-                <Grid.Column>
-                    <Header as="h2" textAlign="center">
-                        Login
-                    </Header>
-                    <Segment>
-                        <Form size="large">
-                            <Button color="blue" fluid size="large">
-                                Login with your CAC Card
-                            </Button>
-                        </Form>
-                    </Segment>
-                </Grid.Column>
-            </Grid>
-        );
-    }
+    return (
+        <Grid centered columns={2}>
+            <Grid.Column>
+                <Header as="h2" textAlign="center">
+                    Login
+                </Header>
+                <Segment className="attached">
+                    <Form size="large">
+                        <Button color="blue" fluid size="large" onClick={onLoginButtonClicked}>
+                            Login with your CAC Card
+                        </Button>
+                    </Form>
+                </Segment>
+                {loginError && (
+                    <Message attached='bottom' error>
+                        {loginError}
+                    </Message>
+                )}
+            </Grid.Column>
+        </Grid>
+    );
 }
-
-export default Login;
