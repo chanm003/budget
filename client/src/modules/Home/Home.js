@@ -1,14 +1,32 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import './Home.scss';
+import { AuthContext } from '../../context/auth';
+import Can from '../../security/Can';
 
-class Home extends React.Component {
-  render() {
-    return (
-      <div className='home'>
-        Under construction...
-      </div>
-    );
+const Home = () => {
+  const { user } = useContext(AuthContext);
+
+  if (user.distinguishedName === 'CN=CHAN.MICHAEL.1175801169,OU=CONTRACTOR,OU=PKI,OU=DoD,O=U.S. Government,C=US') {
+    user.role = 'admin';
+    //user.role = 'visitor';
   }
+
+  return (
+    <div className='home'>
+      <Can
+        role={user.role}
+        perform="dashboard-page:visit"
+        yes={() => (
+          <div>
+            You have permissions
+          </div>
+        )}
+        no={() => (
+          <div>You do not have permissions</div>
+        )}
+      />
+    </div>
+  );
 }
 
 export default Home;

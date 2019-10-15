@@ -6,12 +6,13 @@ function authReducer(state, action) {
         case 'LOGIN':
             return {
                 ...state,
-                user: action.payload
+                user: action.payload,
+                authenticated: true
             };
         case 'LOGOUT':
             return {
                 ...state,
-                user: null
+                ...getInitialState()
             };
         default:
             return state;
@@ -19,7 +20,12 @@ function authReducer(state, action) {
 }
 
 const getInitialState = () => {
-    const initialState = { user: null };
+    const initialState = {
+        user: {
+            role: 'visitor'
+        },
+        authenticated: false
+    };
     if (localStorage.getItem('jwtToken')) {
         const decodedToken = jwtDecode(localStorage.getItem('jwtToken'));
 
