@@ -1,22 +1,6 @@
 import React, { useReducer, createContext } from 'react';
 import jwtDecode from 'jwt-decode';
 
-const initialState = {
-    user: null
-};
-
-if (localStorage.getItem('jwtToken')) {
-    const decodedToken = jwtDecode(localStorage.getItem('jwtToken'));
-
-    if (decodedToken.exp * 1000 < Date.now()) {
-        localStorage.removeItem('jwtToken');
-    } else {
-        initialState.user = decodedToken.user;
-    }
-}
-
-const AuthContext = createContext();
-
 function authReducer(state, action) {
     switch (action.type) {
         case 'LOGIN':
@@ -34,27 +18,47 @@ function authReducer(state, action) {
     }
 }
 
+const getInitialState = () => {
+    const initialState = { user: null };
+    if (localStorage.getItem('jwtToken')) {
+        const decodedToken = jwtDecode(localStorage.getItem('jwtToken'));
+
+        if (decodedToken.exp * 1000 < Date.now()) {
+            localStorage.removeItem('jwtToken');
+        } else {
+            initialState.user = decodedToken.user;
+        }
+    }
+    return initialState;
+};
+
+const getActions = (dispatch) => {
+    return {
+        login: (userData) => {
+            localStorage.setItem('jwtToken', userData.token);
+            dispatch({
+                type: 'LOGIN',
+                payload: userData.user
+            });
+        },
+
+        logout: () => {
+            localStorage.removeItem('jwtToken');
+            dispatch({ type: 'LOGOUT' });
+        }
+    }
+}
+
+const AuthContext = createContext();
+
 function AuthProvider(props) {
-    const [state, dispatch] = useReducer(authReducer, initialState);
-
-    function login(userData) {
-        localStorage.setItem('jwtToken', userData.token);
-        dispatch({
-            type: 'LOGIN',
-            payload: userData.user
-        });
-    }
-
-    function logout() {
-        localStorage.removeItem('jwtToken');
-        dispatch({ type: 'LOGOUT' });
-    }
+    const [state, dispatch] = useReducer(authReducer, getInitialState());
+    const actions = getActions(dispatch);
 
     return (
-        <AuthContext.Provider
-            value={{ user: state.user, login, logout }}
-            {...props}
-        />
+        <AuthContext.Provider value={{ user: state.user, ...actions }}>
+            {props.children}
+        </AuthContext.Provider>
     );
 }
 
