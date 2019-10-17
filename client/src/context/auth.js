@@ -1,7 +1,7 @@
 import React, { useReducer, createContext } from 'react';
 import jwtDecode from 'jwt-decode';
 
-function authReducer(state, action) {
+function reducer(state, action) {
     switch (action.type) {
         case 'LOGIN':
             return {
@@ -58,11 +58,11 @@ const getActions = (dispatch) => {
 const AuthContext = createContext();
 
 function AuthProvider(props) {
-    const [state, dispatch] = useReducer(authReducer, getInitialState());
+    const [state, dispatch] = useReducer(reducer, getInitialState());
     const actions = getActions(dispatch);
 
     return (
-        <AuthContext.Provider value={{ user: state.user, ...actions }}>
+        <AuthContext.Provider value={{ ...state, ...actions }}>
             {props.children}
         </AuthContext.Provider>
     );
