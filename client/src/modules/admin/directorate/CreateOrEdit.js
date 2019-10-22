@@ -1,6 +1,6 @@
 import React from 'react';
-import { useQuery } from '@apollo/react-hooks';
-import { GET_ITEM } from './api';
+import { useQuery, useMutation } from '@apollo/react-hooks';
+import { GET_ITEM, CREATE_ITEM, createMutationOptions } from './api';
 import _ from 'lodash';
 import Form from './Form';
 import { Header } from 'semantic-ui-react';
@@ -11,6 +11,14 @@ const identifyEditableFields = itemToEdit => {
 
 export default props => {
     const { id } = props.match.params;
+
+    const [createItem] = useMutation(CREATE_ITEM, createMutationOptions);
+
+    const onSubmit = async formData => {
+        await createItem({ variables: { title: formData.firstName } });
+        props.history.push('/admin/directorates');
+    }
+
     let formToRender = null;
 
     if (id) {
@@ -23,6 +31,6 @@ export default props => {
     }
 
     return (
-        <div>{formToRender}<Form /></div>
+        <div>{formToRender}<Form onSubmit={onSubmit} /></div>
     );
 }

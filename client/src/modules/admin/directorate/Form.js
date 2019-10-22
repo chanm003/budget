@@ -1,12 +1,14 @@
 import React, { useEffect } from 'react';
 import * as Yup from 'yup';
-import { Form, Button, Label, Segment, Message, Icon } from 'semantic-ui-react';
+import { Form, Button, Message, Icon } from 'semantic-ui-react';
 import useForm from "react-hook-form";
 
 const validationSchema = Yup.object().shape({
     firstName: Yup.string()
+        .trim()
         .required('First name is required'),
     lastName: Yup.string()
+        .trim()
         .required('Last name is required'),
     genderSelect: Yup.string()
         .required('Gender is required'),
@@ -21,7 +23,7 @@ const options = [
     { key: "o", text: "Other", value: "other" }
 ];
 
-export default () => {
+export default (props) => {
     useEffect(() => {
         register({ name: "firstName" });
         register({ name: "lastName" });
@@ -37,10 +39,20 @@ export default () => {
         setValue,
         triggerValidation
     } = useForm({ validationSchema });
+
     const onSubmit = (data, e) => {
-        console.log("Submit event", e);
-        alert(JSON.stringify(data));
+        props.onSubmit(data);
     };
+
+    const onValueChange = async (e, { name, value }) => {
+        setValue(name, value);
+        await triggerValidation({ name });
+    }
+
+    const onCheckedChange = async (e, { name, checked }) => {
+        setValue(name, checked);
+        await triggerValidation({ name });
+    }
 
     return (
         <React.Fragment>
@@ -52,10 +64,7 @@ export default () => {
                         label="First name"
                         placeholder="First name"
                         autoComplete="off"
-                        onChange={async (e, { name, value }) => {
-                            setValue(name, value);
-                            await triggerValidation({ name });
-                        }}
+                        onChange={onValueChange}
                         error={errors.firstName ? true : false}
                     />
                     <Form.Input
@@ -64,10 +73,7 @@ export default () => {
                         label="Last name"
                         placeholder="Last name"
                         autoComplete="off"
-                        onChange={async (e, { name, value }) => {
-                            setValue(name, value);
-                            await triggerValidation({ name });
-                        }}
+                        onChange={onValueChange}
                         error={errors.lastName ? true : false}
                     />
                 </Form.Group>
@@ -75,30 +81,27 @@ export default () => {
                     name="genderSelect"
                     options={options}
                     placeholder="Gender"
-                    onChange={async (e, { name, value }) => {
-                        setValue(name, value);
-                        await triggerValidation({ name });
-                    }}
+                    onChange={onValueChange}
                     error={errors.genderSelect ? true : false}
                 />
                 <Form.Checkbox
                     name="checkBox"
                     label="I agree to the Terms and Conditions"
-                    onChange={async (e, { name, checked }) => {
-                        setValue(name, checked);
-                        await triggerValidation({ name });
-                    }}
+                    onChange={onCheckedChange}
                     error={errors.checkBox ? true : false}
                 />
                 <Button type="submit">Submit</Button>
             </Form>
-            <Message attached='bottom' info>
+
+            {errors && Object.keys(errors).length > 0 && (
+                <Message attached='bottom' error>
+                    {Object.keys(errors).map(key => <p key={key}>{errors[key].message}</p>)}
+                </Message>
+            )}
+
+            <Message info>
                 <Icon name='info' />
                 {JSON.stringify(getValues(), null, 2)}
-            </Message>
-            <Message attached='bottom' error>
-                <Icon name='info' />
-                {JSON.stringify(errors, null, 2)}
             </Message>
         </React.Fragment>
     );
