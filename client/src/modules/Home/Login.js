@@ -9,12 +9,11 @@ import {
 } from 'semantic-ui-react';
 import axios from 'axios';
 
-import { AuthContext } from '../../context/auth';
+import { GlobalContext } from '../../context';
 
 export default (props) => {
-    const { redirectedFrom } = props.location.state || { redirectedFrom: { pathname: '/' } };
     const [loginError, setLoginError] = useState('')
-    const context = useContext(AuthContext);
+    const context = useContext(GlobalContext);
 
     const onLoginButtonClicked = async () => {
         try {

@@ -8,7 +8,7 @@ import admin from '../../../routes/admin';
 import { GET_ITEMS, DELETE_ITEM, deleteMutationOptions } from './api';
 
 export default function () {
-    const { loading, error, data } = useQuery(GET_ITEMS);
+    const { loading, data } = useQuery(GET_ITEMS);
     const [deleteItem] = useMutation(DELETE_ITEM, deleteMutationOptions);
 
     const tableHeaderRowRender = () => (

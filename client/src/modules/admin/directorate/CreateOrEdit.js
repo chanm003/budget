@@ -1,6 +1,6 @@
 import React from 'react';
 import { useQuery, useMutation } from '@apollo/react-hooks';
-import { GET_ITEM, CREATE_ITEM, createMutationOptions } from './api';
+import { GET_ITEM, CREATE_ITEM, UPDATE_ITEM, createMutationOptions } from './api';
 import _ from 'lodash';
 import Form from './Form';
 import { Header } from 'semantic-ui-react';
@@ -11,26 +11,32 @@ const identifyEditableFields = itemToEdit => {
 
 export default props => {
     const { id } = props.match.params;
-
     const [createItem] = useMutation(CREATE_ITEM, createMutationOptions);
+    const [updateItem] = useMutation(UPDATE_ITEM);
 
     const onSubmit = async formData => {
-        await createItem({ variables: { title: formData.firstName } });
+        if (!id) {
+            await createItem({ variables: { ...formData } });
+        } else {
+            await updateItem({ variables: { id, ...formData } });
+        }
         props.history.push('/admin/directorates');
     }
 
-    let formToRender = null;
+    let initialValues = {};
+    let header = 'New Form';
 
     if (id) {
-        const { loading, error, data } = useQuery(GET_ITEM, { variables: { id } });
+        const { loading, data } = useQuery(GET_ITEM, { variables: { id } });
         if (loading) { return null; }
-        const initialValues = identifyEditableFields(data.directorate)
-        formToRender = <Header as='h2'>Edit Form</Header>;
-    } else {
-        formToRender = <Header as='h2'>New Form</Header>;
+        initialValues = identifyEditableFields(data.directorate)
+        header = 'Edit Form';
     }
 
     return (
-        <div>{formToRender}<Form onSubmit={onSubmit} /></div>
+        <div>
+            <Header as='h2'>{header}</Header>
+            <Form onSubmit={onSubmit} initialValues={initialValues} />
+        </div>
     );
 }

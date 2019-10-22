@@ -27,6 +27,15 @@ export const GET_ITEMS = gql`
     }
 `;
 
+export const UPDATE_ITEM = gql`
+    mutation UpdateItem($id: ID!, $title: String!) {
+        updateDirectorate(id: $id, input: {title: $title }) {
+            id
+            title
+        }
+    }
+`;
+
 export const DELETE_ITEM = gql`
     mutation RemoveItem($id: ID!) {
         removeDirectorate(id: $id) {

@@ -6,35 +6,30 @@ import { SemanticToastContainer, toast } from 'react-semantic-toasts';
 import 'react-semantic-toasts/styles/react-semantic-alert.css';
 import ScrollToTop from '../ScrollToTop/ScrollToTop';
 
-class AppLayout extends React.Component {
-    componentDidUpdate(prevProps) {
-        if (!prevProps.message && this.props.message) {
-            toast({
-                icon: this.props.icon,
-                type: this.props.message.type,
-                title: this.props.message.title || '',
-                description: this.props.message.description || '',
-                size: 'small',
-                time: 5000
-            })
-            this.props.clearMessage();
-        }
-    }
+export default function AppLayout(props) {
+    setTimeout(() => {
+        const message = {}
+        toast({
+            icon: message.icon || 'check',
+            type: message.type || 'success',
+            title: message.title || 'test',
+            description: message.description || 'test desc',
+            size: 'small',
+            time: 5000
+        })
 
-    render() {
-        return (
-            <ScrollToTop>
-                <div className='app-layout'>
-                    <HeaderNav />
-                    <SideBar />
-                    <div className='main'>
-                        {this.props.children}
-                        <SemanticToastContainer className="container" position="top-right" />
-                    </div>
+    }, 2000);
+
+    return (
+        <ScrollToTop>
+            <div className='app-layout'>
+                <HeaderNav />
+                <SideBar />
+                <div className='main'>
+                    {props.children}
+                    <SemanticToastContainer className="container" position="top-right" />
                 </div>
-            </ScrollToTop>
-        );
-    }
+            </div>
+        </ScrollToTop>
+    );
 }
-
-export default AppLayout;
