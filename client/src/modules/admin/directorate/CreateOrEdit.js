@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { GET_ITEM, CREATE_ITEM, UPDATE_ITEM, createMutationOptions } from './api';
 import _ from 'lodash';
 import Form from './Form';
 import { Header } from 'semantic-ui-react';
+import { GlobalContext } from '../../../context';
 
 const identifyEditableFields = itemToEdit => {
     return _.pick(itemToEdit, 'title');
@@ -11,14 +12,17 @@ const identifyEditableFields = itemToEdit => {
 
 export default props => {
     const { id } = props.match.params;
+    const { showSuccessToast } = useContext(GlobalContext);
     const [createItem] = useMutation(CREATE_ITEM, createMutationOptions);
     const [updateItem] = useMutation(UPDATE_ITEM);
 
     const onSubmit = async formData => {
         if (!id) {
-            await createItem({ variables: { ...formData } });
+            const { data: { createDirectorate: item } } = await createItem({ variables: { ...formData } });
+            showSuccessToast({ title: 'Directorate created', description: `'${item.title}' has been created.` });
         } else {
             await updateItem({ variables: { id, ...formData } });
+            showSuccessToast({ title: 'Directorate updated', description: `Your changes have been saved.` });
         }
         props.history.push('/admin/directorates');
     }

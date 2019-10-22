@@ -10,12 +10,12 @@ import { Store } from './context';
 export const browserHistory = createBrowserHistory();
 
 ReactDOM.render(
-  <ApolloProvider>
-    <Store>
+  <Store>
+    <ApolloProvider>
       <Router history={browserHistory}>
         <App />
       </Router>
-    </Store>
-  </ApolloProvider>,
+    </ApolloProvider>
+  </Store>,
   document.getElementById("root")
 );

@@ -1,24 +1,29 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import './AppLayout.scss';
 import HeaderNav from '../HeaderNav/HeaderNav';
 import { SideBar } from '../SideBar/SideBar';
 import { SemanticToastContainer, toast } from 'react-semantic-toasts';
 import 'react-semantic-toasts/styles/react-semantic-alert.css';
 import ScrollToTop from '../ScrollToTop/ScrollToTop';
+import { GlobalContext } from '../../../../context';
 
 export default function AppLayout(props) {
-    setTimeout(() => {
-        const message = {}
-        toast({
-            icon: message.icon || 'check',
-            type: message.type || 'success',
-            title: message.title || 'test',
-            description: message.description || 'test desc',
-            size: 'small',
-            time: 5000
-        })
+    const { message, clearToast } = useContext(GlobalContext);
 
-    }, 2000);
+    useEffect(() => {
+        if (message) {
+            toast({
+                icon: message.icon || 'check',
+                type: message.type || 'success',
+                title: message.title || 'test',
+                description: message.description || 'test desc',
+                size: 'small',
+                time: 5000,
+                onDismiss: () => { }
+            })
+            clearToast();
+        }
+    }, [message]);
 
     return (
         <ScrollToTop>
