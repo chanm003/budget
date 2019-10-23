@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import AppLayout from './AppLayout/AppLayout';
 import { Route } from 'react-router-dom';
 import { routes } from '../../../routes';

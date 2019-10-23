@@ -23,7 +23,7 @@ export default function AppLayout(props) {
             })
             clearToast();
         }
-    }, [message]);
+    }, [clearToast, message]);
 
     return (
         <ScrollToTop>
