@@ -1,6 +1,7 @@
 import jwtDecode from 'jwt-decode';
 
 export function reducer(state, action) {
+    console.log('auth reducer')
     switch (action.type) {
         case 'LOGIN':
             return {
@@ -37,7 +38,7 @@ export const getInitialState = () => {
     return initialState;
 };
 
-export const getActions = (dispatch) => {
+export const createActions = (dispatch) => {
     return {
         login: (userData) => {
             localStorage.setItem('jwtToken', userData.token);

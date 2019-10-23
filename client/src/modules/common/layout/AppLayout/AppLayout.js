@@ -1,14 +1,14 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import './AppLayout.scss';
 import HeaderNav from '../HeaderNav/HeaderNav';
 import { SideBar } from '../SideBar/SideBar';
 import { SemanticToastContainer, toast } from 'react-semantic-toasts';
 import 'react-semantic-toasts/styles/react-semantic-alert.css';
 import ScrollToTop from '../ScrollToTop/ScrollToTop';
-import { GlobalContext } from '../../../../context';
+import { useStore } from '../../../../context';
 
 export default function AppLayout(props) {
-    const { message, clearToast } = useContext(GlobalContext);
+    const { message, clearToast } = useStore();
 
     useEffect(() => {
         if (message) {

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { Container, Button, Table } from 'semantic-ui-react'
 import DeleteButton from '../../../modules/common/components/DeleteButton/DeleteButton';
@@ -6,10 +6,10 @@ import { Link } from 'react-router-dom';
 import ItemsTabular from '../../common/components/Table/Table';
 import admin from '../../../routes/admin';
 import { GET_ITEMS, DELETE_ITEM, deleteMutationOptions } from './api';
-import { GlobalContext } from '../../../context';
+import { useStore } from '../../../context';
 
 export default function () {
-    const { showSuccessToast } = useContext(GlobalContext);
+    const { showSuccessToast } = useStore();
     const { loading, data } = useQuery(GET_ITEMS);
     const [deleteItem] = useMutation(DELETE_ITEM, deleteMutationOptions);
 

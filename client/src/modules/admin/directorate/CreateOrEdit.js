@@ -1,10 +1,10 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { GET_ITEM, CREATE_ITEM, UPDATE_ITEM, createMutationOptions } from './api';
 import _ from 'lodash';
 import Form from './Form';
 import { Header } from 'semantic-ui-react';
-import { GlobalContext } from '../../../context';
+import { useStore } from '../../../context';
 
 const identifyEditableFields = itemToEdit => {
     return _.pick(itemToEdit, 'title');
@@ -12,7 +12,7 @@ const identifyEditableFields = itemToEdit => {
 
 export default props => {
     const { id } = props.match.params;
-    const { showSuccessToast } = useContext(GlobalContext);
+    const { showSuccessToast } = useStore();
     const [createItem] = useMutation(CREATE_ITEM, createMutationOptions);
     const [updateItem] = useMutation(UPDATE_ITEM);
 

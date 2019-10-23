@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import {
     Button,
     Form,
@@ -9,11 +9,11 @@ import {
 } from 'semantic-ui-react';
 import axios from 'axios';
 
-import { GlobalContext } from '../../context';
+import { useStore } from '../../context';
 
 export default (props) => {
     const [loginError, setLoginError] = useState('')
-    const context = useContext(GlobalContext);
+    const context = useStore();
 
     const onLoginButtonClicked = async () => {
         try {

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { ApolloProvider } from '@apollo/react-hooks';
 import ApolloClient from 'apollo-client';
 import { ApolloLink } from 'apollo-link';
@@ -6,10 +6,10 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { createHttpLink } from 'apollo-link-http';
 import { setContext } from 'apollo-link-context';
 import { onError } from "apollo-link-error";
-import { GlobalContext } from './context';
+import { useStore } from './context';
 
 export default (props) => {
-    const { showErrorToast } = useContext(GlobalContext);
+    const { showErrorToast } = useStore();
 
     const httpLink = createHttpLink({
         uri: '/graphql'

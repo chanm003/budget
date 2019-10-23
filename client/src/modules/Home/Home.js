@@ -1,10 +1,10 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import './Home.scss';
-import { GlobalContext } from '../../context';
+import { useStore } from '../../context';
 import Can from '../../security/Can';
 
 const Home = () => {
-  const { user } = useContext(GlobalContext);
+  const { user } = useStore();
 
   if (user.distinguishedName === 'CN=CHAN.MICHAEL.1175801169,OU=CONTRACTOR,OU=PKI,OU=DoD,O=U.S. Government,C=US') {
     user.role = 'admin';

@@ -3,6 +3,7 @@ import SideBarItem from './SideBarItem/SideBarItem';
 import { Menu, Divider } from 'semantic-ui-react';
 import './SideBar.scss';
 import { SideBarHeader } from './SideBarHeader/SideBarHeader';
+import { routes } from '../../../../routes';
 
 export function SideBar() {
   return (
@@ -14,6 +15,7 @@ export function SideBar() {
 
       <SideBarHeader title='Administration' />
 
+      <SideBarItem path={routes.directorateList.path} label='Directorates' icon='comment' />
 
       <Divider />
 

@@ -1,19 +1,19 @@
-import React, { useReducer, createContext } from 'react';
+import React, { useReducer, createContext, useContext } from 'react';
 
-import { getActions as getAuthActions, reducer as authReducer, getInitialState as getInitialAuthState } from './auth';
-import { getActions as getCommonActions, reducer as commonReducer, getInitialState as getInitialCommonState } from './common';
+import { createActions as createActionsAuth, reducer as authReducer, getInitialState as getInitialStateAuth } from './auth';
+import { createActions as createActionsCommon, reducer as commonReducer, getInitialState as getInitialStateCommon } from './common';
 
 const GlobalContext = createContext();
 
 function Store(props) {
-    const [authState, authDispatch] = useReducer(authReducer, getInitialAuthState());
-    const [commonState, commonDispatch] = useReducer(commonReducer, getInitialCommonState());
+    const [auth, dispatchAuth] = useReducer(authReducer, getInitialStateAuth());
+    const [common, dispatchCommon] = useReducer(commonReducer, getInitialStateCommon());
 
     const storeApi = {
-        ...authState,
-        ...commonState,
-        ...getAuthActions(authDispatch),
-        ...getCommonActions(commonDispatch)
+        ...auth,
+        ...common,
+        ...createActionsAuth(dispatchAuth),
+        ...createActionsCommon(dispatchCommon)
     }
 
     return (
@@ -23,4 +23,8 @@ function Store(props) {
     );
 }
 
-export { GlobalContext, Store };
+const useStore = () => {
+    return useContext(GlobalContext)
+}
+
+export { useStore, Store };
