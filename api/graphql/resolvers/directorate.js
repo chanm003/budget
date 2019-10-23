@@ -4,7 +4,8 @@ module.exports = {
             const item = await models.Directorate.findById(args.id);
             return item;
         },
-        directorates: async (_, args, { models }) => {
+        directorates: async (_, args, { models, user }) => {
+            console.log(user);
             const items = await models.Directorate.find();
             return items;
         }

@@ -14,6 +14,18 @@ const startOptions = {
     playground: '/graphql'
 }
 
+const verifyToken = (req) => {
+    let currentUser = { role: 'visitor' };
+    try {
+        let authHeader = req.headers['authorization'];
+        authHeader = authHeader && authHeader.replace('Bearer ', '')
+        currentUser = jwt.verify(authHeader, jsonWebTokenSecret).user;
+    } catch (e) {
+        return currentUser;
+    }
+    return currentUser;
+}
+
 const attemptToLoginUser = async function (req, res) {
     try {
         let user = null;
@@ -48,10 +60,11 @@ const createServer = () => {
     const server = new GraphQLServer({
         typeDefs: graphQlSchema,
         resolvers: graphQlResolvers,
-        context: req => {
+        context: ({ request: req }) => {
             return {
                 req,
                 models,
+                user: verifyToken(req)
             }
         }
     });
