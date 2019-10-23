@@ -1,35 +1,47 @@
-import React from 'react';
-import { Field, reduxForm } from 'redux-form';
-import { Form } from 'semantic-ui-react';
-import { renderTextInput } from '../../common/helpers/semanticUiFields';
+import React, { useEffect } from 'react';
+import * as Yup from 'yup';
+import { Form, Button } from 'semantic-ui-react';
+import useForm from "react-hook-form";
 
-class DataEntryForm extends React.Component {
-    render() {
-        const { valid, handleSubmit, onSubmit } = this.props;
-        return (
-            <Form onSubmit={handleSubmit((formValues) => onSubmit(formValues))}>
+import { handleValueChange, FormError } from './formHelpers';
+
+export default (props) => {
+    const {
+        register,
+        errors,
+        handleSubmit,
+        setValue,
+        triggerValidation,
+    } = useForm({ validationSchema, defaultValues: props.initialValues });
+
+    useEffect(() => {
+        register({ name: "title" });
+    }, [register]);
+
+    return (
+        <React.Fragment>
+            <Form className="attached fluid segment" onSubmit={handleSubmit((data) => props.onSubmit(data))}>
                 <Form.Group widths="equal">
-                    <Field name="title" component={renderTextInput} label="Title" />
+                    <Form.Input
+                        name="title"
+                        fluid
+                        defaultValue={props.initialValues.title}
+                        label="Title"
+                        placeholder="Title"
+                        autoComplete="off"
+                        onChange={handleValueChange(setValue, triggerValidation)}
+                        error={errors.title ? true : false}
+                    />
                 </Form.Group>
-                <Form.Group inline>
-                    <Form.Button disabled={!valid} primary>Submit</Form.Button>
-                </Form.Group>
+                <Button type="submit">Submit</Button>
             </Form>
-        );
-    }
-}
-
-const validate = (formValues) => {
-    const errors = {};
-
-    if (!formValues.title) {
-        errors.title = 'You must enter a title';
-    }
-
-    return errors;
+            <FormError errors={errors} />
+        </React.Fragment>
+    );
 };
 
-export default reduxForm({
-    form: 'directorateForm',
-    validate
-})(DataEntryForm);
+const validationSchema = Yup.object().shape({
+    title: Yup.string()
+        .trim()
+        .required('Title is required')
+});

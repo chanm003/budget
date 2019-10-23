@@ -1,7 +1,6 @@
-const directorateResolver = require('./directorate');
-const programResolver = require('./program');
+const path = require('path')
+const { fileLoader, mergeResolvers } = require('merge-graphql-schemas');
 
-module.exports = {
-    ...directorateResolver,
-    ...programResolver
-}
+const resolversArray = fileLoader(path.join(__dirname, '.'));
+
+module.exports = mergeResolvers(resolversArray); 

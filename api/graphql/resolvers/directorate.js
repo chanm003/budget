@@ -1,27 +1,29 @@
-const Directorate = require('../../models/directorate');
-
 module.exports = {
-    directorate: async (args, req) => {
-        const item = await Directorate.findById(args.id);
-        return item;
+    Query: {
+        directorate: async (_, args, { models }) => {
+            const item = await models.Directorate.findById(args.id);
+            return item;
+        },
+        directorates: async (_, args, { models }) => {
+            const items = await models.Directorate.find();
+            return items;
+        }
     },
-    directorates: async (args, req) => {
-        const items = await Directorate.find();
-        return items;
-    },
-    createDirectorate: async (args, req) => {
-        const item = new Directorate({
-            ...args.input
-        });
-        const result = await item.save();
-        return result;
-    },
-    updateDirectorate: async (args, req) => {
-        const result = await Directorate.findByIdAndUpdate(args.id, args.input, { new: true })
-        return result;
-    },
-    removeDirectorate: async (args, req) => {
-        const deletedItem = await Directorate.findByIdAndRemove(args.id);
-        return deletedItem
+    Mutation: {
+        createDirectorate: async (_, args, { models }) => {
+            const item = new models.Directorate({
+                ...args.input
+            });
+            const result = await item.save();
+            return result;
+        },
+        updateDirectorate: async (_, args, { models }) => {
+            const result = await models.Directorate.findByIdAndUpdate(args.id, args.input, { new: true })
+            return result;
+        },
+        removeDirectorate: async (_, args, { models }) => {
+            const deletedItem = await models.Directorate.findByIdAndRemove(args.id);
+            return deletedItem
+        }
     }
 }

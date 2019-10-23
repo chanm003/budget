@@ -1,23 +1,6 @@
-const { buildSchema } = require('graphql');
-const directorateSchema = require('./directorate');
-const programSchema = require('./program');
+const path = require('path')
+const { fileLoader, mergeTypes } = require('merge-graphql-schemas');
 
-module.exports = buildSchema(`
-${directorateSchema.types}
-${programSchema.types}
+const typesArray = fileLoader(path.join(__dirname, '.'), { recursive: true })
 
-type RootQuery {
-    ${directorateSchema.queries}
-    ${programSchema.queries}
-}
-
-type RootMutation {
-    ${directorateSchema.mutations}
-    ${programSchema.mutations} 
-}
-
-schema {
-    query: RootQuery
-    mutation: RootMutation
-}
-`);
+module.exports = mergeTypes(typesArray, { all: true })

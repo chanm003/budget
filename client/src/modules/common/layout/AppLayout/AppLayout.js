@@ -1,53 +1,40 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import React, { useEffect } from 'react';
 import './AppLayout.scss';
 import HeaderNav from '../HeaderNav/HeaderNav';
 import { SideBar } from '../SideBar/SideBar';
 import { SemanticToastContainer, toast } from 'react-semantic-toasts';
 import 'react-semantic-toasts/styles/react-semantic-alert.css';
-import { actions as common } from '../../state';
 import ScrollToTop from '../ScrollToTop/ScrollToTop';
+import { useStore } from '../../../../context';
 
-class AppLayout extends React.Component {
-    componentDidUpdate(prevProps) {
-        if (!prevProps.message && this.props.message) {
+export default function AppLayout(props) {
+    const { common: { message, clearToast } } = useStore();
+
+    useEffect(() => {
+        if (message) {
             toast({
-                icon: this.props.icon,
-                type: this.props.message.type,
-                title: this.props.message.title || '',
-                description: this.props.message.description || '',
+                icon: message.icon || 'check',
+                type: message.type || 'success',
+                title: message.title || 'test',
+                description: message.description || 'test desc',
                 size: 'small',
-                time: 5000
+                time: 5000,
+                onDismiss: () => { }
             })
-            this.props.clearMessage();
+            clearToast();
         }
-    }
+    }, [clearToast, message]);
 
-    render() {
-        return (
-            <ScrollToTop>
-                <div className='app-layout'>
-                    <HeaderNav />
-                    <SideBar />
-                    <div className='main'>
-                        {this.props.children}
-                        <SemanticToastContainer className="container" position="top-right"/>
-                    </div>
+    return (
+        <ScrollToTop>
+            <div className='app-layout'>
+                <HeaderNav />
+                <SideBar />
+                <div className='main'>
+                    {props.children}
+                    <SemanticToastContainer className="container" position="top-right" />
                 </div>
-            </ScrollToTop>
-        );
-    }
+            </div>
+        </ScrollToTop>
+    );
 }
-
-
-const mapStateToProps = (state) => {
-    return {
-        message: state.common.message,
-        directorates: state
-    };
-};
-
-export default connect(
-    mapStateToProps,
-    { clearMessage: common.clearMessage }
-)(AppLayout);

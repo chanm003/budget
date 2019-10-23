@@ -4,16 +4,16 @@ import { Link } from 'react-router-dom';
 import LoadingSegment from '../LoadingSegment/LoadingSegment';
 
 const renderActionButtons = (createItemPath) => (
-        <Link to={createItemPath}>
-            <Button primary>
-                <Icon name='add' /> New
+    <Link to={createItemPath}>
+        <Button primary>
+            <Icon name='add' /> New
             </Button>
-        </Link>
-    );
+    </Link>
+);
 
 const tableRender = (items, tableRowRender, tableHeaderRowRender, tableRowNoItemsMessage) => {
     if (!items) { return null; }
-    return(
+    return (
         <Table celled compact='very'>
             <Table.Header>
                 {tableHeaderRowRender()}
@@ -21,8 +21,8 @@ const tableRender = (items, tableRowRender, tableHeaderRowRender, tableRowNoItem
             <Table.Body>
                 {
                     items.length > 0
-                        ?   items.map(tableRowRender)
-                        :   tableRowNoItemsMessage()
+                        ? items.map(tableRowRender)
+                        : tableRowNoItemsMessage()
                 }
             </Table.Body>
         </Table>
@@ -31,9 +31,10 @@ const tableRender = (items, tableRowRender, tableHeaderRowRender, tableRowNoItem
 
 export default props => {
     const { heading, createItemPath, isLoading, items, tableRowRender, tableHeaderRowRender, tableRowNoItemsMessage } = props;
+
     return (
         <LoadingSegment heading={heading} headingActions={renderActionButtons(createItemPath)} isLoading={isLoading}>
-             {tableRender(items, tableRowRender, tableHeaderRowRender, tableRowNoItemsMessage)}
+            {tableRender(items, tableRowRender, tableHeaderRowRender, tableRowNoItemsMessage)}
         </LoadingSegment>
     );
 }

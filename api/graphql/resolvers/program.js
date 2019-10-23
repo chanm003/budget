@@ -1,27 +1,29 @@
-const Program = require('../../models/program');
-
 module.exports = {
-    program: async (args, req) => {
-        const item = await Program.findById(args.id);
-        return item;
+    Query: {
+        program: async (_, args, { models }) => {
+            const item = await models.Program.findById(args.id);
+            return item;
+        },
+        programs: async (_, args, { models }) => {
+            const items = await models.Program.find();
+            return items;
+        }
     },
-    programs: async (args, req) => {
-        const items = await Program.find();
-        return items;
-    },
-    createProgram: async (args, req) => {
-        const item = new Program({
-            ...args.input
-        });
-        const result = await item.save();
-        return result;
-    },
-    updateProgram: async (args, req) => {
-        const result = await Program.findByIdAndUpdate(args.id, args.input, { new: true })
-        return result;
-    },
-    removeProgram: async (args, req) => {
-        const deletedItem = await Program.findByIdAndRemove(args.id);
-        return deletedItem
+    Mutation: {
+        createProgram: async (_, args, { models }) => {
+            const item = new models.Program({
+                ...args.input
+            });
+            const result = await item.save();
+            return result;
+        },
+        updateProgram: async (_, args, { models }) => {
+            const result = await models.Program.findByIdAndUpdate(args.id, args.input, { new: true })
+            return result;
+        },
+        removeProgram: async (_, args, { models }) => {
+            const deletedItem = await models.Program.findByIdAndRemove(args.id);
+            return deletedItem
+        }
     }
 }
