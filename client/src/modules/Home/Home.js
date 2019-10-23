@@ -4,12 +4,7 @@ import { useStore } from '../../context';
 import Can from '../../security/Can';
 
 const Home = () => {
-  const { user } = useStore();
-
-  if (user.distinguishedName === 'CN=CHAN.MICHAEL.1175801169,OU=CONTRACTOR,OU=PKI,OU=DoD,O=U.S. Government,C=US') {
-    user.role = 'admin';
-    //user.role = 'visitor';
-  }
+  const { auth: { user } } = useStore();
 
   return (
     <div className='home'>

@@ -13,13 +13,13 @@ import { useStore } from '../../context';
 
 export default (props) => {
     const [loginError, setLoginError] = useState('')
-    const context = useStore();
+    const { auth } = useStore();
 
     const onLoginButtonClicked = async () => {
         try {
             setLoginError('')
             const { data } = await axios.get('/api/login');
-            context.login(data);
+            auth.login(data);
             props.history.push('/');
         } catch (err) {
             setLoginError(err.response.data);

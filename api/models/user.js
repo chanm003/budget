@@ -10,6 +10,10 @@ const schema = new mongoose.Schema(
         lastLoggedIn: {
             type: Date,
             default: Date.now
+        },
+        role: {
+            type: String,
+            default: 'visitor'
         }
     },
     {

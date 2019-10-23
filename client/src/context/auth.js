@@ -1,7 +1,6 @@
 import jwtDecode from 'jwt-decode';
 
 export function reducer(state, action) {
-    console.log('auth reducer')
     switch (action.type) {
         case 'LOGIN':
             return {

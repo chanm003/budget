@@ -9,7 +9,7 @@ import { GET_ITEMS, DELETE_ITEM, deleteMutationOptions } from './api';
 import { useStore } from '../../../context';
 
 export default function () {
-    const { showSuccessToast } = useStore();
+    const { common: { showSuccessToast } } = useStore();
     const { loading, data } = useQuery(GET_ITEMS);
     const [deleteItem] = useMutation(DELETE_ITEM, deleteMutationOptions);
 

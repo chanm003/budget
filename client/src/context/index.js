@@ -6,14 +6,14 @@ import { createActions as createActionsCommon, reducer as commonReducer, getInit
 const GlobalContext = createContext();
 
 function Store(props) {
-    const [auth, dispatchAuth] = useReducer(authReducer, getInitialStateAuth());
-    const [common, dispatchCommon] = useReducer(commonReducer, getInitialStateCommon());
+    const [state, dispatch] = useCombinedReducer({
+        auth: useReducer(authReducer, getInitialStateAuth()),
+        common: useReducer(commonReducer, getInitialStateCommon())
+    });
 
     const storeApi = {
-        ...auth,
-        ...common,
-        ...createActionsAuth(dispatchAuth),
-        ...createActionsCommon(dispatchCommon)
+        auth: { ...state.auth, ...createActionsAuth(dispatch) },
+        common: { ...state.common, ...createActionsCommon(dispatch) }
     }
 
     return (
@@ -26,5 +26,21 @@ function Store(props) {
 const useStore = () => {
     return useContext(GlobalContext)
 }
+
+const useCombinedReducer = useReducers => {
+    // Global State
+    const state = Object.keys(useReducers).reduce(
+        (acc, key) => ({ ...acc, [key]: useReducers[key][0] }),
+        {}
+    );
+
+    // Global Dispatch Function
+    const dispatch = action =>
+        Object.keys(useReducers)
+            .map(key => useReducers[key][1])
+            .forEach(fn => fn(action));
+
+    return [state, dispatch];
+};
 
 export { useStore, Store };

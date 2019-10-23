@@ -12,7 +12,7 @@ const identifyEditableFields = itemToEdit => {
 
 export default props => {
     const { id } = props.match.params;
-    const { showSuccessToast } = useStore();
+    const { common: { showSuccessToast } } = useStore();
     const [createItem] = useMutation(CREATE_ITEM, createMutationOptions);
     const [updateItem] = useMutation(UPDATE_ITEM);
 

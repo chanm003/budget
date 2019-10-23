@@ -9,7 +9,7 @@ import { onError } from "apollo-link-error";
 import { useStore } from './context';
 
 export default (props) => {
-    const { showErrorToast } = useStore();
+    const { common: { showErrorToast } } = useStore();
 
     const httpLink = createHttpLink({
         uri: '/graphql'

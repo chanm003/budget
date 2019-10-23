@@ -8,7 +8,7 @@ import ScrollToTop from '../ScrollToTop/ScrollToTop';
 import { useStore } from '../../../../context';
 
 export default function AppLayout(props) {
-    const { message, clearToast } = useStore();
+    const { common: { message, clearToast } } = useStore();
 
     useEffect(() => {
         if (message) {

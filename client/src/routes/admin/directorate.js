@@ -12,7 +12,6 @@ export const directorateCreate = {
     path: '/admin/directorates/create',
     component: CreateOrEdit,
     auth: true
-    //role: params.user.roles.admin
 }
 
 export const directorateEdit = {

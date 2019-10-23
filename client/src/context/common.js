@@ -1,5 +1,4 @@
 export function reducer(state, action) {
-    console.log('common reducer')
     switch (action.type) {
         case 'SHOW_SUCCESS_MESSAGE':
             return {
