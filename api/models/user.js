@@ -13,7 +13,7 @@ const schema = new mongoose.Schema(
         },
         role: {
             type: String,
-            default: 'visitor'
+            default: 'loggedInUser'
         }
     },
     {

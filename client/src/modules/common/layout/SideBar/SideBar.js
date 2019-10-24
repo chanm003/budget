@@ -13,11 +13,13 @@ export function SideBar() {
 
       <Divider />
 
-      <SideBarHeader title='Administration' />
+      <React.Fragment>
+        <SideBarHeader title='Administration' />
 
-      <SideBarItem path={routes.directorateList.path} label='Directorates' icon='comment' />
+        <SideBarItem path={routes.directorateList.path} label='Directorates' icon='comment' />
 
-      <Divider />
+        <Divider />
+      </React.Fragment>
 
       <SideBarItem label='Report history' icon='flag' />
       <SideBarItem label='Help' icon='help circle' />

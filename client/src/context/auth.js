@@ -5,8 +5,7 @@ export function reducer(state, action) {
         case 'LOGIN':
             return {
                 ...state,
-                user: action.payload,
-                authenticated: true
+                user: action.payload
             };
         case 'LOGOUT':
             return {
@@ -22,8 +21,7 @@ export const getInitialState = () => {
     const initialState = {
         user: {
             role: 'visitor'
-        },
-        authenticated: false
+        }
     };
     if (localStorage.getItem('jwtToken')) {
         const decodedToken = jwtDecode(localStorage.getItem('jwtToken'));

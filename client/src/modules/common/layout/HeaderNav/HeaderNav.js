@@ -1,10 +1,12 @@
 import React from 'react';
-import { Form, Icon, Image, Input, Menu } from 'semantic-ui-react';
+import { Form, Icon, Image, Input, Menu, Button } from 'semantic-ui-react';
 import './HeaderNav.scss';
 import logo from '../../../../assets/images/logo.jpg';
 import { Link } from 'react-router-dom';
+import { useStore } from '../../../../context';
 
 export default function HeaderNav() {
+  const { auth: { user } } = useStore();
   return (
     <Menu borderless className='top-menu' fixed='top'>
       <Menu.Item header className='logo'>
@@ -35,8 +37,16 @@ export default function HeaderNav() {
             <Icon className='header-icon' name='alarm' size='large' />
           </Menu.Item>
           <Menu.Item name='avatar'>
-            <Image src='http://via.placeholder.com/80x80' avatar />
+            {user.role === 'visitor'
+              ? (
+                <Button as={Link} to='/login'>Log-in</Button>
+              )
+              : (
+                <Image as={Link} to='/login' src='http://via.placeholder.com/80x80' avatar />
+              )
+            }
           </Menu.Item>
+
         </Menu.Menu>
       </Menu.Menu>
     </Menu>

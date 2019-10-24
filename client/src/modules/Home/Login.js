@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     Button,
     Form,
@@ -13,14 +13,19 @@ import { useStore } from '../../context';
 
 export default (props) => {
     const [loginError, setLoginError] = useState('')
-    const { auth } = useStore();
+    const { auth: { user, login } } = useStore();
+
+    useEffect(() => {
+        if (user.role !== 'visitor') {
+            props.history.push('/');
+        }
+    }, [user, props.history]);
 
     const onLoginButtonClicked = async () => {
         try {
             setLoginError('')
             const { data } = await axios.get('/api/login');
-            auth.login(data);
-            props.history.push('/');
+            login(data);
         } catch (err) {
             setLoginError(err.response.data);
         }
