@@ -1,15 +1,16 @@
 import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import { Route, Redirect, useLocation } from 'react-router-dom';
 import Can from './Can';
 import { useStore } from '../context';
 
 export const GuardedRoute = ({ component: Component, roles, ...rest }) => {
     const { perform } = rest;
     const { auth: { user } } = useStore();
+    const { pathname } = useLocation();
 
     const authCheckFailed = () => {
         if (user.role === 'visitor') {
-            return <Redirect to="/login" />
+            return <Redirect to={{ pathname: "/login", state: { from: pathname } }} />
         } else {
             return <Redirect to="/403" />;
         }
@@ -29,4 +30,3 @@ export const GuardedRoute = ({ component: Component, roles, ...rest }) => {
         }} />
     );
 }
-

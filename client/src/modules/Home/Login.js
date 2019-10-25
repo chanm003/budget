@@ -7,6 +7,7 @@ import {
     Message,
     Segment,
 } from 'semantic-ui-react';
+import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 
 import { useStore } from '../../context';
@@ -14,12 +15,14 @@ import { useStore } from '../../context';
 export default (props) => {
     const [loginError, setLoginError] = useState('')
     const { auth: { user, login } } = useStore();
+    const { state } = useLocation();
 
     useEffect(() => {
         if (user.role !== 'visitor') {
-            props.history.push('/');
+            const redirectPath = state && state.from ? state.from : '/'
+            props.history.push(redirectPath);
         }
-    }, [user, props.history]);
+    }, [user.role, props.history]);
 
     const onLoginButtonClicked = async () => {
         try {
