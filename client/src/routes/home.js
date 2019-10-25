@@ -1,5 +1,6 @@
 import Home from '../modules/Home/Home';
 import Login from '../modules/Home/Login';
+import Logout from '../modules/Home/Logout';
 import UnauthorizedPage from '../modules/Home/403';
 
 // Home routes
@@ -20,5 +21,10 @@ export default {
         path: '/login',
         component: Login,
         perform: 'login-page:visit'
-    }
+    },
+    logout: {
+        path: '/logout',
+        component: Logout,
+        perform: 'logout-page:visit'
+    },
 }

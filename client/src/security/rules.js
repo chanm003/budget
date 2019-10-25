@@ -3,7 +3,8 @@ const rules = {
         static: [
             "403-page:visit",
             "home-page:visit",
-            "login-page:visit"
+            "login-page:visit",
+            "logout-page:visit"
         ]
     },
     loggedInUser: {
@@ -11,6 +12,7 @@ const rules = {
             "403-page:visit",
             "home-page:visit",
             "login-page:visit",
+            "logout-page:visit",
             "directorates:list",
             "directorates:create"
         ],
@@ -26,6 +28,7 @@ const rules = {
             "403-page:visit",
             "home-page:visit",
             "login-page:visit",
+            "logout-page:visit",
             "directorates:list",
             "directorates:create",
             "directorates:edit",

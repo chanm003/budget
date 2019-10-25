@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Icon, Image, Input, Menu, Button } from 'semantic-ui-react';
+import { Form, Icon, Image, Input, Menu, Button, Label, Dropdown } from 'semantic-ui-react';
 import './HeaderNav.scss';
 import logo from '../../../../assets/images/logo.jpg';
 import { Link } from 'react-router-dom';
@@ -7,6 +7,7 @@ import { useStore } from '../../../../context';
 
 export default function HeaderNav() {
   const { auth: { user } } = useStore();
+
   return (
     <Menu borderless className='top-menu' fixed='top'>
       <Menu.Item header className='logo'>
@@ -38,12 +39,8 @@ export default function HeaderNav() {
           </Menu.Item>
           <Menu.Item name='avatar'>
             {user.role === 'visitor'
-              ? (
-                <Button as={Link} to='/login'>Log-in</Button>
-              )
-              : (
-                <Image as={Link} to='/login' src='http://via.placeholder.com/80x80' avatar />
-              )
+              ? <Button as={Link} to='/login'>Log-in</Button>
+              : renderDropdown(user)
             }
           </Menu.Item>
 
@@ -53,3 +50,32 @@ export default function HeaderNav() {
   );
 }
 
+const parseDistinguishedName = distinguishedName => {
+  if (distinguishedName) {
+    const parsed = distinguishedName
+      .replace('CN=', '')
+      .split('.')
+      .slice(0, 2)
+      .reverse();
+    return {
+      name: parsed.join(' '),
+      initials: parsed.map(name => name[0]).join('')
+    };
+  }
+}
+
+const renderDropdown = user => {
+  const { name, initials } = parseDistinguishedName(user.distinguishedName);
+
+  return (
+    <Dropdown
+      pointing="top right"
+      icon={null}
+      trigger={<Label circular color="grey">{initials}</Label>}>
+      <Dropdown.Menu>
+        <Dropdown.Item text={`Signed in as ${name}`} disabled />
+        <Dropdown.Item text="Sign out" as={Link} to='/logout' />
+      </Dropdown.Menu>
+    </Dropdown>
+  );
+}
