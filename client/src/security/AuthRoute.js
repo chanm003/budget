@@ -2,18 +2,15 @@ import React from 'react';
 import { Route, Redirect, useLocation } from 'react-router-dom';
 import Can from './Can';
 import { useStore } from '../context';
+import { hasValidToken } from '../context/auth';
 
-export const GuardedRoute = ({ component: Component, roles, ...rest }) => {
+export const AuthRoute = ({ component: Component, roles, ...rest }) => {
     const { perform } = rest;
-    const { auth: { user } } = useStore();
+    const { auth: { user, logout } } = useStore();
     const { pathname } = useLocation();
 
-    const authCheckFailed = () => {
-        if (user.role === 'visitor') {
-            return <Redirect to={{ pathname: "/login", state: { from: pathname } }} />
-        } else {
-            return <Redirect to="/403" />;
-        }
+    if (user.role !== 'visitor' && !hasValidToken()) {
+        logout();
     }
 
     return (
@@ -25,7 +22,13 @@ export const GuardedRoute = ({ component: Component, roles, ...rest }) => {
                     // render component to user
                     return <Component {...props} />;
                 }}
-                no={authCheckFailed}
+                no={() => {
+                    if (user.role === 'visitor') {
+                        return <Redirect to={{ pathname: "/login", state: { from: pathname } }} />
+                    } else {
+                        return <Redirect to="/403" />;
+                    }
+                }}
             />
         }} />
     );

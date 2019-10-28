@@ -22,7 +22,7 @@ export default (props) => {
             const redirectPath = state && state.from ? state.from : '/'
             props.history.push(redirectPath);
         }
-    }, [user.role, props.history]);
+    });
 
     const onLoginButtonClicked = async () => {
         try {

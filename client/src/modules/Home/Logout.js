@@ -10,7 +10,7 @@ export default function Logout(props) {
         if (user.role !== 'visitor') {
             logout();
         }
-    }, [user.role]);
+    });
 
     return (
         <Message info>

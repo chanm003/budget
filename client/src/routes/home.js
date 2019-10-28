@@ -9,22 +9,24 @@ export default {
         path: '/403',
         component: UnauthorizedPage,
         exact: true,
-        perform: '403-page:visit'
+        auth: false
     },
     home: {
         path: '/',
         component: Home,
         exact: true,
-        perform: 'home-page:visit'
+        auth: false
     },
     login: {
         path: '/login',
         component: Login,
-        perform: 'login-page:visit'
+        exact: true,
+        auth: false
     },
     logout: {
         path: '/logout',
         component: Logout,
-        perform: 'logout-page:visit'
+        exact: true,
+        auth: false
     },
 }

@@ -42,7 +42,7 @@ const attemptToLoginUser = async function (req, res) {
             }
         }
 
-        const token = jwt.sign({ user }, jsonWebTokenSecret, { expiresIn: "1m" })
+        const token = jwt.sign({ user }, jsonWebTokenSecret, { expiresIn: "15s" })
 
         res.json({
             user: {
