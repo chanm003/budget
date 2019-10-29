@@ -1,12 +1,11 @@
 import React from 'react';
 import { Route, Redirect, useLocation } from 'react-router-dom';
 import Can from './Can';
-import { useStore } from '../context';
-import { hasValidToken } from '../context/auth';
+import { useAuth, hasValidToken } from '../context/auth';
 
 export const AuthRoute = ({ component: Component, roles, ...rest }) => {
     const { perform } = rest;
-    const { auth: { user, logout } } = useStore();
+    const { user, logout } = useAuth();
     const { pathname } = useLocation();
 
     if (user.role !== 'visitor' && !hasValidToken()) {

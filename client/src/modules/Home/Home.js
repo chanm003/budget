@@ -1,10 +1,10 @@
 import React from 'react';
 import './Home.scss';
-import { useStore } from '../../context';
+import { useAuth } from '../../context/auth';
 import Can from '../../security/Can';
 
 const Home = () => {
-  const { auth: { user } } = useStore();
+  const { user } = useAuth();
 
   return (
     <div className='home'>

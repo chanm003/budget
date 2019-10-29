@@ -6,11 +6,8 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { createHttpLink } from 'apollo-link-http';
 import { setContext } from 'apollo-link-context';
 import { onError } from "apollo-link-error";
-import { useStore } from './context';
 
 export default (props) => {
-    const { common: { showErrorToast } } = useStore();
-
     const httpLink = createHttpLink({
         uri: '/graphql'
     });
@@ -34,7 +31,7 @@ export default (props) => {
 
         if (networkError) console.log(`[Network error]: ${networkError}`);
 
-        showErrorToast({ title: 'Error occured', description: 'Please try again at a later time' });
+        //showErrorToast({ title: 'Error occured', description: 'Please try again at a later time' });
     });
 
     const client = new ApolloClient({

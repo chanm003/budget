@@ -10,11 +10,11 @@ import {
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 
-import { useStore } from '../../context';
+import { useAuth } from '../../context/auth';
 
 export default (props) => {
     const [loginError, setLoginError] = useState('')
-    const { auth: { user, login } } = useStore();
+    const { user, login } = useAuth();
     const { state } = useLocation();
 
     useEffect(() => {

@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react'
 import { Message } from 'semantic-ui-react';
 
-import { useStore } from '../../context';
+import { useAuth } from '../../context/auth';
 
 export default function Logout(props) {
-    const { auth: { user, logout } } = useStore();
+    const { user, logout } = useAuth();
 
     useEffect(() => {
         if (user.role !== 'visitor') {

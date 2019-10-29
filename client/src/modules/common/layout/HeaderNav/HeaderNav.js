@@ -3,10 +3,10 @@ import { Form, Icon, Image, Input, Menu, Button, Label, Dropdown } from 'semanti
 import './HeaderNav.scss';
 import logo from '../../../../assets/images/logo.jpg';
 import { Link } from 'react-router-dom';
-import { useStore } from '../../../../context';
+import { useAuth } from '../../../../context/auth';
 
 export default function HeaderNav() {
-  const { auth: { user } } = useStore();
+  const { user } = useAuth();
 
   return (
     <Menu borderless className='top-menu' fixed='top'>

@@ -5,17 +5,17 @@ import App from "./modules/common/layout/App";
 import { Router } from "react-router-dom";
 import { createBrowserHistory } from "history";
 import ApolloProvider from './apolloSetup';
-import { Store } from './context';
+import { AuthProvider } from './context/auth';
 
 export const browserHistory = createBrowserHistory();
 
 ReactDOM.render(
-  <Store>
+  <AuthProvider>
     <ApolloProvider>
       <Router history={browserHistory}>
         <App />
       </Router>
     </ApolloProvider>
-  </Store>,
+  </AuthProvider>,
   document.getElementById("root")
 );

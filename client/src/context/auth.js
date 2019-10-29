@@ -1,6 +1,7 @@
+import React, { useContext, useReducer, createContext } from 'react';
 import jwtDecode from 'jwt-decode';
 
-export function reducer(state, action) {
+function reducer(state, action) {
     switch (action.type) {
         case 'LOGIN':
             return {
@@ -31,11 +32,11 @@ const parseToken = () => {
     return user;
 }
 
-export const hasValidToken = () => {
+const hasValidToken = () => {
     return !!parseToken()
 }
 
-export const getInitialState = () => {
+const getInitialState = () => {
     const initialState = {
         user: {
             ...{ role: 'visitor' },
@@ -46,7 +47,7 @@ export const getInitialState = () => {
     return initialState;
 };
 
-export const createActions = (dispatch) => {
+const createActions = (dispatch) => {
     return {
         login: (userData) => {
             localStorage.setItem('jwtToken', userData.token);
@@ -62,3 +63,26 @@ export const createActions = (dispatch) => {
         }
     }
 }
+
+const AuthContext = createContext();
+
+function AuthProvider(props) {
+    const [state, dispatch] = useReducer(reducer, getInitialState())
+
+    const api = {
+        ...state,
+        ...createActions(dispatch)
+    }
+
+    return (
+        <AuthContext.Provider value={api}>
+            {props.children}
+        </AuthContext.Provider>
+    );
+}
+
+const useAuth = () => {
+    return useContext(AuthContext)
+}
+
+export { useAuth, AuthProvider, hasValidToken }
