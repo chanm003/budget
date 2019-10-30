@@ -20,7 +20,7 @@ export const GET_ITEM = gql`
 
 export const GET_ITEMS = gql`
     {
-        directorates {
+        directoratessss {
             id 
             title
         }
@@ -38,7 +38,7 @@ export const UPDATE_ITEM = gql`
 
 export const DELETE_ITEM = gql`
     mutation RemoveItem($id: ID!) {
-        removeDirectorate(id: $id) {
+        removeDirectorates(id: $id) {
             id
             title
         }

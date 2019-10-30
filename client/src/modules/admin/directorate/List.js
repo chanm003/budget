@@ -1,6 +1,8 @@
 import React from 'react';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { Container, Button, Table } from 'semantic-ui-react'
+import { useToasts } from 'react-toast-notifications';
+import { toastSettings } from '../../constants';
 import DeleteButton from '../../../modules/common/components/DeleteButton/DeleteButton';
 import { Link } from 'react-router-dom';
 import ItemsTabular from '../../common/components/Table/Table';
@@ -8,6 +10,7 @@ import admin from '../../../routes/admin';
 import { GET_ITEMS, DELETE_ITEM, deleteMutationOptions } from './api';
 
 export default function () {
+    const { addToast } = useToasts();
     const { loading, data } = useQuery(GET_ITEMS);
     const [deleteItem] = useMutation(DELETE_ITEM, deleteMutationOptions);
 
@@ -41,7 +44,7 @@ export default function () {
 
     const onDeleteClicked = async (guid) => {
         const { data: { removeDirectorate: item } } = await deleteItem({ variables: { id: guid } });
-        //showSuccessToast({ title: 'Directorate deleted', description: `'${item.title}' has been deleted.` });
+        addToast(`'${item.title}' has been deleted.`, toastSettings.success);
     }
 
     return (

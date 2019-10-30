@@ -22,5 +22,5 @@ export const directorateEdit = {
     component: CreateOrEdit,
     exact: true,
     auth: true,
-    perform: 'directorates:delete'
+    perform: 'directorates:edit'
 }

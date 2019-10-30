@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import './AppLayout.scss';
 import HeaderNav from '../HeaderNav/HeaderNav';
 import { SideBar } from '../SideBar/SideBar';
@@ -16,5 +16,6 @@ export default function AppLayout(props) {
                 </div>
             </div>
         </ScrollToTop>
+
     );
 }
