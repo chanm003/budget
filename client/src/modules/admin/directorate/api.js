@@ -20,7 +20,7 @@ export const GET_ITEM = gql`
 
 export const GET_ITEMS = gql`
     {
-        directoratessss {
+        directorates {
             id 
             title
         }

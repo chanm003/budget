@@ -25,7 +25,7 @@ export const AuthRoute = ({ component: Component, roles, ...rest }) => {
                     if (user.role === 'visitor') {
                         return <Redirect to={{ pathname: "/login", state: { from: pathname } }} />
                     } else {
-                        return <Redirect to="/403" />;
+                        return <Redirect to={{ pathname: "/error", state: { type: 'UNAUTHORIZED', message: `We're sorry, you do not have sufficient permissions to view this page` } }} />;
                     }
                 }}
             />

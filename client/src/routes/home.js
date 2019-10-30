@@ -1,13 +1,13 @@
 import Home from '../modules/Home/Home';
 import Login from '../modules/Home/Login';
 import Logout from '../modules/Home/Logout';
-import UnauthorizedPage from '../modules/Home/403';
+import ErrorPage from '../modules/Home/Error';
 
 // Home routes
 export default {
-    403: {
-        path: '/403',
-        component: UnauthorizedPage,
+    error: {
+        path: '/error',
+        component: ErrorPage,
         exact: true,
         auth: false
     },
