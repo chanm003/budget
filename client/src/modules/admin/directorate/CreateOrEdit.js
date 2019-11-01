@@ -3,7 +3,7 @@ import { useQuery, useMutation } from '@apollo/react-hooks';
 import { GET_ITEM, CREATE_ITEM, UPDATE_ITEM, createMutationOptions } from './api';
 import _ from 'lodash';
 import { useToasts } from 'react-toast-notifications';
-import { toastSettings } from '../../constants';
+import { toastSettings } from '../../common/layout/toaster/settings';
 import Form from './Form';
 import { Header } from 'semantic-ui-react';
 

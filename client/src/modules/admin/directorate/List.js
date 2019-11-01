@@ -2,7 +2,7 @@ import React from 'react';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { Container, Button, Table } from 'semantic-ui-react'
 import { useToasts } from 'react-toast-notifications';
-import { toastSettings } from '../../constants';
+import { toastSettings } from '../../common/layout/toaster/settings';
 import DeleteButton from '../../../modules/common/components/DeleteButton/DeleteButton';
 import { Link } from 'react-router-dom';
 import ItemsTabular from '../../common/components/Table/Table';
