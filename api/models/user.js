@@ -3,19 +3,24 @@ const bcrypt = require('bcryptjs');
 
 const schema = new mongoose.Schema(
     {
-        email: {
+        method: {
             type: String,
-            unique: true,
-            lowercase: true
+            enum: ['local', 'cac', 'github'],
+            required: true
         },
-        password: {
-            type: String
+        local: {
+            email: {
+                type: String,
+                lowercase: true
+            },
+            password: {
+                type: String
+            }
         },
-        distinguishedName: {
-            type: String,
-            unique: true,
-            required: false,
-            index: true
+        cac: {
+            distinguishedName: {
+                type: String
+            }
         },
         lastLoggedIn: {
             type: Date,
@@ -33,14 +38,15 @@ const schema = new mongoose.Schema(
 
 schema.pre('save', async function (next) {
     try {
-        if (this.password) {
-            // Generate a salt
-            const salt = await bcrypt.genSalt(10);
-            // Generate a password hash (salt + hash)
-            const passwordHash = await bcrypt.hash(this.password, salt);
-            // Re-assign hashed version over original, plain text password
-            this.password = passwordHash;
+        if (this.method !== 'local') {
+            next();
         }
+        // Generate a salt
+        const salt = await bcrypt.genSalt(10);
+        // Generate a password hash (salt + hash)
+        const passwordHash = await bcrypt.hash(this.local.password, salt);
+        // Re-assign hashed version over original, plain text password
+        this.password = passwordHash;
         next();
     } catch (error) {
         next(error);
@@ -49,7 +55,7 @@ schema.pre('save', async function (next) {
 
 schema.methods.isValidPassword = async function (newPassword) {
     try {
-        return await bcrypt.compare(newPassword, this.password);
+        return await bcrypt.compare(newPassword, this.local.password);
     } catch (error) {
         throw new Error(error);
     }
@@ -62,7 +68,7 @@ schema.statics.mapToNewOrExistingUser = async function (params) {
     const options = { upsert: true, new: true, setDefaultsOnInsert: true };
 
     // create new user or update existing user
-    newOrExistingUser = await this.findOneAndUpdate({ distinguishedName }, update, options);
+    newOrExistingUser = await this.findOneAndUpdate({ method: 'cac', 'cac.distinguishedName': distinguishedName }, update, options);
     newOrExistingUser.lastLoggedIn = new Date();
     const result = await newOrExistingUser.save();
     console.log('Certificate detected mapped to new or existing user ', result.id)

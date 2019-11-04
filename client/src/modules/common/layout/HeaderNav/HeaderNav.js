@@ -65,7 +65,7 @@ const parseDistinguishedName = distinguishedName => {
 }
 
 const renderDropdown = user => {
-  const { name, initials } = parseDistinguishedName(user.distinguishedName);
+  const { name, initials } = { name: 'Mike Chan', initials: 'MC' };
 
   return (
     <Dropdown

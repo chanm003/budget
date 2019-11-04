@@ -1,6 +1,7 @@
 const passport = require('passport');
 const JwtStrategy = require('passport-jwt').Strategy;
 const CustomStrategy = require('passport-custom').Strategy;
+//var GitHubStrategy = require('passport-github').Strategy;
 const { ExtractJwt } = require('passport-jwt');
 const LocalStrategy = require('passport-local').Strategy;
 const { isDevelopmentMode, jsonWebTokenSecret } = require('./keys');
@@ -24,7 +25,7 @@ passport.use(new LocalStrategy({
 }, async (email, password, done) => {
     try {
         // Find the user given the email
-        const user = await User.findOne({ email });
+        const user = await User.findOne({ 'local.email': email });
 
         // If not, handle it
         if (!user) {
@@ -64,6 +65,37 @@ passport.use('parseCertificateFromHttpHeader', new CustomStrategy(
         }
     }
 ));
+
+/*
+passport.use(new GitHubStrategy({
+    clientID: GITHUB_CLIENT_ID,
+    clientSecret: GITHUB_CLIENT_SECRET,
+    callbackURL: "http://127.0.0.1:3000/auth/github/callback"
+},
+    function (accessToken, refreshToken, profile, done) {
+        try {
+            const existingUser = await User.findOne({ 'github.id': profile.id });
+            if (existingUser) {
+                return done(null, existingUser)
+            }
+
+            const newUser = new User({
+                method: 'github',
+                github: {
+                    id: profile.id,
+                    email: ''
+                }
+            });
+
+            await newUser.save();
+            done(null, newUser);
+        } catch (error) {
+            done(error, false, error.message);
+        }
+    }
+));
+*/
+
 
 module.exports = {
     passportCacCertificate: passport.authenticate('parseCertificateFromHttpHeader', { session: false }),
