@@ -1,12 +1,13 @@
 const { GraphQLServer } = require('graphql-yoga');
-const bodyParser = require('body-parser');
+
 const jwt = require('jsonwebtoken');
 
 const { models } = require('../config/database');
 const graphQlSchema = require('../graphql/schema/index');
 const graphQlResolvers = require('../graphql/resolvers/index');
 const User = models.User;
-const { isDevelopmentMode, jsonWebTokenSecret } = require('../config/keys');
+const { isDevelopmentMode, jsonWebTokenSecret } = require('./keys');
+const { configureExpress } = require('./express');
 
 const startOptions = {
     port: 9000,
@@ -26,6 +27,7 @@ const verifyToken = (req) => {
     return currentUser;
 }
 
+/*
 const attemptToLoginUser = async function (req, res) {
     try {
         let user = null;
@@ -55,6 +57,7 @@ const attemptToLoginUser = async function (req, res) {
         res.status(500).send(err.message)
     }
 }
+*/
 
 const createServer = () => {
     const server = new GraphQLServer({
@@ -69,10 +72,9 @@ const createServer = () => {
         }
     });
 
-    server.express.use(bodyParser.urlencoded({ extended: false }));
-    server.express.use(bodyParser.json());
+    configureExpress(server.express);
 
-    server.express.get('/api/login', attemptToLoginUser);
+    //server.express.get('/api/login', attemptToLoginUser);
 
     return server;
 }
