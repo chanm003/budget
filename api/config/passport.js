@@ -1,74 +1,72 @@
-const CustomStrategy = require('passport-custom').Strategy;
-const session = require('express-session');
 const passport = require('passport');
+const JwtStrategy = require('passport-jwt').Strategy;
+const CustomStrategy = require('passport-custom').Strategy;
+const { ExtractJwt } = require('passport-jwt');
+const LocalStrategy = require('passport-local').Strategy;
+const { isDevelopmentMode, jsonWebTokenSecret } = require('./keys');
+const User = require('../models/user')
 
-const User = require('../models/user');
-const { isDevelopmentMode, sessionKey } = require('./keys');
+// JSON WEB TOKENS STRATEGY
+passport.use(new JwtStrategy({
+    jwtFromRequest: ExtractJwt.fromHeader('authorization'),
+    secretOrKey: jsonWebTokenSecret
+}, async (payload, done) => {
+    try {
+        done(null, payload.user);
+    } catch (error) {
+        done(error, false);
+    }
+}));
 
-// export helper function that app.js can invoke
-module.exports = function (app) {
-    passport.use('parseHttpHeader', new CustomStrategy(
-        function (req, callback) {
+// LOCAL STRATEGY
+passport.use(new LocalStrategy({
+    usernameField: 'email'
+}, async (email, password, done) => {
+    try {
+        // Find the user given the email
+        const user = await User.findOne({ email });
+
+        // If not, handle it
+        if (!user) {
+            return done(null, false);
+        }
+
+        // Check if the password is correct
+        const isMatch = await user.isValidPassword(password);
+
+        // If not, handle it
+        if (!isMatch) {
+            return done(null, false);
+        }
+
+        // Otherwise, return the user
+        done(null, user);
+    } catch (error) {
+        done(error, false);
+    }
+}));
+
+// CERTIFICATE STRATEGY
+passport.use('parseCertificateFromHttpHeader', new CustomStrategy(
+    async function (req, done) {
+        try {
             const distinguishedName = req.headers['x-subject-dn'];
-            if (distinguishedName) {
-                // try to match distinguished name in req header to existing user in the database
-                // if unable to find match, "register" the user by creating a new user in the database
-                User.mapToNewOrExistingUser(
-                    { distinguishedName },
-                    user => callback(null, user),
-                    err => callback(null, false, { err })
-                );
-            } else {
-                if (isDevelopmentMode) {
-                    // DEV so if no distinguished name in req header, auto login as the first user in database
-                    User.mapToRandomUser(
-                        user => callback(null, user),
-                        err => callback(null, false)
-                    );
-                } else {
-                    // PROD so there MUST be a distinguished name in req header
-                    callback(null, false);
-                }
+
+            // no certificate in header
+            if (!distinguishedName) {
+                return done(null, false);
             }
+
+            const user = await User.mapToNewOrExistingUser({ distinguishedName });
+            done(null, user);
+        } catch (error) {
+            done(error, false);
         }
-    ));
+    }
+));
 
-    passport.serializeUser((user, done) => {
-        done(null, user._id);
-    })
-
-    passport.deserializeUser((_id, done) => {
-        User.findById(_id)
-            .then(user => done(null, user));
-    })
-
-    // middleware for Session
-    app.use(session({
-        secret: sessionKey,
-        resave: false,
-        saveUninitialized: true
-    }));
-
-    // middleware for Passport
-    app.use(passport.initialize());
-    app.use(passport.session());
-
-    app.get('/api/login',
-        passport.authenticate('parseHttpHeader'),
-        function (req, res) {
-            console.log('User was logged in via Passport');
-            res.json(req.user);
-        }
-    );
-
-    // custom middleware
-    app.use((req, res, next) => {
-        if (req.isAuthenticated()) {
-            console.log('middleware running...Authenticated')
-            next();
-        } else {
-            console.log('middleware running...NOT Authenticated')
-            res.status(401).send('Unauthorized');
-        }
-    })
+module.exports = {
+    passportCacCertificate: passport.authenticate('parseCertificateFromHttpHeader', { session: false }),
+    passportSignIn: passport.authenticate('local', { session: false }),
+    passportJWT: passport.authenticate('jwt', { session: false })
 }

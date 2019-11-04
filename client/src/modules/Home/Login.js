@@ -27,7 +27,7 @@ export default (props) => {
     const onLoginButtonClicked = async () => {
         try {
             setLoginError('')
-            const { data } = await axios.get('/api/login');
+            const { data } = await axios.get('/api/users/signin_cac');
             login(data);
         } catch (err) {
             setLoginError(err.response.data);
