@@ -19,7 +19,6 @@ const createPrograms = num => {
 }
 
 const dataToSeed = [
-    new User({ distinguishedName: 'CN=CHAN.MICHAEL.1175801169,OU=CONTRACTOR,OU=PKI,OU=DoD,O=U.S. Government,C=US' }),
     new Directorate({ title: 'SOJ2' }),
     new Directorate({ title: 'SOJ3' }),
     new Directorate({ title: 'SOJ6' }),

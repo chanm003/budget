@@ -1,5 +1,5 @@
 const router = require('express-promise-router')();
-const { passportSignIn, passportJWT, passportCacCertificate } = require('../config/passport')
+const { passportSignIn, passportJWT, passportCacCertificate, passportGithub } = require('../config/passport')
 const UsersController = require('../controllers/users');
 
 
@@ -11,6 +11,9 @@ router.route('/signin_emailPassword')
 
 router.route('/signin_cac')
     .get(passportCacCertificate, UsersController.generateToken)
+
+router.route('/github')
+    .get(passportGithub, UsersController.generateToken)
 
 router.route('/protected')
     .get(passportJWT, async (req, res, next) => {

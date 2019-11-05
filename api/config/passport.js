@@ -1,7 +1,7 @@
 const passport = require('passport');
 const JwtStrategy = require('passport-jwt').Strategy;
 const CustomStrategy = require('passport-custom').Strategy;
-//var GitHubStrategy = require('passport-github').Strategy;
+const GitHubStrategy = require('passport-github').Strategy;
 const { ExtractJwt } = require('passport-jwt');
 const LocalStrategy = require('passport-local').Strategy;
 const { isDevelopmentMode, jsonWebTokenSecret } = require('./keys');
@@ -21,12 +21,12 @@ passport.use(new JwtStrategy({
 
 // LOCAL STRATEGY
 passport.use(new LocalStrategy({
-    usernameField: 'email'
-}, async (email, password, done) => {
+    usernameField: 'username'
+}, async (username, password, done) => {
     try {
         // Find the user given the email
-        const user = await User.findOne({ 'local.email': email });
-
+        const user = await User.findOne({ 'local.username': username });
+        console.log(user)
         // If not, handle it
         if (!user) {
             return done(null, false);
@@ -34,13 +34,15 @@ passport.use(new LocalStrategy({
 
         // Check if the password is correct
         const isMatch = await user.isValidPassword(password);
-
+        console.log(isMatch)
         // If not, handle it
         if (!isMatch) {
             return done(null, false);
         }
 
         // Otherwise, return the user
+        user.lastLoggedIn = new Date();
+        await user.save();
         done(null, user);
     } catch (error) {
         done(error, false);
@@ -58,32 +60,49 @@ passport.use('parseCertificateFromHttpHeader', new CustomStrategy(
                 return done(null, false);
             }
 
-            const user = await User.mapToNewOrExistingUser({ distinguishedName });
-            done(null, user);
+            const existingUser = await User.findOne({ 'cac.distinguishedName': distinguishedName });
+            if (existingUser) {
+                existingUser.lastLoggedIn = new Date();
+                await existingUser.save();
+                return done(null, existingUser)
+            }
+
+            const newUser = new User({
+                method: 'cac',
+                cac: {
+                    distinguishedName
+                }
+            });
+
+            await newUser.save();
+            done(null, newUser);
         } catch (error) {
             done(error, false);
         }
     }
 ));
 
-/*
+// GITHUB STRATEGY
 passport.use(new GitHubStrategy({
-    clientID: GITHUB_CLIENT_ID,
-    clientSecret: GITHUB_CLIENT_SECRET,
-    callbackURL: "http://127.0.0.1:3000/auth/github/callback"
+    clientID: 'bc488231935c3b1a9cca',
+    clientSecret: 'bfe241340409c5db158efb950a53c2d43c1fff05',
+    callbackURL: 'https://localhost:8000/api/users/github',
+    scope: ['user:email']
 },
-    function (accessToken, refreshToken, profile, done) {
+    async function (accessToken, refreshToken, profile, done) {
         try {
             const existingUser = await User.findOne({ 'github.id': profile.id });
             if (existingUser) {
+                existingUser.lastLoggedIn = new Date();
+                await existingUser.save();
                 return done(null, existingUser)
             }
 
             const newUser = new User({
+                email: profile._json.email || '',
                 method: 'github',
                 github: {
-                    id: profile.id,
-                    email: ''
+                    id: profile.id
                 }
             });
 
@@ -94,10 +113,10 @@ passport.use(new GitHubStrategy({
         }
     }
 ));
-*/
 
 
 module.exports = {
+    passportGithub: passport.authenticate('github', { session: false }),
     passportCacCertificate: passport.authenticate('parseCertificateFromHttpHeader', { session: false }),
     passportSignIn: passport.authenticate('local', { session: false }),
     passportJWT: passport.authenticate('jwt', { session: false })
