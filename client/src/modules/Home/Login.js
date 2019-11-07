@@ -16,22 +16,29 @@ export default (props) => {
     const [loginError, setLoginError] = useState('')
     const { user, login } = useAuth();
     const { state } = useLocation();
+    const { protocol, hostname } = document.location;
+    const cacURL = `${protocol}//${hostname}:7000`;
 
     useEffect(() => {
         if (user.role !== 'visitor') {
-            const redirectPath = state && state.from ? state.from : '/'
-            props.history.push(redirectPath);
+            props.history.push(localStorage.getItem('redirectPath'));
+        }
+
+        window.onmessage = function (evt) {
+            if (evt.origin === cacURL) {
+                login(evt.data)
+            }
         }
     });
 
     const onLoginButtonClicked = async () => {
-        try {
-            setLoginError('')
-            const { data } = await axios.get('/api/users/signin_cac');
-            login(data);
-        } catch (err) {
-            setLoginError(err.response.data);
-        }
+        setRedirectPath(state);
+        document.location.href = cacURL;
+    }
+
+    const setRedirectPath = state => {
+        const redirectPath = state && state.from ? state.from : '/';
+        localStorage.setItem('redirectPath', redirectPath);
     }
 
     return (
