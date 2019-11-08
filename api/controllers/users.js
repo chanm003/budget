@@ -39,5 +39,10 @@ module.exports = {
         // Generate token
         const token = signToken(req.user);
         res.status(200).json({ user: req.user, token });
+    },
+    generateTokenView: async (req, res, next) => {
+        // Generate token
+        const token = signToken(req.user);
+        res.render('set-jwt', { user: req.user, token });
     }
 }

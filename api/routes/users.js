@@ -13,7 +13,7 @@ router.route('/signin_cac')
     .get(passportCacCertificate, UsersController.generateToken)
 
 router.route('/github')
-    .get(passportGithub, UsersController.generateToken)
+    .get(passportGithub, UsersController.generateTokenView)
 
 router.route('/protected')
     .get(passportJWT, async (req, res, next) => {

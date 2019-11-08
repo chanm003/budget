@@ -5,7 +5,7 @@ import {
     Grid,
     Header,
     Message,
-    Segment,
+    Icon,
 } from 'semantic-ui-react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
@@ -31,7 +31,12 @@ export default (props) => {
         }
     });
 
-    const onLoginButtonClicked = async () => {
+    const onGitLoginButtonClicked = async () => {
+        setRedirectPath(state);
+        document.location.href = '/api/users/github';
+    }
+
+    const onCacLoginButtonClicked = async () => {
         setRedirectPath(state);
         document.location.href = cacURL;
     }
@@ -47,15 +52,17 @@ export default (props) => {
                 <Header as="h2" textAlign="center">
                     Login
                 </Header>
-                <Segment className="attached">
-                    <Form size="large">
-                        <Button color="blue" fluid size="large" onClick={onLoginButtonClicked}>
-                            Login with your CAC Card
-                        </Button>
-                    </Form>
-                </Segment>
+
+                <Button color="blue" fluid size="large" onClick={onCacLoginButtonClicked}>
+                    Login with your CAC Card
+                </Button>
+                <br />
+                <Button color='black' fluid size="large" onClick={onGitLoginButtonClicked}>
+                    <Icon name='github' /> Login with your Github
+                </Button>
+
                 {loginError && (
-                    <Message attached='bottom' error>
+                    <Message error>
                         {loginError}
                     </Message>
                 )}
