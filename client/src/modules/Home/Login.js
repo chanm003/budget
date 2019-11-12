@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
     Button,
     Form,
@@ -13,6 +13,7 @@ import axios from 'axios';
 import { useAuth } from '../../context/auth';
 
 export default (props) => {
+    const iframe = useRef(null);
     const [loginError, setLoginError] = useState('')
     const { user, login } = useAuth();
     const { state } = useLocation();
@@ -26,7 +27,8 @@ export default (props) => {
 
         window.onmessage = function (evt) {
             if (evt.origin === cacURL) {
-                login(evt.data)
+                login(evt.data);
+                props.history.push(localStorage.getItem('redirectPath'));
             }
         }
     });
@@ -38,7 +40,10 @@ export default (props) => {
 
     const onCacLoginButtonClicked = async () => {
         setRedirectPath(state);
-        document.location.href = cacURL;
+        iframe.current.onload = function (a, b, c) {
+            console.log(iframe.current)
+        }
+        iframe.current.src = cacURL;
     }
 
     const setRedirectPath = state => {
@@ -56,6 +61,7 @@ export default (props) => {
                 <Button color="blue" fluid size="large" onClick={onCacLoginButtonClicked}>
                     Login with your CAC Card
                 </Button>
+                <iframe ref={iframe} width="1000" style={{ display: 'none' }} />
                 <br />
                 <Button color='black' fluid size="large" onClick={onGitLoginButtonClicked}>
                     <Icon name='github' /> Login with your Github

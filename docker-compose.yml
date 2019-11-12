@@ -13,8 +13,6 @@ services:
         build:
             context: ./api
             dockerfile: Dockerfile.dev
-        ports:
-            - 9000:9000
         volumes:
             - /api/node_modules
             - ./api:/api

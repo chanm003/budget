@@ -15,26 +15,12 @@
         />
     </head>
     <body>
-        <iframe
-            id="iframe"
-            src=""
-            width="500"
-            height="300"
-            style="display: none;"
-        ></iframe>
         <script src="jquery.min.js"></script>
         <script type="text/javascript">
             var config = parseReferrer();
-            var iframeElem = $('#iframe');
 
             $(document).ready(function() {
-                iframeElem
-                    .attr('src', config.url)
-                    .on('load', function() {
-                        $.ajax('/api/users/signin_cac').then(
-                            onTokenReceived,
-                        );
-                    });
+                $.ajax('/api/users/signin_cac').then(onTokenReceived);
             });
 
             function parseReferrer() {
@@ -49,11 +35,7 @@
             }
 
             function onTokenReceived(resp) {
-                iframeElem[0].contentWindow.postMessage(
-                    resp,
-                    config.origin,
-                );
-                document.location.href = config.url;
+                window.parent.postMessage(resp, config.origin);
             }
         </script>
     </body>
