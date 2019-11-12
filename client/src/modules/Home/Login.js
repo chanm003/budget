@@ -1,35 +1,23 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     Button,
-    Form,
     Grid,
     Header,
     Message,
     Icon,
 } from 'semantic-ui-react';
 import { useLocation } from 'react-router-dom';
-import axios from 'axios';
-
+import CacLoginButton from './CacLoginButton';
 import { useAuth } from '../../context/auth';
 
 export default (props) => {
-    const iframe = useRef(null);
     const [loginError, setLoginError] = useState('')
     const { user, login } = useAuth();
     const { state } = useLocation();
-    const { protocol, hostname } = document.location;
-    const cacURL = `${protocol}//${hostname}:7000`;
 
     useEffect(() => {
         if (user.role !== 'visitor') {
             props.history.push(localStorage.getItem('redirectPath'));
-        }
-
-        window.onmessage = function (evt) {
-            if (evt.origin === cacURL) {
-                login(evt.data);
-                props.history.push(localStorage.getItem('redirectPath'));
-            }
         }
     });
 
@@ -38,12 +26,13 @@ export default (props) => {
         document.location.href = '/api/users/github';
     }
 
-    const onCacLoginButtonClicked = async () => {
+    const onCacLoginButtonClicked = () => {
         setRedirectPath(state);
-        iframe.current.onload = function (a, b, c) {
-            console.log(iframe.current)
-        }
-        iframe.current.src = cacURL;
+    }
+
+    const onCacLoginDataReceived = (authData) => {
+        login(authData);
+        props.history.push(localStorage.getItem('redirectPath'));
     }
 
     const setRedirectPath = state => {
@@ -57,11 +46,7 @@ export default (props) => {
                 <Header as="h2" textAlign="center">
                     Login
                 </Header>
-
-                <Button color="blue" fluid size="large" onClick={onCacLoginButtonClicked}>
-                    Login with your CAC Card
-                </Button>
-                <iframe ref={iframe} width="1000" style={{ display: 'none' }} />
+                <CacLoginButton onLoginButtonClicked={onCacLoginButtonClicked} onLoginSuccess={onCacLoginDataReceived} />
                 <br />
                 <Button color='black' fluid size="large" onClick={onGitLoginButtonClicked}>
                     <Icon name='github' /> Login with your Github
