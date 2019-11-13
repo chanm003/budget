@@ -1,5 +1,6 @@
+import core from './core';
 import home from './home';
-import admin from './admin';
+import directorate from './directorate'
 
 // Combined routes
-export const routes = Object.assign(home, admin);
+export const routes = Object.assign(core, home, directorate);

@@ -8,7 +8,7 @@ import {
 } from 'semantic-ui-react';
 import { useLocation } from 'react-router-dom';
 import CacLoginButton from './CacLoginButton';
-import { useAuth } from '../../context/auth';
+import { useAuth } from './authContext';
 
 export default (props) => {
     const [loginError, setLoginError] = useState('')

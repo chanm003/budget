@@ -3,7 +3,7 @@ import { Form, Icon, Image, Input, Menu, Button, Label, Dropdown } from 'semanti
 import './HeaderNav.scss';
 import logo from '../../../../assets/images/logo.jpg';
 import { Link } from 'react-router-dom';
-import { useAuth } from '../../../../context/auth';
+import { useAuth } from '../../authentication/authContext';
 
 export default function HeaderNav() {
   const { user } = useAuth();

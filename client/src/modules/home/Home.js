@@ -1,7 +1,7 @@
 import React from 'react';
 import './Home.scss';
-import { useAuth } from '../../context/auth';
-import Can from '../../security/Can';
+import { useAuth } from '../core/authentication/authContext';
+import Can from '../core/security/Can';
 
 const Home = () => {
   const { user } = useAuth();

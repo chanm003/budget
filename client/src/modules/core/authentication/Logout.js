@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { Message } from 'semantic-ui-react';
 
-import { useAuth } from '../../context/auth';
+import { useAuth } from './authContext';
 
 export default function Logout(props) {
     const { user, logout } = useAuth();

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Redirect, useLocation } from 'react-router-dom';
 import Can from './Can';
-import { useAuth, hasValidToken } from '../context/auth';
+import { useAuth, hasValidToken } from '../authentication/authContext';
 
 export const AuthRoute = ({ component: Component, roles, ...rest }) => {
     const { perform } = rest;

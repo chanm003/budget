@@ -2,7 +2,7 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import AppLayout from './AppLayout/AppLayout';
 import { routes } from '../../../routes';
-import { AuthRoute } from '../../../security/AuthRoute';
+import { AuthRoute } from '../security/AuthRoute';
 
 export default function App() {
   return (
