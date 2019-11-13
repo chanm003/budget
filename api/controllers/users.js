@@ -8,12 +8,12 @@ signToken = user => {
 
 module.exports = {
     signup_emailPassword: async (req, res, next) => {
-        const { username, password } = req.body;
+        const { email, password } = req.body;
 
-        // Check if there is a user with the same username
-        const foundUser = await User.findOne({ 'local.username': username });
+        // Check if account already exists
+        const foundUser = await User.findOne({ email: email, method: 'local' });
         if (foundUser) {
-            return res.status(403).json({ error: 'Username is already in use' });
+            return res.status(403).json({ error: 'Email is already in use' });
         }
 
         // Hash password
@@ -21,9 +21,9 @@ module.exports = {
 
         // Create a new user
         const newUser = new User({
+            email,
             method: 'local',
             local: {
-                username,
                 password: hashedPassword
             }
         });

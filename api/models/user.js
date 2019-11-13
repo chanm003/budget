@@ -22,10 +22,6 @@ const schema = new mongoose.Schema(
             required: true
         },
         local: {
-            username: {
-                type: String,
-                lowercase: true
-            },
             password: {
                 type: String
             }

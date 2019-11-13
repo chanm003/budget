@@ -21,12 +21,12 @@ passport.use(new JwtStrategy({
 
 // LOCAL STRATEGY
 passport.use(new LocalStrategy({
-    usernameField: 'username'
-}, async (username, password, done) => {
+    usernameField: 'email'
+}, async (email, password, done) => {
     try {
         // Find the user given the email
-        const user = await User.findOne({ 'local.username': username });
-        console.log(user)
+        const user = await User.findOne({ email: email, method: 'local' });
+
         // If not, handle it
         if (!user) {
             return done(null, false);
