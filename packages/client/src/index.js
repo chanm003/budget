@@ -7,13 +7,11 @@ import AppProviders from './AppProviders';
 import browserHistory from './modules/core/browserHistory';
 import shared from 'shared';
 
+console.log(shared);
 ReactDOM.render(
     <AppProviders>
         <Router history={browserHistory}>
             <App />
-            <a href="#" onClick={shared.sayHi()}>
-                Say Hi
-            </a>
         </Router>
     </AppProviders>,
     document.getElementById('root'),
