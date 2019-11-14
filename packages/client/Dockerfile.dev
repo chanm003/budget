@@ -1,6 +1,11 @@
 FROM node:alpine
-WORKDIR '/client'
+WORKDIR '/packages/client'
+COPY ./packages/client/package.json ./
+COPY ./packages/client .
+WORKDIR '/'
 COPY ./package.json ./
-RUN npm install
-COPY . .
+COPY ./packages/shared ./packages/shared
+RUN yarn
+WORKDIR '/packages/client'
+#CMD ["sleep", "20000"]
 CMD ["npm", "start"]

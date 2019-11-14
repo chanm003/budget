@@ -2,20 +2,20 @@ version: '3'
 services:
     client:
         build:
-            context: ./packages/client
-            dockerfile: Dockerfile.dev
+            context: ./
+            dockerfile: ./packages/client/Dockerfile.dev
         volumes:
-            - /client/node_modules
-            - ./packages/client:/client
+            - /packages/client/node_modules
+            - ./packages/client:/packages/client
         environment:
             - CHOKIDAR_USEPOLLING=true
     api:
         build:
-            context: ./packages/api
-            dockerfile: Dockerfile.dev
+            context: ./
+            dockerfile: ./packages/api/Dockerfile.dev
         volumes:
-            - /api/node_modules
-            - ./packages/api:/api
+            - /packages/api/node_modules
+            - ./packages/api:/packages/api
         depends_on:
             - mongodb
         environment:
