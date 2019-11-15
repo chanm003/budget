@@ -49,7 +49,7 @@ export default function SignIn(props) {
                 <Button type="submit">Sign in</Button>
             </Form>
             <br />
-            <FormError errors={errors} />
+            <FormError errors={errors} serverError={props.serverError} />
         </React.Fragment>
     )
 }

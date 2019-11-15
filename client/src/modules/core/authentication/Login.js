@@ -14,7 +14,7 @@ import { useAuth } from './authContext';
 import SignIn from './SignIn';
 
 export default (props) => {
-    const [loginError, setLoginError] = useState('')
+    const [usernamePasswordError, setUsernamePasswordError] = useState('')
     const { user, login } = useAuth();
     const { state } = useLocation();
 
@@ -41,12 +41,12 @@ export default (props) => {
             props.history.push(localStorage.getItem('redirectPath'));
         } catch (err) {
             let message = 'Network request failed';
-            if (err.response.status === 401) {
-                message = 'Invalid username or password'
+            if (err.response.status === 401 && err.response.data && err.response.data.error) {
+                message = err.response.data.error.message;
             } else {
                 message = err.message;
             }
-            setLoginError(message);
+            setUsernamePasswordError(message);
         }
     }
 
@@ -72,14 +72,9 @@ export default (props) => {
                 </Grid.Column>
                 <Grid.Column>
                     <SignIn
-                        onFormFocus={() => setLoginError('')}
+                        serverError={usernamePasswordError}
+                        onFormFocus={() => setUsernamePasswordError('')}
                         onSubmit={onSignInFormSubmit} />
-
-                    {loginError && (
-                        <Message error>
-                            {loginError}
-                        </Message>
-                    )}
                 </Grid.Column>
             </Grid>
 

@@ -11,12 +11,17 @@ export const handleValueChange = (setValue, triggerValidation) => async (e, { na
     await triggerValidation({ name });
 }
 
-export const FormError = ({ errors }) => {
+export const FormError = ({ errors, serverError }) => {
     return (
         <React.Fragment>
             {errors && Object.keys(errors).length > 0 && (
                 <Message attached='bottom' error>
                     {Object.keys(errors).map(key => <p key={key}>{errors[key].message}</p>)}
+                </Message>
+            )}
+            {serverError && (
+                <Message attached='bottom' error>
+                    <p>{serverError}</p>
                 </Message>
             )}
         </React.Fragment>
