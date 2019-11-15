@@ -1,0 +1,11 @@
+FROM node:alpine
+WORKDIR '/packages/client'
+COPY ./packages/client/package.json ./
+COPY ./packages/client .
+WORKDIR '/'
+COPY ./package.json ./
+COPY ./packages/shared ./packages/shared
+RUN yarn
+WORKDIR '/packages/client'
+#CMD ["sleep", "20000"]
+CMD ["npm", "start"]

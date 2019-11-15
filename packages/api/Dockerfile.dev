@@ -1,0 +1,19 @@
+FROM node:alpine
+
+WORKDIR '/packages/api'
+COPY ./packages/api/package.json ./
+COPY ./packages/api .
+WORKDIR '/'
+COPY ./package.json ./
+COPY ./packages/shared ./packages/shared
+RUN yarn
+
+## THE LIFE SAVER
+ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.2.1/wait /wait
+RUN chmod +x /wait
+
+WORKDIR '/packages/api'
+#CMD ["sleep", "20000"]
+
+## Launch the wait tool and then your application
+CMD /wait && npm run dev
