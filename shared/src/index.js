@@ -1,3 +1,5 @@
-exports.sayHi = function () {
-    return 'Hi from shared mie hasdflj';
+const validationSchemas = require('./validationSchemas');
+
+module.exports = {
+    validationSchemas: { ...validationSchemas }
 };

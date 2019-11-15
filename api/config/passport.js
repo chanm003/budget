@@ -4,6 +4,7 @@ const CustomStrategy = require('passport-custom').Strategy;
 const GitHubStrategy = require('passport-github').Strategy;
 const { ExtractJwt } = require('passport-jwt');
 const LocalStrategy = require('passport-local').Strategy;
+const { validationSchemas } = require('shared');
 const { isDevelopmentMode, jsonWebTokenSecret } = require('./keys');
 const User = require('../models/user')
 
@@ -24,20 +25,19 @@ passport.use(new LocalStrategy({
     usernameField: 'email'
 }, async (email, password, done) => {
     try {
-        // Find the user given the email
+        await validationSchemas.loginSchema.validate({ email, password });
+
         const user = await User.findOne({ email: email, method: 'local' });
 
-        // If not, handle it
         if (!user) {
-            return done(null, false);
+            // no account for that email
+            return done({ message: 'Invalid credentials' }, false);
         }
 
-        // Check if the password is correct
         const isMatch = await user.isValidPassword(password);
-        console.log(isMatch)
-        // If not, handle it
         if (!isMatch) {
-            return done(null, false);
+            // account exists for that user but invalid password
+            return done({ message: 'Invalid credentials' }, false);
         }
 
         // Otherwise, return the user
@@ -118,6 +118,14 @@ passport.use(new GitHubStrategy({
 module.exports = {
     passportGithub: passport.authenticate('github', { session: false }),
     passportCacCertificate: passport.authenticate('parseCertificateFromHttpHeader', { session: false }),
-    passportSignIn: passport.authenticate('local', { session: false }),
+    passportSignIn: (req, res, next) => {
+        passport.authenticate('local', { session: false }, function (err, user, info) {
+            if (err) {
+                return res.status(401).send({ error: err })
+            }
+            req.user = user;
+            next();
+        })(req, res, next)
+    },
     passportJWT: passport.authenticate('jwt', { session: false })
 }

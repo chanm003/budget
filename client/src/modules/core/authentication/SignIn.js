@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 
 import { Form, Button, Header } from 'semantic-ui-react';
 import useForm from "react-hook-form";
-import * as Yup from "yup";
+import { validationSchemas } from 'shared';
 import { handleValueChange, FormError } from '../../common/formHelpers';
 
 export default function SignIn(props) {
@@ -12,7 +12,7 @@ export default function SignIn(props) {
         handleSubmit,
         setValue,
         triggerValidation,
-    } = useForm({ validationSchema: loginSchema });
+    } = useForm({ validationSchema: validationSchemas.loginSchema });
 
     useEffect(() => {
         register({ name: 'email' });
@@ -53,14 +53,3 @@ export default function SignIn(props) {
         </React.Fragment>
     )
 }
-
-const loginSchema = Yup.object().shape({
-    email: Yup.string()
-        .trim()
-        .email('Email must be in correct format')
-        .required('Email is required')
-    ,
-    password: Yup.string()
-        .trim()
-        .required('Password is required')
-});
