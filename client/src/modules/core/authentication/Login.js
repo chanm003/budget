@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import {
+    Segment,
     Button,
     Grid,
-    Header,
+    Divider,
     Message,
     Icon,
 } from 'semantic-ui-react';
 import { useLocation } from 'react-router-dom';
 import CacLoginButton from './CacLoginButton';
 import { useAuth } from './authContext';
+import SignIn from './SignIn';
 
 export default (props) => {
     const [loginError, setLoginError] = useState('')
@@ -30,6 +33,23 @@ export default (props) => {
         setRedirectPath(state);
     }
 
+    const onSignInFormSubmit = async (formData) => {
+        try {
+            setRedirectPath(state);
+            const response = await axios.post('/api/users/signin_emailPassword', formData)
+            login(response.data);
+            props.history.push(localStorage.getItem('redirectPath'));
+        } catch (err) {
+            let message = 'Network request failed';
+            if (err.response.status === 401) {
+                message = 'Invalid username or password'
+            } else {
+                message = err.message;
+            }
+            setLoginError(message);
+        }
+    }
+
     const onCacLoginDataReceived = (authData) => {
         login(authData);
         props.history.push(localStorage.getItem('redirectPath'));
@@ -41,23 +61,29 @@ export default (props) => {
     }
 
     return (
-        <Grid centered columns={2}>
-            <Grid.Column>
-                <Header as="h2" textAlign="center">
-                    Login
-                </Header>
-                <CacLoginButton onLoginButtonClicked={onCacLoginButtonClicked} onLoginSuccess={onCacLoginDataReceived} />
-                <br />
-                <Button color='black' fluid size="large" onClick={onGitLoginButtonClicked}>
-                    <Icon name='github' /> Login with your Github
-                </Button>
+        <Segment basic>
+            <Grid columns={2} relaxed='very'>
+                <Grid.Column>
+                    <CacLoginButton onLoginButtonClicked={onCacLoginButtonClicked} onLoginSuccess={onCacLoginDataReceived} />
+                    <br />
+                    <Button color='black' fluid size="large" onClick={onGitLoginButtonClicked}>
+                        <Icon name='github' /> Continue with your Github
+                    </Button>
+                </Grid.Column>
+                <Grid.Column>
+                    <SignIn
+                        onFormFocus={() => setLoginError('')}
+                        onSubmit={onSignInFormSubmit} />
 
-                {loginError && (
-                    <Message error>
-                        {loginError}
-                    </Message>
-                )}
-            </Grid.Column>
-        </Grid>
+                    {loginError && (
+                        <Message error>
+                            {loginError}
+                        </Message>
+                    )}
+                </Grid.Column>
+            </Grid>
+
+            <Divider vertical>OR</Divider>
+        </Segment>
     );
 }

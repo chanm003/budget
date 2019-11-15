@@ -21,7 +21,7 @@ export default (props) => {
     return (
         <React.Fragment>
             <Button color="blue" fluid size="large" onClick={onCacLoginButtonClicked}>
-                Login with your CAC Card
+                Continue with your CAC Card
             </Button>
             <iframe src={props.src} ref={iframe} width="1000" style={{ display: 'none' }} />
         </React.Fragment>
