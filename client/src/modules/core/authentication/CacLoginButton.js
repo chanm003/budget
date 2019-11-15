@@ -1,6 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 import { Button } from 'semantic-ui-react';
+
+import { useAuth } from './authContext';
+
 export default (props) => {
+    const { login } = useAuth();
     const iframe = useRef(null);
     const { protocol, hostname } = document.location;
     const cacURL = `${protocol}//${hostname}:7000`;
@@ -8,13 +12,18 @@ export default (props) => {
     useEffect(() => {
         window.onmessage = function (evt) {
             if (evt.origin === cacURL) {
-                props.onLoginSuccess(evt.data);
+                onLoginSuccess(evt.data);
             }
         }
     });
 
+    const onLoginSuccess = (authData) => {
+        login(authData);
+        props.redirectUser();
+    }
+
     const onCacLoginButtonClicked = () => {
-        props.onLoginButtonClicked();
+        props.setRedirectPath();
         iframe.current.src = cacURL;
     }
 
