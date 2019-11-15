@@ -7,7 +7,7 @@ import AppProviders from './AppProviders';
 import browserHistory from './modules/core/browserHistory';
 import shared from 'shared';
 
-console.log(shared);
+console.log(shared.sayHi());
 ReactDOM.render(
     <AppProviders>
         <Router history={browserHistory}>

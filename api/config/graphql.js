@@ -2,7 +2,7 @@ const { GraphQLServer } = require('graphql-yoga');
 
 const jwt = require('jsonwebtoken');
 
-const { models } = require('../config/database');
+const { models } = require('./database');
 const graphQlSchema = require('../graphql/schema/index');
 const graphQlResolvers = require('../graphql/resolvers/index');
 const User = models.User;
