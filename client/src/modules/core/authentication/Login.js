@@ -9,8 +9,10 @@ import CacLoginButton from './CacLoginButton';
 import GitLoginButton from './GitLoginButton';
 import { useAuth } from './authContext';
 import SignIn from './SignIn';
+import RegisterUser from './RegisterUser';
 
 export default (props) => {
+    const [visbleLocalStrategyForm, setVisbleLocalStrategyForm] = useState('SIGNIN');
     const { user } = useAuth();
     const { state } = useLocation();
 
@@ -41,9 +43,18 @@ export default (props) => {
                         setRedirectPath={setRedirectPath} />
                 </Grid.Column>
                 <Grid.Column>
-                    <SignIn
-                        redirectUser={redirectUser}
-                        setRedirectPath={setRedirectPath} />
+                    {visbleLocalStrategyForm === 'SIGNIN' && (
+                        <SignIn
+                            hideForm={() => setVisbleLocalStrategyForm('REGISTER')}
+                            redirectUser={redirectUser}
+                            setRedirectPath={setRedirectPath} />
+                    )}
+                    {visbleLocalStrategyForm === 'REGISTER' && (
+                        <RegisterUser
+                            hideForm={() => setVisbleLocalStrategyForm('SIGNIN')}
+                            redirectUser={redirectUser}
+                            setRedirectPath={setRedirectPath} />
+                    )}
                 </Grid.Column>
             </Grid>
 

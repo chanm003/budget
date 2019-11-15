@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const { validationSchemas } = require('shared');
 const User = require('../models/user');
 const { jsonWebTokenSecret } = require('../config/keys');
 
@@ -8,32 +9,38 @@ signToken = user => {
 
 module.exports = {
     signup_emailPassword: async (req, res, next) => {
-        const { email, password } = req.body;
+        try {
+            const { email, password, passwordConfirm } = req.body;
 
-        // Check if account already exists
-        const foundUser = await User.findOne({ email: email, method: 'local' });
-        if (foundUser) {
-            return res.status(403).json({ error: 'Email is already in use' });
-        }
+            await validationSchemas.registrationSchema.validate({ email, password, passwordConfirm });
 
-        // Hash password
-        const hashedPassword = await User.hashPassword(password);
-
-        // Create a new user
-        const newUser = new User({
-            email,
-            method: 'local',
-            local: {
-                password: hashedPassword
+            // Check if account already exists
+            const foundUser = await User.findOne({ email: email, method: 'local' });
+            if (foundUser) {
+                return res.status(403).json({ error: { message: 'Email is already in use' } });
             }
-        });
-        await newUser.save();
 
-        // Generate the token
-        const token = signToken(newUser);
+            // Hash password
+            const hashedPassword = await User.hashPassword(password);
 
-        // Respond with token
-        res.status(200).json({ user: newUser, token });
+            // Create a new user
+            const newUser = new User({
+                email,
+                method: 'local',
+                local: {
+                    password: hashedPassword
+                }
+            });
+            await newUser.save();
+
+            // Generate the token
+            const token = signToken(newUser);
+
+            // Respond with token
+            res.status(200).json({ user: newUser, token });
+        } catch (err) {
+            res.status(401).send({ error: err });
+        }
     },
     generateToken: async (req, res, next) => {
         // Generate token

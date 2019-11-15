@@ -7,7 +7,7 @@ import { validationSchemas } from 'shared';
 import { useAuth } from './authContext';
 import { handleValueChange, FormError } from '../../common/formHelpers';
 
-export default function SignIn(props) {
+export default function RegisterUser(props) {
     const [serverError, setServerError] = useState('');
     const { login } = useAuth();
 
@@ -17,26 +17,27 @@ export default function SignIn(props) {
         handleSubmit,
         setValue,
         triggerValidation,
-    } = useForm({ validationSchema: validationSchemas.loginSchema });
+    } = useForm({ validationSchema: validationSchemas.registrationSchema });
 
     useEffect(() => {
         register({ name: 'email' });
         register({ name: 'password' });
+        register({ name: 'passwordConfirm' });
     }, [register]);
 
     const onFormFocus = () => {
         setServerError('');
     }
 
-    const onSignInFormSubmit = async (formData) => {
+    const onFormSubmit = async (formData) => {
         try {
             props.setRedirectPath();
-            const response = await axios.post('/api/users/signin_emailPassword', formData)
+            const response = await axios.post('/api/users/signup_emailPassword', formData)
             login(response.data);
             props.redirectUser();
         } catch (err) {
             let message = 'Network request failed';
-            if (err.response.status === 401 && err.response.data && err.response.data.error) {
+            if (err.response.status === 403 && err.response.data && err.response.data.error) {
                 message = err.response.data.error.message;
             } else {
                 message = err.message;
@@ -47,8 +48,8 @@ export default function SignIn(props) {
 
     return (
         <React.Fragment>
-            <Header as='h4'>Sign in with username and password</Header>
-            <Form className="fluid" onSubmit={handleSubmit(onSignInFormSubmit)}>
+            <Header as='h4'>Create a new account</Header>
+            <Form className="fluid" onSubmit={handleSubmit(onFormSubmit)}>
                 <Form.Input
                     name="email"
                     fluid
@@ -71,10 +72,22 @@ export default function SignIn(props) {
                     onChange={handleValueChange(setValue, triggerValidation)}
                     error={errors.password ? true : false}
                 />
-                <Button type="submit">Sign in</Button>
+                <Form.Input
+                    name="passwordConfirm"
+                    fluid
+                    type="password"
+                    label="Confirm Password"
+                    placeholder="Confirm Password"
+                    autoComplete="off"
+                    onFocus={onFormFocus}
+                    onChange={handleValueChange(setValue, triggerValidation)}
+                    error={errors.password ? true : false}
+                />
+
+                <Button type="submit">Register</Button>
             </Form>
             <br />
-            <p>Need an account? <a onClick={props.hideForm}>Sign up</a></p>
+            <p>Already have an account? Click here to <a onClick={props.hideForm}>Login</a></p>
             <FormError errors={errors} serverError={serverError} />
         </React.Fragment>
     )
