@@ -1,18 +1,15 @@
 const express = require('express')
+const bodyParser = require('body-parser');
+const path = require('path');
 
-module.exports = function (app) {
-    // HTTP request parsers
-    app.use(express.urlencoded({ extended: false }));
-    app.use(express.json());
+const configureExpress = app => {
+    app.set('view engine', 'jade');
+    app.use(bodyParser.urlencoded({ extended: false }));
+    app.use(bodyParser.json());
+    app.use('/api/users', require('../routes/users'));
+    app.use(express.static('public'));
+}
 
-    // CORS headers
-    app.use((req, res, next) => {
-        res.setHeader('Access-Control-Allow-Origin', '*');
-        res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
-        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-        if (req.method === 'OPTIONS') {
-            return res.sendStatus(200);
-        }
-        next();
-    });
+module.exports = {
+    configureExpress
 }

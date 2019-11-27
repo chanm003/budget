@@ -1,4 +1,3 @@
-
 const { createServer, startOptions } = require('./config/graphql');
 const { connectToDatabase } = require('./config/database');
 

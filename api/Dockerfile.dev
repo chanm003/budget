@@ -1,11 +1,21 @@
 FROM node:alpine
-WORKDIR '/api'
+
+## setup yarn workspace inside container
+WORKDIR '/'
+COPY ./api/package.json ./packages/api/package.json
+COPY ./shared/package.json ./packages/shared/package.json
 COPY ./package.json ./
-RUN npm install
-COPY . .
+RUN yarn
+
+COPY ./api ./packages/api
+COPY ./shared ./packages/shared
+
 ## THE LIFE SAVER
 ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.2.1/wait /wait
 RUN chmod +x /wait
+
+WORKDIR '/packages/api'
+## CMD ["sleep", "20000"]
 
 ## Launch the wait tool and then your application
 CMD /wait && npm run dev

@@ -1,0 +1,25 @@
+{
+  "name": "budget",
+  "version": "1.0.0",
+  "description": "using Docker containers",
+  "main": "index.js",
+  "scripts": {
+    "yarn": "yarn",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "git+https://github.com/mcleanra/budget.git",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mcleanra/budget/issues"
+  },
+  "homepage": "https://github.com/mcleanra/budget#readme",
+  "devDependencies": {
+    "yarn": "^1.19.1"
+  },
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ]
+}

@@ -1,6 +1,16 @@
 FROM node:alpine
-WORKDIR '/client'
+
+## setup yarn workspace inside container
+WORKDIR '/'
+COPY ./client/package.json ./packages/client/package.json
+COPY ./shared/package.json ./packages/shared/package.json
 COPY ./package.json ./
-RUN npm install
-COPY . .
+RUN yarn
+
+COPY ./client ./packages/client
+COPY ./shared ./packages/shared
+
+WORKDIR '/packages/client'
+
+##CMD ["sleep", "20000"]
 CMD ["npm", "start"]
