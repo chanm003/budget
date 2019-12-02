@@ -24,14 +24,14 @@ export default function () {
         </Table.Row>
     )
 
-    const tableRowRender = ({ id, title }) => (
-        <Table.Row key={id}>
+    const tableRowRender = ({ _id, title }) => (
+        <Table.Row key={_id}>
             <Table.Cell>{title}</Table.Cell>
             <Table.Cell collapsing textAlign='right'>
-                <Link to={routeConfig.directorateEdit.path(id)}>
+                <Link to={routeConfig.directorateEdit.path(_id)}>
                     <Button icon='pencil' primary />
                 </Link>
-                <DeleteButton guid={id} onDeleteConfirm={onDeleteClicked} />
+                <DeleteButton guid={_id} onDeleteConfirm={onDeleteClicked} />
             </Table.Cell>
         </Table.Row>
     )
@@ -43,8 +43,8 @@ export default function () {
     );
 
     const onDeleteClicked = async (guid) => {
-        const { data: { removeDirectorate: item } } = await deleteItem({ variables: { id: guid } });
-        addToast(`'${item.title}' has been deleted.`, toastSettings.success);
+        const { data: { DirectorateRemoveById: { record } } } = await deleteItem({ variables: { id: guid } });
+        addToast(`'${record.title}' has been deleted.`, toastSettings.success);
     }
 
     return (
@@ -52,7 +52,7 @@ export default function () {
             <ItemsTabular
                 heading="Directorates"
                 isLoading={loading}
-                items={data ? data.directorates : []}
+                items={data ? data.DirectorateMany : []}
                 createItemPath={routeConfig.directorateCreate.path}
                 tableHeaderRowRender={tableHeaderRowRender}
                 tableRowRender={tableRowRender}

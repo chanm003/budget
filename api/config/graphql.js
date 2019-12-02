@@ -3,9 +3,8 @@ const { GraphQLServer } = require('graphql-yoga');
 const jwt = require('jsonwebtoken');
 
 const { models } = require('./database');
-const graphQlSchema = require('../graphql/schema/index');
-const graphQlResolvers = require('../graphql/resolvers/index');
-const User = models.User;
+const { composeWithMongoose } = require('graphql-compose-mongoose/node8');
+const { schemaComposer } = require('graphql-compose');
 const { isDevelopmentMode, jsonWebTokenSecret } = require('./keys');
 const { configureExpress } = require('./express');
 
@@ -13,6 +12,36 @@ const startOptions = {
     port: 9000,
     endpoint: '/graphql',
     playground: '/graphql'
+}
+
+const addToSchema = (collection, TC) => {
+    let query = {};
+    query[`${collection}ById`] = TC.getResolver('findById');
+    query[`${collection}ByIds`] = TC.getResolver('findByIds');
+    query[`${collection}One`] = TC.getResolver('findOne');
+    query[`${collection}Many`] = TC.getResolver('findMany');
+    query[`${collection}Count`] = TC.getResolver('count');
+    schemaComposer.Query.addFields(query);
+    let mutation = {};
+    mutation[`${collection}CreateOne`] = TC.getResolver('createOne');
+    mutation[`${collection}CreateMany`] = TC.getResolver('createMany');
+    mutation[`${collection}UpdateById`] = TC.getResolver('updateById');
+    mutation[`${collection}UpdateOne`] = TC.getResolver('updateOne');
+    mutation[`${collection}UpdateMany`] = TC.getResolver('updateMany');
+    mutation[`${collection}RemoveById`] = TC.getResolver('removeById');
+    mutation[`${collection}RemoveOne`] = TC.getResolver('removeOne');
+    mutation[`${collection}RemoveMany`] = TC.getResolver('removeMany');
+    schemaComposer.Mutation.addFields(mutation);
+}
+
+const generateSchema = () => {
+    const UserTC = composeWithMongoose(models.User, {});
+    const DirectorateTC = composeWithMongoose(models.Directorate, {});
+
+    addToSchema('User', UserTC);
+    addToSchema('Directorate', DirectorateTC);
+
+    return schemaComposer.buildSchema();
 }
 
 const verifyToken = (req) => {
@@ -29,8 +58,7 @@ const verifyToken = (req) => {
 
 const createServer = () => {
     const server = new GraphQLServer({
-        typeDefs: graphQlSchema,
-        resolvers: graphQlResolvers,
+        schema: generateSchema(),
         context: ({ request: req }) => {
             return {
                 req,
