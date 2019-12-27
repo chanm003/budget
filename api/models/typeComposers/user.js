@@ -26,8 +26,27 @@ const addRelation = (typeComposer, fieldName) => {
     })
 }
 
+
+const onUpdatedMutation = (typeComposer, mutate) => {
+    typeComposer.wrapResolverResolve('updateById', next => async rp => {
+        rp.beforeRecordMutate = async (doc, { context: { user } }) => mutate(doc, user);
+        return next(rp);
+    });
+
+    typeComposer.wrapResolverResolve('updateOne', next => async rp => {
+        rp.beforeRecordMutate = async (doc, { context: { user } }) => mutate(doc, user);
+        return next(rp);
+    });
+
+    typeComposer.wrapResolverResolve('updateMany', next => async rp => {
+        rp.beforeRecordMutate = async (doc, { context: { user } }) => mutate(doc, user);
+        return next(rp);
+    });
+}
+
 module.exports = {
     typeComposer: UserTC,
     addRelation: addRelation,
-    onCreatedMutation: onCreatedMutation
+    onCreatedMutation: onCreatedMutation,
+    onUpdatedMutation: onUpdatedMutation
 };

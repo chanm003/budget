@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const Directorate = require('../models/directorate');
-const Program = require('../models/program');
 const User = require('../models/user');
 
 module.exports = {
@@ -26,7 +25,6 @@ module.exports = {
     },
     models: {
         Directorate,
-        Program,
         User
     }
 }
