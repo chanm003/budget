@@ -19,8 +19,8 @@ export default props => {
 
     const onSubmit = async formData => {
         if (!id) {
-            const { data: { createDirectorate: item } } = await createItem({ variables: { ...formData } });
-            addToast(`'${item.title}' has been created.`, toastSettings.success);
+            const { data: { DirectorateCreateOne: { record } } } = await createItem({ variables: { ...formData } });
+            addToast(`'${record.title}' has been created.`, toastSettings.success);
         } else {
             await updateItem({ variables: { id, ...formData } });
             addToast(`Your changes have been saved.`, toastSettings.success);
@@ -34,7 +34,7 @@ export default props => {
     if (id) {
         const { loading, data } = useQuery(GET_ITEM, { variables: { id } });
         if (loading) { return null; }
-        initialValues = identifyEditableFields(data.directorate)
+        initialValues = identifyEditableFields(data.DirectorateById)
         header = 'Edit Form';
     }
 

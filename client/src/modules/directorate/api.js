@@ -2,68 +2,74 @@ import { gql } from 'apollo-boost';
 
 export const CREATE_ITEM = gql`
     mutation CreateItem($title: String!) {
-        createDirectorate(input: {title: $title }) {
-            id
-            title
+        DirectorateCreateOne(record: {title: $title}){
+            record {
+                _id
+                title
+            }
         }
     }
 `;
 
 export const GET_ITEM = gql`
-    query GetItem($id: ID!) {
-        directorate(id: $id) {
-            id
+    query GetItem($id: MongoID!) {
+        DirectorateById(_id: $id) {
+            _id
             title
         }
     }
 `;
 
 export const GET_ITEMS = gql`
-    {
-        directorates {
-            id 
+    query GetItems {
+        DirectorateMany {
+            _id 
             title
         }
     }
 `;
 
 export const UPDATE_ITEM = gql`
-    mutation UpdateItem($id: ID!, $title: String!) {
-        updateDirectorate(id: $id, input: {title: $title }) {
-            id
-            title
+    mutation UpdateItem($id: MongoID!, $title: String!) {
+        DirectorateUpdateById(record: {_id: $id, title: $title}){
+            record {
+                _id
+                title
+            }
         }
     }
 `;
 
 export const DELETE_ITEM = gql`
-    mutation RemoveItem($id: ID!) {
-        removeDirectorates(id: $id) {
-            id
-            title
+    mutation RemoveItem($id: MongoID!) {
+        DirectorateRemoveById(_id: $id) {
+            record {
+                _id
+                title
+            }
         }
     }
 `;
 
 export const createMutationOptions = {
-    update(cache, { data: { createDirectorate: createdItem } }) {
-        addNewItemToCache(cache, createdItem);
+    update(cache, { data: { DirectorateCreateOne: { record } } }) {
+        addNewItemToCache(cache, record);
     }
 };
 
 export const deleteMutationOptions = {
-    update(cache, { data: { removeDirectorate: deletedItem } }) {
-        removeItemFromCache(cache, deletedItem);
+    update(cache, { data: { DirectorateRemoveById: { record } } }) {
+        removeItemFromCache(cache, record);
     }
 };
 
 const addNewItemToCache = (cache, itemToAdd) => {
     try {
-        const { directorates: existingItems } = cache.readQuery({ query: GET_ITEMS });
+        const { DirectorateMany: existingItems } = cache.readQuery({ query: GET_ITEMS });
         cache.writeQuery({
             query: GET_ITEMS,
             data: {
-                directorates: [...existingItems, itemToAdd]
+                DirectorateMany: [...existingItems, itemToAdd]
             }
         })
     } catch (err) { /* may not exist if user navigated directly to CREATE form */ }
@@ -71,11 +77,11 @@ const addNewItemToCache = (cache, itemToAdd) => {
 
 const removeItemFromCache = (cache, itemToRemove) => {
     try {
-        const { directorates: existingItems } = cache.readQuery({ query: GET_ITEMS });
+        const { DirectorateMany: existingItems } = cache.readQuery({ query: GET_ITEMS });
         cache.writeQuery({
             query: GET_ITEMS,
             data: {
-                directorates: existingItems.filter(c => c.id !== itemToRemove.id)
+                DirectorateMany: existingItems.filter(c => c._id !== itemToRemove._id)
             }
         })
     } catch (err) { }
