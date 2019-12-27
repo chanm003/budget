@@ -1,12 +1,12 @@
 const { GraphQLServer } = require('graphql-yoga');
-
 const jwt = require('jsonwebtoken');
+const { schemaComposer } = require('graphql-compose');
 
 const { models } = require('./database');
-const { composeWithMongoose } = require('graphql-compose-mongoose/node8');
-const { schemaComposer } = require('graphql-compose');
-const { isDevelopmentMode, jsonWebTokenSecret } = require('./keys');
+const { jsonWebTokenSecret } = require('./keys');
 const { configureExpress } = require('./express');
+const UserTC = require('../models/typeComposers/user').typeComposer;
+const DirectorateTC = require('../models/typeComposers/directorate').typeComposer;
 
 const startOptions = {
     port: 9000,
@@ -35,29 +35,8 @@ const addToSchema = (collection, TC) => {
 }
 
 const generateSchema = () => {
-    const UserTC = composeWithMongoose(models.User, {});
-    const DirectorateTC = composeWithMongoose(models.Directorate, {});
-
-    DirectorateTC.wrapResolverResolve('createMany', next => async rp => {
-        rp.beforeRecordMutate = async (doc, { context: { user } }) => {
-            doc.createdBy = user._id || '5de4fab4024e060045b174ce';
-            return doc;
-        }
-        return next(rp);
-    });
-
-    DirectorateTC.addRelation('createdBy', {
-        resolver: () => UserTC.getResolver('findById'),
-        prepareArgs: {
-            _id: source => source.createdBy || null,
-        },
-        projection: { createdBy: true }
-    })
-
-
     addToSchema('User', UserTC);
     addToSchema('Directorate', DirectorateTC);
-
     return schemaComposer.buildSchema();
 }
 
