@@ -30,6 +30,6 @@ node dataToSeed.js
 ```
 
 ### Navigate to application
-[Open React App](http://localhost:8000/login)
+[Open React App](https://localhost:8000/login)
 - username: jdoe@gmail.com
 - password: 12345678
