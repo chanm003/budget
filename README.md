@@ -8,12 +8,14 @@ cd
 docker-compose up
 ```
 
-### Spins up three containers
+### Above commands spin up five containers
 1. api 
 2. client
 3. mongo
+4. nginx
+5. cac
 
-### Connect to Mongo container to seed data (optional)
+### Connect to Mongo container to seed data
 ```
 sudo docker exec -it budget_api_1 sh
 cd seed
@@ -23,6 +25,11 @@ node dataToSeed.js
 #### On Windows use
 ```
 winpty docker exec -it budget_api_1 //bin//sh
+cd seed
+node dataToSeed.js
 ```
 
-[Open React App being served from localhost:3000](http://localhost:3000/)
+### Navigate to application
+[Open React App](http://localhost:8000/login)
+- username: jdoe@gmail.com
+- password: 12345678
