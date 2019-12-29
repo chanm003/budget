@@ -9,6 +9,7 @@ const seeder = require('./seeder');
 const Directorate = require('../models/directorate');
 const Program = require('../models/program');
 const User = require('../models/user');
+const { roleNames } = require('shared');
 
 const createItems = (num, createFunc) => {
     return Array.from({ length: num }).map(createFunc);
@@ -36,7 +37,7 @@ const createFirstUser = async () => {
         local: {
             password: hashedPassword
         },
-        role: 'admin'
+        role: roleNames.ADMIN
     });
     const results = await seeder.insertData([firstUser]);
     return results[0];

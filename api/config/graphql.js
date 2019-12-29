@@ -1,6 +1,7 @@
 const { GraphQLServer } = require('graphql-yoga');
 const jwt = require('jsonwebtoken');
 const { schemaComposer } = require('graphql-compose');
+const { roleNames } = require('shared');
 
 const { models } = require('./database');
 const { jsonWebTokenSecret } = require('./keys');
@@ -41,7 +42,7 @@ const generateSchema = () => {
 }
 
 const verifyToken = (req) => {
-    let currentUser = { role: 'visitor' };
+    let currentUser = { role: roleNames.VISITOR };
     try {
         let authHeader = req.headers['authorization'];
         authHeader = authHeader && authHeader.replace('Bearer ', '')

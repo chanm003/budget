@@ -4,7 +4,7 @@ import useForm from "react-hook-form";
 import { validationSchemas } from 'shared';
 
 import { handleValueChange, FormError } from '../common/formHelpers';
-console.log(validationSchemas)
+
 export default (props) => {
     const {
         register,

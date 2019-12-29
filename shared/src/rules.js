@@ -1,13 +1,17 @@
+const VISITOR = 'VISITOR';
+const LOGGED_IN_USER = 'LOGGED_IN_USER';
+const ADMIN = 'ADMIN';
+
 const rules = {
-    visitor: {
+    [VISITOR]: {
         static: []
     },
-    loggedInUser: {
+    [LOGGED_IN_USER]: {
         static: [
             "directorates:list",
         ]
     },
-    admin: {
+    [ADMIN]: {
         static: [
             "directorates:list",
             "directorates:create",
@@ -16,4 +20,11 @@ const rules = {
     }
 };
 
-module.exports = rules;
+module.exports = {
+    rules,
+    roleNames: {
+        VISITOR,
+        LOGGED_IN_USER,
+        ADMIN
+    }
+};

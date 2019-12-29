@@ -1,7 +1,8 @@
 const validationSchemas = require('./validationSchemas');
-const rules = require('./rules');
+const { rules, roleNames } = require('./rules');
 
 module.exports = {
     validationSchemas: { ...validationSchemas },
-    rules
+    rules,
+    roleNames
 };

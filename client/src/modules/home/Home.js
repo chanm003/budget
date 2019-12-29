@@ -10,7 +10,7 @@ const Home = () => {
     <div className='home'>
       <Can
         role={user.role}
-        perform="dashboard-page:visit"
+        perform="directorates:list"
         yes={() => (
           <div>
             You have permissions

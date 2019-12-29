@@ -1,5 +1,6 @@
 import React, { useContext, useReducer, createContext } from 'react';
 import jwtDecode from 'jwt-decode';
+import { roleNames } from 'shared';
 
 function reducer(state, action) {
     switch (action.type) {
@@ -39,7 +40,7 @@ const hasValidToken = () => {
 const getInitialState = () => {
     const initialState = {
         user: {
-            ...{ role: 'visitor' },
+            ...{ role: roleNames.VISITOR },
             ...parseToken()
         }
     };

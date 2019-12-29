@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
+const { roleNames } = require('shared');
 
 const schema = new mongoose.Schema(
     {
@@ -42,7 +43,7 @@ const schema = new mongoose.Schema(
         },
         role: {
             type: String,
-            default: 'loggedInUser'
+            default: roleNames.LOGGED_IN_USER
         }
     },
     {

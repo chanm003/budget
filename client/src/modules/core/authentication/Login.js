@@ -5,6 +5,8 @@ import {
     Divider,
 } from 'semantic-ui-react';
 import { useLocation } from 'react-router-dom';
+import { roleNames } from 'shared';
+
 import CacLoginButton from './CacLoginButton';
 import GitLoginButton from './GitLoginButton';
 import { useAuth } from './authContext';
@@ -17,7 +19,7 @@ export default (props) => {
     const { state } = useLocation();
 
     useEffect(() => {
-        if (user.role !== 'visitor') {
+        if (user.role !== roleNames.VISITOR) {
             props.history.push(localStorage.getItem('redirectPath'));
         }
     });

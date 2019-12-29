@@ -1,5 +1,7 @@
 import React from 'react';
 import { Form, Icon, Image, Input, Menu, Button, Label, Dropdown } from 'semantic-ui-react';
+import { roleNames } from 'shared';
+
 import './HeaderNav.scss';
 import logo from '../../../../assets/images/logo.jpg';
 import { Link } from 'react-router-dom';
@@ -38,7 +40,7 @@ export default function HeaderNav() {
             <Icon className='header-icon' name='alarm' size='large' />
           </Menu.Item>
           <Menu.Item name='avatar'>
-            {user.role === 'visitor'
+            {user.role === roleNames.VISITOR
               ? <Button as={Link} to='/login'>Log-in</Button>
               : renderDropdown(user)
             }
