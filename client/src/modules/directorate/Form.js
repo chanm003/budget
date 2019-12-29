@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
-import * as Yup from 'yup';
 import { Form, Button } from 'semantic-ui-react';
 import useForm from "react-hook-form";
+import { validationSchemas } from 'shared';
 
 import { handleValueChange, FormError } from '../common/formHelpers';
-
+console.log(validationSchemas)
 export default (props) => {
     const {
         register,
@@ -12,7 +12,7 @@ export default (props) => {
         handleSubmit,
         setValue,
         triggerValidation,
-    } = useForm({ validationSchema, defaultValues: props.initialValues });
+    } = useForm({ validationSchema: validationSchemas.directorateSchema, defaultValues: props.initialValues });
 
     useEffect(() => {
         register({ name: "title" });
@@ -39,9 +39,3 @@ export default (props) => {
         </React.Fragment>
     );
 };
-
-const validationSchema = Yup.object().shape({
-    title: Yup.string()
-        .trim()
-        .required('Title is required')
-});
