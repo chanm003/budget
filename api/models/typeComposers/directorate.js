@@ -6,6 +6,7 @@ const {
     onUpdatedMutation: onUpdatedMutateUserFields,
     addRelation: addRelationToUser
 } = require('./user');
+const { validationSchemas: { directorateSchema } } = require('shared');
 
 const DirectorateTC = composeWithMongoose(Directorate, {});
 defineRelationshipToUser();
@@ -29,6 +30,15 @@ function defineRelationshipToUser() {
     });
 }
 
+const validators = {
+    DirectorateCreateOne: async (resolve, root, args, context, info) => {
+        await directorateSchema.validate(args.record);
+        const result = await resolve(root, args, context, info)
+        return result;
+    }
+}
+
 module.exports = {
-    typeComposer: DirectorateTC
+    typeComposer: DirectorateTC,
+    validators
 };

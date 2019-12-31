@@ -7,7 +7,7 @@ const { models } = require('./database');
 const { jsonWebTokenSecret } = require('./keys');
 const { configureExpress } = require('./express');
 const UserTC = require('../models/typeComposers/user').typeComposer;
-const DirectorateTC = require('../models/typeComposers/directorate').typeComposer;
+const { typeComposer: DirectorateTC, validators: DirectorateValidators } = require('../models/typeComposers/directorate');
 
 const startOptions = {
     port: 9000,
@@ -53,8 +53,15 @@ const verifyToken = (req) => {
     return currentUser;
 }
 
+const validationMiddleware = {
+    Mutation: {
+        ...DirectorateValidators
+    }
+}
+
 const createServer = () => {
     const server = new GraphQLServer({
+        middlewares: [validationMiddleware],
         schema: generateSchema(),
         context: ({ request: req }) => {
             return {
