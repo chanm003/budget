@@ -1,34 +1,24 @@
 const { composeWithMongoose } = require('graphql-compose-mongoose/node8');
 
 const Directorate = require('../directorate');
-const {
-    onCreatedMutation: onCreatedMutateUserFields,
-    onUpdatedMutation: onUpdatedMutateUserFields,
-    addRelation: addRelationToUser
-} = require('./user');
+const { typeComposer: UserTC } = require('./user');
+const { addReference } = require('../../config/schemaHelpers');
 const { validationSchemas: { directorateSchema } } = require('shared');
 
 const DirectorateTC = composeWithMongoose(Directorate, {});
-defineRelationshipToUser();
 
-function defineRelationshipToUser() {
-    // fields that reference User model
-    addRelationToUser(DirectorateTC, 'createdBy');
-    addRelationToUser(DirectorateTC, 'updatedBy');
-
-    // on Directorate created, mutate fields that reference User model
-    onCreatedMutateUserFields(DirectorateTC, (doc, user) => {
-        doc.createdBy = user._id;
-        doc.updatedBy = user._id;
+// two fields on Directorate are of type User
+addReference([{ name: 'createdBy' }, { name: 'updatedBy' }], DirectorateTC, UserTC,
+    (doc, ctx) => {
+        doc.createdBy = ctx.user._id;
+        doc.updatedBy = ctx.user._id;
         return doc;
-    });
-
-    // on Directorate updated, mutate fields that reference User model
-    onUpdatedMutateUserFields(DirectorateTC, (doc, user) => {
-        doc.updatedBy = user._id;
+    },
+    (doc, ctx) => {
+        doc.updatedBy = ctx.user._id;
         return doc;
-    });
-}
+    }
+);
 
 const validators = {
     DirectorateCreateOne: async (resolve, root, args, context, info) => {
