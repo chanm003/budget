@@ -6,7 +6,7 @@ import Can from './Can';
 import { useAuth, hasValidToken } from '../authentication/authContext';
 
 export const AuthRoute = ({ component: Component, roles, ...rest }) => {
-    const { perform } = rest;
+    const { resource, action } = rest;
     const { user, logout } = useAuth();
     const { pathname } = useLocation();
 
@@ -18,7 +18,8 @@ export const AuthRoute = ({ component: Component, roles, ...rest }) => {
         <Route {...rest} render={props => {
             return <Can
                 role={user.role}
-                perform={perform}
+                resource={resource}
+                action={action}
                 yes={() => {
                     // render component to user
                     return <Component {...props} />;

@@ -7,20 +7,23 @@ export default {
         component: List,
         exact: true,
         auth: true,
-        perform: 'directorates:list'
+        action: 'readAny',
+        resource: 'directorate'
     },
     directorateCreate: {
         path: '/admin/directorates/create',
         component: CreateOrEdit,
         exact: true,
         auth: true,
-        perform: 'directorates:create'
+        action: 'createOwn',
+        resource: 'directorate'
     },
     directorateEdit: {
         path: (id = ':id') => (`/admin/directorates/${id}/edit`),
         component: CreateOrEdit,
         exact: true,
         auth: true,
-        perform: 'directorates:edit'
+        action: 'updateOwn',
+        resource: 'directorate'
     }
 }
