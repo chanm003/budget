@@ -1,4 +1,6 @@
 module.exports = {
-    ...require('./user'),
-    ...require('./directorate')
+    validationSchemas: {
+        ...require('./user'),
+        ...require('./directorate')
+    }
 } 
