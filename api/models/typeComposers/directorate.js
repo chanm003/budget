@@ -2,7 +2,7 @@ const { composeWithMongoose } = require('graphql-compose-mongoose/node8');
 
 const Directorate = require('../directorate');
 const { typeComposer: UserTC } = require('./user');
-const { addReference } = require('../../config/schemaHelpers');
+const { addReference, generateValidators } = require('../../config/schemaHelpers');
 const { validationSchemas: { directorateSchema } } = require('shared');
 
 const DirectorateTC = composeWithMongoose(Directorate, {});
@@ -15,18 +15,14 @@ addReference([{ name: 'createdBy' }, { name: 'updatedBy' }], DirectorateTC, User
         return doc;
     },
     (doc, ctx) => {
-        doc.updatedBy = ctx.user._id;
+        if (doc) {
+            doc.updatedBy = ctx.user._id;
+        }
         return doc;
     }
 );
 
-const validators = {
-    DirectorateCreateOne: async (resolve, root, args, context, info) => {
-        await directorateSchema.validate(args.record);
-        const result = await resolve(root, args, context, info)
-        return result;
-    }
-}
+const validators = generateValidators('Directorate', directorateSchema);
 
 module.exports = {
     typeComposer: DirectorateTC,

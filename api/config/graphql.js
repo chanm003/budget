@@ -3,7 +3,6 @@ const jwt = require('jsonwebtoken');
 const { schemaComposer } = require('graphql-compose');
 const { roleNames } = require('shared');
 
-const { models } = require('./database');
 const { jsonWebTokenSecret } = require('./keys');
 const { configureExpress } = require('./express');
 const UserTC = require('../models/typeComposers/user').typeComposer;
@@ -47,7 +46,6 @@ const createServer = () => {
         context: ({ request: req }) => {
             return {
                 req,
-                models,
                 user: verifyToken(req)
             }
         }
