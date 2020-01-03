@@ -1,24 +1,17 @@
 const { GraphQLServer } = require('graphql-yoga');
 const jwt = require('jsonwebtoken');
-const { schemaComposer } = require('graphql-compose');
 const { roleNames } = require('shared');
 
 const { jsonWebTokenSecret } = require('./keys');
 const { configureExpress } = require('./express');
-const UserTC = require('../models/typeComposers/user').typeComposer;
-const { addToSchema } = require('./schemaHelpers');
-const { typeComposer: DirectorateTC, validators: DirectorateValidators } = require('../models/typeComposers/directorate');
+const { permissionsMiddleware } = require('./permissions');
+const { validationMiddleware } = require('./validation');
+const { generateSchema } = require('./schema');
 
 const startOptions = {
     port: 9000,
     endpoint: '/graphql',
     playground: '/graphql'
-}
-
-const generateSchema = () => {
-    addToSchema('User', UserTC, schemaComposer);
-    addToSchema('Directorate', DirectorateTC, schemaComposer);
-    return schemaComposer.buildSchema();
 }
 
 const verifyToken = (req) => {
@@ -33,15 +26,9 @@ const verifyToken = (req) => {
     return currentUser;
 }
 
-const validationMiddleware = {
-    Mutation: {
-        ...DirectorateValidators
-    }
-}
-
 const createServer = () => {
     const server = new GraphQLServer({
-        middlewares: [validationMiddleware],
+        middlewares: [permissionsMiddleware, validationMiddleware],
         schema: generateSchema(),
         context: ({ request: req }) => {
             return {

@@ -2,8 +2,10 @@ const { composeWithMongoose } = require('graphql-compose-mongoose/node8');
 
 const Directorate = require('../directorate');
 const { typeComposer: UserTC } = require('./user');
-const { addReference, generateValidators } = require('../../config/schemaHelpers');
-const { validationSchemas: { directorateSchema } } = require('shared');
+const { addReference } = require('../../config/schemaHelpers');
+const { generateRules } = require('../../config/securityRuleHelpers');
+const { generateValidators } = require('../../config/validationHelpers');
+const { validationSchemas: { directorateSchema }, apiPermissions } = require('shared');
 
 const DirectorateTC = composeWithMongoose(Directorate, {});
 
@@ -23,8 +25,10 @@ addReference([{ name: 'createdBy' }, { name: 'updatedBy' }], DirectorateTC, User
 );
 
 const validators = generateValidators('Directorate', directorateSchema);
+const securityRules = generateRules('Directorate', apiPermissions);
 
 module.exports = {
+    securityRules,
     typeComposer: DirectorateTC,
     validators
 };
