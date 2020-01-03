@@ -2,13 +2,21 @@ import React from 'react';
 import { Table, Button, Icon } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import LoadingSegment from '../LoadingSegment/LoadingSegment';
+import Can from '../../../core/security/Can';
+import { useAuth } from '../../../core/authentication/authContext';
 
-const renderActionButtons = (createItemPath) => (
-    <Link to={createItemPath}>
-        <Button primary>
-            <Icon name='add' /> New
-            </Button>
-    </Link>
+const renderActionButtons = (user, createItemPath) => (
+    <Can
+        user={user}
+        operationName={'DirectorateCreateOne'}
+        yes={() => (
+            <Link to={createItemPath}>
+                <Button primary>
+                    <Icon name='add' /> New
+                    </Button>
+            </Link>
+        )}
+    />
 );
 
 const tableRender = (items, tableRowRender, tableHeaderRowRender, tableRowNoItemsMessage) => {
@@ -30,10 +38,11 @@ const tableRender = (items, tableRowRender, tableHeaderRowRender, tableRowNoItem
 }
 
 export default props => {
+    const { user } = useAuth();
     const { heading, createItemPath, isLoading, items, tableRowRender, tableHeaderRowRender, tableRowNoItemsMessage } = props;
 
     return (
-        <LoadingSegment heading={heading} headingActions={renderActionButtons(createItemPath)} isLoading={isLoading}>
+        <LoadingSegment heading={heading} headingActions={renderActionButtons(user, createItemPath)} isLoading={isLoading}>
             {tableRender(items, tableRowRender, tableHeaderRowRender, tableRowNoItemsMessage)}
         </LoadingSegment>
     );

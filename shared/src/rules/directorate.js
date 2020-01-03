@@ -29,6 +29,9 @@ const apiSecurity = {
     DirectorateMany: ac => (user, data) => {
         return ac.can(user.role)['readAny'](resourceName).granted;
     },
+    DirectorateRemoveById: ac => (user, data) => {
+        return ac.can(user.role)['deleteOwn'](resourceName).granted;
+    },
     DirectorateUpdateById: ac => (user, data) => {
         return ac.can(user.role)['updateOwn'](resourceName).granted;
     }
