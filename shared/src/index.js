@@ -1,4 +1,5 @@
 module.exports = {
     ...require('./validationSchemas'),
-    ...require('./rules')
+    ...require('./rules'),
+    ...require('./roleNames')
 };

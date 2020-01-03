@@ -1,17 +1,16 @@
 const AccessControl = require('accesscontrol');
+const { roleNames } = require('../roleNames');
 
 const acss = new AccessControl();
 
 // role names
-const VISITOR = 'VISITOR';
-const LOGGED_IN_USER = 'LOGGED_IN_USER';
-const ADMIN = 'ADMIN';
 
-acss.grant(VISITOR)
-    .grant(LOGGED_IN_USER)
+
+acss.grant(roleNames.VISITOR)
+    .grant(roleNames.LOGGED_IN_USER)
     .readAny('Directorate')
-    .grant(ADMIN)
-    .extend(LOGGED_IN_USER)
+    .grant(roleNames.ADMIN)
+    .extend(roleNames.LOGGED_IN_USER)
     .createAny('Directorate')
     .updateAny('Directorate')
     .deleteAny('Directorate');
@@ -30,10 +29,5 @@ const apiPermissions = {
 }
 
 module.exports = {
-    apiPermissions,
-    roleNames: {
-        VISITOR,
-        LOGGED_IN_USER,
-        ADMIN
-    }
+    apiPermissions
 };
