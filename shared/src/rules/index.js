@@ -1,32 +1,14 @@
 const AccessControl = require('accesscontrol');
+
 const { roleNames } = require('../roleNames');
+const { grantsObject: directorateSecurityGrants, apiSecurity: directorateApiSecurity } = require('./directorate');
+const { mergeApiPermissions, mergeResourceGrants } = require('./combineSecurity');
 
-const acss = new AccessControl();
+const grantsObject = mergeResourceGrants(roleNames, directorateSecurityGrants);
 
-// role names
+const accessControl = new AccessControl(grantsObject);
 
-
-acss.grant(roleNames.VISITOR)
-    .grant(roleNames.LOGGED_IN_USER)
-    .readAny('Directorate')
-    .grant(roleNames.ADMIN)
-    .extend(roleNames.LOGGED_IN_USER)
-    .createAny('Directorate')
-    .updateAny('Directorate')
-    .deleteAny('Directorate');
-
-// TODO: perform permissions based on data https://auth0.com/blog/role-based-access-control-rbac-and-react-apps/
-const apiPermissions = {
-    DirectorateCreateOne: (user, data) => {
-        return acss.can(user.role)['createOwn']('Directorate').granted;
-    },
-    DirectorateMany: (user, data) => {
-        return acss.can(user.role)['readAny']('Directorate').granted;
-    },
-    DirectorateUpdateById: (user, data) => {
-        return acss.can(user.role)['updateOwn']('Directorate').granted;
-    },
-}
+const apiPermissions = mergeApiPermissions(accessControl, directorateApiSecurity);
 
 module.exports = {
     apiPermissions
