@@ -9,9 +9,8 @@ const Home = () => {
   return (
     <div className='home'>
       <Can
-        role={user.role}
-        resource="directorate"
-        action="readAny"
+        user={user}
+        operationName={'DirectorateMany'}
         yes={() => (
           <div>
             You have permissions
