@@ -7,12 +7,12 @@ import DeleteButton from '../../modules/common/components/DeleteButton/DeleteBut
 import { Link } from 'react-router-dom';
 import ItemsTabular from '../common/components/Table/Table';
 import routeConfig from '../../routes/directorate';
-import { GET_ITEMS, DELETE_ITEM, deleteMutationOptions } from './api';
+import { api, mutationOptions, responseParsers } from './api';
 
 export default function () {
     const { addToast } = useToasts();
-    const { loading, data } = useQuery(GET_ITEMS);
-    const [deleteItem] = useMutation(DELETE_ITEM, deleteMutationOptions);
+    const { loading, data } = useQuery(api.Query.Many);
+    const [deleteItem] = useMutation(api.Mutation.RemoveById, mutationOptions.RemoveById);
 
     const tableHeaderRowRender = () => (
         <Table.Row>
@@ -43,8 +43,8 @@ export default function () {
     );
 
     const onDeleteClicked = async (guid) => {
-        const { data: { DirectorateRemoveById: { record } } } = await deleteItem({ variables: { id: guid } });
-        addToast(`'${record.title}' has been deleted.`, toastSettings.success);
+        const removedItem = responseParsers.RemoveById(await deleteItem({ variables: { id: guid } }))
+        addToast(`'${removedItem.title}' has been deleted.`, toastSettings.success);
     }
 
     return (
@@ -52,7 +52,7 @@ export default function () {
             <ItemsTabular
                 heading="Directorates"
                 isLoading={loading}
-                items={data ? data.DirectorateMany : []}
+                items={responseParsers.Many(data)}
                 createItemPath={routeConfig.directorateCreate.path}
                 tableHeaderRowRender={tableHeaderRowRender}
                 tableRowRender={tableRowRender}

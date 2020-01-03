@@ -1,6 +1,6 @@
 import React from 'react';
 import { useQuery, useMutation } from '@apollo/react-hooks';
-import { GET_ITEM, CREATE_ITEM, UPDATE_ITEM, createMutationOptions } from './api';
+import { api, mutationOptions, responseParsers } from './api';
 import _ from 'lodash';
 import { useToasts } from 'react-toast-notifications';
 import { toastSettings } from '../core/layout/toaster/settings';
@@ -14,13 +14,13 @@ const identifyEditableFields = itemToEdit => {
 export default props => {
     const { id } = props.match.params;
     const { addToast } = useToasts();
-    const [createItem] = useMutation(CREATE_ITEM, createMutationOptions);
-    const [updateItem] = useMutation(UPDATE_ITEM);
+    const [createItem] = useMutation(api.Mutation.CreateOne, mutationOptions.CreateOne);
+    const [updateItem] = useMutation(api.Mutation.UpdateById);
 
     const onSubmit = async formData => {
         if (!id) {
-            const { data: { DirectorateCreateOne: { record } } } = await createItem({ variables: { ...formData } });
-            addToast(`'${record.title}' has been created.`, toastSettings.success);
+            const createdItem = responseParsers.CreateOne(await createItem({ variables: { ...formData } }));
+            addToast(`'${createdItem.title}' has been created.`, toastSettings.success);
         } else {
             await updateItem({ variables: { id, ...formData } });
             addToast(`Your changes have been saved.`, toastSettings.success);
@@ -32,9 +32,9 @@ export default props => {
     let header = 'New Form';
 
     if (id) {
-        const { loading, data } = useQuery(GET_ITEM, { variables: { id } });
+        const { loading, data } = useQuery(api.Query.ById, { variables: { id } });
         if (loading) { return null; }
-        initialValues = identifyEditableFields(data.DirectorateById)
+        initialValues = identifyEditableFields(responseParsers.ById(data))
         header = 'Edit Form';
     }
 
