@@ -18,6 +18,7 @@ const generateRule = (operationName, collectionName, apiPermissions) => {
 const generateRules = (collectionName, apiPermissions) => {
     return {
         Query: {
+            [`${collectionName}ById`]: generateRule('ById', collectionName, apiPermissions),
             [`${collectionName}Many`]: generateRule('Many', collectionName, apiPermissions)
         },
         Mutation: {

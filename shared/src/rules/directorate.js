@@ -23,6 +23,9 @@ const grantsObject = {
 
 // TODO: perform permissions based on data https://auth0.com/blog/role-based-access-control-rbac-and-react-apps/
 const apiSecurity = {
+    DirectorateById: ac => (user, data) => {
+        return ac.can(user.role)['readAny'](resourceName).granted;
+    },
     DirectorateCreateOne: ac => (user, data) => {
         return ac.can(user.role)['createOwn'](resourceName).granted;
     },
