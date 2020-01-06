@@ -12,7 +12,11 @@ export default (props) => {
     useEffect(() => {
         window.onmessage = function (evt) {
             if (evt.origin === cacURL) {
-                onLoginSuccess(evt.data);
+                if (!evt.data.error) {
+                    onLoginSuccess(evt.data);
+                } else {
+                    alert('Ensure your CAC card has been properly inserted into the reader.  If this error persists, please close all browsers.  Then re-insert your CAC card into the reader and return to this page.');
+                }
             }
         }
     });

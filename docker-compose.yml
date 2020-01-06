@@ -48,3 +48,4 @@ services:
         volumes:
             - ./cac/default.conf:/etc/nginx/conf.d/default.conf
             - ./cac/index.html:/www/data/index.html
+            - ./cac/400.html:/www/data/400.html
