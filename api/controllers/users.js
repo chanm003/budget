@@ -4,7 +4,7 @@ const User = require('../models/user');
 const { jsonWebTokenSecret } = require('../config/keys');
 
 signToken = user => {
-    return jwt.sign({ user }, jsonWebTokenSecret, { expiresIn: "5m" })
+    return jwt.sign({ user }, jsonWebTokenSecret, { expiresIn: "15m" })
 }
 
 module.exports = {

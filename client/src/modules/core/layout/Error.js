@@ -6,8 +6,8 @@ export default function ErrorPage({ location: { state } }) {
     let errorMessage = 'Something went wrong.  Please try again at a later time.'
 
     if (state) {
-        const { type, message } = state;
-        header = type;
+        const { message } = state;
+        header = 'Error occurred';
         errorMessage = message;
     }
 
