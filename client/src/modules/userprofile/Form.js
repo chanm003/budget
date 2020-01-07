@@ -12,7 +12,7 @@ export default (props) => {
         handleSubmit,
         setValue,
         triggerValidation,
-    } = useForm({ validationSchema: validationSchemas.userprofileSchema, defaultValues: props.initialValues });
+    } = useForm({ validationSchema: validationSchemas.User.yupSchemas.userprofileSchema, defaultValues: props.initialValues });
 
     useEffect(() => {
         register({ name: "firstName" });

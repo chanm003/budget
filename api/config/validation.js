@@ -1,10 +1,12 @@
-const { validators: DirectorateValidators } = require('../models/typeComposers/directorate');
+const { validationSchemas } = require('shared');
 
-const validationMiddleware = {
-    Mutation: {
-        ...DirectorateValidators
-    }
-}
+const { models } = require('./database');
+
+const validationMiddleware = { Mutation: {} };
+
+Object.keys(models).forEach(modelName => {
+    validationMiddleware.Mutation = { ...validationMiddleware.Mutation, ...validationSchemas[modelName].graphqlMutations }
+})
 
 module.exports = {
     validationMiddleware

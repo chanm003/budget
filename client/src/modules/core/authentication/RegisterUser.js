@@ -17,7 +17,7 @@ export default function RegisterUser(props) {
         handleSubmit,
         setValue,
         triggerValidation,
-    } = useForm({ validationSchema: validationSchemas.registrationSchema });
+    } = useForm({ validationSchema: validationSchemas.User.yupSchemas.registrationSchema });
 
     useEffect(() => {
         register({ name: 'email' });

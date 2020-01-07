@@ -1,4 +1,4 @@
-const { validationSchemas } = require('shared');
+const { validationSchemas: { User: { yupSchemas: { registrationSchema } } } } = require('shared');
 
 const User = require('../models/user');
 const { signToken } = require('../config/jwt');
@@ -8,7 +8,7 @@ module.exports = {
         try {
             const { email, password, passwordConfirm } = req.body;
 
-            await validationSchemas.registrationSchema.validate({ email, password, passwordConfirm });
+            await registrationSchema.validate({ email, password, passwordConfirm });
 
             // Check if account already exists
             const foundUser = await User.findOne({ email: email, method: 'local' });

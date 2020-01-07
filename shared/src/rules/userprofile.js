@@ -4,7 +4,6 @@ const resourceName = 'User';
 const grantsObject = {
     [roleNames.VISITOR]: {
         User: {
-            'read:any': ['*']
         }
     },
     [roleNames.LOGGED_IN_USER]: {
@@ -24,11 +23,17 @@ const grantsObject = {
 
 // TODO: perform permissions based on data https://auth0.com/blog/role-based-access-control-rbac-and-react-apps/
 const apiSecurity = {
-    UserById: ac => (user, data) => {
-        return ac.can(user.role)['readAny'](resourceName).granted;
-    },
-    UserUpdateById: ac => (user, data) => {
-        return ac.can(user.role)['updateOwn'](resourceName).granted;
+    User: {
+        Query: {
+            UserById: ac => (user, data) => {
+                return ac.can(user.role)['readAny'](resourceName).granted;
+            }
+        },
+        Mutation: {
+            UserUpdateById: ac => (user, data) => {
+                return ac.can(user.role)['updateOwn'](resourceName).granted;
+            }
+        }
     }
 }
 

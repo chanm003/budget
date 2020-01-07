@@ -17,7 +17,7 @@ export default function SignIn(props) {
         handleSubmit,
         setValue,
         triggerValidation,
-    } = useForm({ validationSchema: validationSchemas.loginSchema });
+    } = useForm({ validationSchema: validationSchemas.User.yupSchemas.loginSchema });
 
     useEffect(() => {
         register({ name: 'email' });

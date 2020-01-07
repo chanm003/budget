@@ -58,7 +58,11 @@ const userprofileSchema = Yup.object().shape({
 });
 
 module.exports = {
-    loginSchema,
-    registrationSchema,
-    userprofileSchema
+    User: {
+        yupSchemas: {
+            loginSchema,
+            registrationSchema,
+            userprofileSchema
+        }
+    }
 }

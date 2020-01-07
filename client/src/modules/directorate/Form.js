@@ -12,7 +12,7 @@ export default (props) => {
         handleSubmit,
         setValue,
         triggerValidation,
-    } = useForm({ validationSchema: validationSchemas.directorateSchema, defaultValues: props.initialValues });
+    } = useForm({ validationSchema: validationSchemas.Directorate.yupSchemas.directorateSchema, defaultValues: props.initialValues });
 
     useEffect(() => {
         register({ name: "title" });

@@ -20,23 +20,28 @@ const grantsObject = {
     }
 };
 
-
 // TODO: perform permissions based on data https://auth0.com/blog/role-based-access-control-rbac-and-react-apps/
 const apiSecurity = {
-    DirectorateById: ac => (user, data) => {
-        return ac.can(user.role)['readAny'](resourceName).granted;
-    },
-    DirectorateCreateOne: ac => (user, data) => {
-        return ac.can(user.role)['createOwn'](resourceName).granted;
-    },
-    DirectorateMany: ac => (user, data) => {
-        return ac.can(user.role)['readAny'](resourceName).granted;
-    },
-    DirectorateRemoveById: ac => (user, data) => {
-        return ac.can(user.role)['deleteOwn'](resourceName).granted;
-    },
-    DirectorateUpdateById: ac => (user, data) => {
-        return ac.can(user.role)['updateOwn'](resourceName).granted;
+    Directorate: {
+        Query: {
+            DirectorateById: ac => (user, data) => {
+                return ac.can(user.role)['readAny'](resourceName).granted;
+            },
+            DirectorateMany: ac => (user, data) => {
+                return ac.can(user.role)['readAny'](resourceName).granted;
+            }
+        },
+        Mutation: {
+            DirectorateCreateOne: ac => (user, data) => {
+                return ac.can(user.role)['createOwn'](resourceName).granted;
+            },
+            DirectorateRemoveById: ac => (user, data) => {
+                return ac.can(user.role)['deleteOwn'](resourceName).granted;
+            },
+            DirectorateUpdateById: ac => (user, data) => {
+                return ac.can(user.role)['updateOwn'](resourceName).granted;
+            }
+        }
     }
 }
 

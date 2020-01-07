@@ -4,7 +4,7 @@ const CustomStrategy = require('passport-custom').Strategy;
 const GitHubStrategy = require('passport-github').Strategy;
 const { ExtractJwt } = require('passport-jwt');
 const LocalStrategy = require('passport-local').Strategy;
-const { validationSchemas } = require('shared');
+const { validationSchemas: { User: { yupSchemas: { loginSchema } } } } = require('shared');
 const { isDevelopmentMode, jsonWebTokenSecret } = require('./keys');
 const User = require('../models/user')
 
@@ -25,7 +25,7 @@ passport.use(new LocalStrategy({
     usernameField: 'email'
 }, async (email, password, done) => {
     try {
-        await validationSchemas.loginSchema.validate({ email, password });
+        await loginSchema.validate({ email, password });
 
         const user = await User.findOne({ email: email, method: 'local' });
 

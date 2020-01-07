@@ -1,10 +1,16 @@
 const mergeApiPermissions = (accessControl, ...args) => {
-    const apiPermissions = {};
+    let apiPermissions = {};
     args.forEach(apiResourceSecurity => {
-        Object.keys(apiResourceSecurity).forEach(operationName => {
-            apiPermissions[operationName] = apiResourceSecurity[operationName](accessControl);
-        });
+        apiPermissions = { ...apiPermissions, ...apiResourceSecurity };
     });
+    Object.keys(apiPermissions).forEach(modelName => {
+        Object.keys(apiPermissions[modelName].Query).forEach(queryName => {
+            apiPermissions[modelName].Query[queryName] = apiPermissions[modelName].Query[queryName](accessControl);
+        });
+        Object.keys(apiPermissions[modelName].Mutation).forEach(queryName => {
+            apiPermissions[modelName].Mutation[queryName] = apiPermissions[modelName].Mutation[queryName](accessControl);
+        })
+    })
     return apiPermissions;
 }
 
