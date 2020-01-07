@@ -1,10 +1,10 @@
 const { rule } = require('graphql-shield');
-const { roleNames } = require('shared');
+const { roleNames, serverErrors } = require('shared');
 
 const generateRule = (operationName, collectionName, apiPermissions) => {
     return rule()(async (parent, args, ctx, info) => {
         if (ctx.user.role === roleNames.VISITOR) {
-            return new Error('Security token is missing, invalid, or expired');
+            return new Error(serverErrors.INVALID_JWT);
         }
 
         if (!apiPermissions[`${collectionName}${operationName}`](ctx.user, args.record)) {

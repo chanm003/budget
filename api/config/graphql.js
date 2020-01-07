@@ -1,12 +1,11 @@
 const { GraphQLServer } = require('graphql-yoga');
-const jwt = require('jsonwebtoken');
 const { roleNames } = require('shared');
 
-const { jsonWebTokenSecret } = require('./keys');
 const { configureExpress } = require('./express');
 const { permissionsMiddleware } = require('./permissions');
 const { validationMiddleware } = require('./validation');
 const { generateSchema } = require('./schema');
+const { verifyToken } = require('./jwt');
 
 const startOptions = {
     port: 9000,
@@ -14,12 +13,12 @@ const startOptions = {
     playground: '/graphql'
 }
 
-const verifyToken = (req) => {
+const parseUserFromRequest = (req) => {
     let currentUser = { role: roleNames.VISITOR };
     try {
         let authHeader = req.headers['authorization'];
-        authHeader = authHeader && authHeader.replace('Bearer ', '')
-        currentUser = jwt.verify(authHeader, jsonWebTokenSecret).user;
+        authHeader = authHeader && authHeader.replace('Bearer ', '');
+        currentUser = verifyToken(authHeader).user;
     } catch (e) {
         return currentUser;
     }
@@ -33,7 +32,7 @@ const createServer = () => {
         context: ({ request: req }) => {
             return {
                 req,
-                user: verifyToken(req)
+                user: parseUserFromRequest(req)
             }
         }
     });

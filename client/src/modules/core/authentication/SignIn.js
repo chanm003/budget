@@ -31,7 +31,7 @@ export default function SignIn(props) {
     const onSignInFormSubmit = async (formData) => {
         try {
             props.setRedirectPath();
-            const response = await axios.post('/api/users/signin_emailPassword', formData)
+            const response = await axios.post('/api/users/signin_emailPassword', formData);
             login(response.data);
             props.redirectUser();
         } catch (err) {

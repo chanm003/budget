@@ -42,7 +42,23 @@ const registrationSchema = Yup.object().shape({
         .required('Confirm Password is required')
 });
 
+const userprofileSchema = Yup.object().shape({
+    firstName: Yup.string()
+        .trim()
+        .required('First Name is required')
+    ,
+    lastName: Yup.string()
+        .trim()
+        .required('Last Name is required')
+    ,
+    email: Yup.string()
+        .trim()
+        .email('Email must be in correct format')
+        .required('Email is required')
+});
+
 module.exports = {
     loginSchema,
-    registrationSchema
+    registrationSchema,
+    userprofileSchema
 }

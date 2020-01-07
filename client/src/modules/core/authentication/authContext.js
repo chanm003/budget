@@ -4,6 +4,11 @@ import { roleNames } from 'shared';
 
 function reducer(state, action) {
     switch (action.type) {
+        case 'UPDATE_PROFILE':
+            return {
+                ...state,
+                user: { ...state.user, ...action.payload }
+            };
         case 'LOGIN':
             return {
                 ...state,
@@ -50,6 +55,14 @@ const getInitialState = () => {
 
 const createActions = (dispatch) => {
     return {
+        updateProfile: (userData) => {
+            localStorage.setItem('jwtToken', userData.token);
+            dispatch({
+                type: 'UPDATE_PROFILE',
+                payload: userData.user
+            });
+        },
+
         login: (userData) => {
             localStorage.setItem('jwtToken', userData.token);
             dispatch({

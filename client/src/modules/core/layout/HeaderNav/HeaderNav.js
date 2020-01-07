@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Icon, Image, Input, Menu, Button, Label, Dropdown } from 'semantic-ui-react';
+import { Form, Icon, Image, Input, Menu, Button, Label, Dropdown, Popup } from 'semantic-ui-react';
 import { roleNames } from 'shared';
 
 import './HeaderNav.scss';
@@ -52,32 +52,33 @@ export default function HeaderNav() {
   );
 }
 
-const parseDistinguishedName = distinguishedName => {
-  if (distinguishedName) {
-    const parsed = distinguishedName
-      .replace('CN=', '')
-      .split('.')
-      .slice(0, 2)
-      .reverse();
-    return {
-      name: parsed.join(' '),
-      initials: parsed.map(name => name[0]).join('')
-    };
-  }
-}
-
 const renderDropdown = user => {
-  const { name, initials } = { name: 'Mike Chan', initials: 'MC' };
+  const isProfileValid = isUserProfileValid(user);
+  let trigger = null;
+  let name = '';
+
+  if (isProfileValid) {
+    name = `${user.firstName} ${user.lastName}`;
+    const initials = `${user.firstName[0]}${user.lastName[0]}`;
+    trigger = <Label circular color="grey">{initials}</Label>;
+  } else {
+    trigger = <Popup content='Click to update your profile' position='bottom right' trigger={<Button circular negative icon='warning' />} />
+  }
 
   return (
     <Dropdown
       pointing="top right"
       icon={null}
-      trigger={<Label circular color="grey">{initials}</Label>}>
+      trigger={trigger}>
       <Dropdown.Menu>
-        <Dropdown.Item text={`Signed in as ${name}`} disabled />
+        {isProfileValid && (<Dropdown.Item text={`Signed in as ${name}`} disabled />)}
+        <Dropdown.Item text="Edit Profile" as={Link} to='/userprofile/edit' />
         <Dropdown.Item text="Sign out" as={Link} to='/logout' />
       </Dropdown.Menu>
     </Dropdown>
   );
+}
+
+const isUserProfileValid = user => {
+  return !!user.firstName.trim() && !!user.lastName.trim() && !!user.email.trim();
 }

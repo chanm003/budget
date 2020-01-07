@@ -1,11 +1,7 @@
-const jwt = require('jsonwebtoken');
 const { validationSchemas } = require('shared');
-const User = require('../models/user');
-const { jsonWebTokenSecret } = require('../config/keys');
 
-signToken = user => {
-    return jwt.sign({ user }, jsonWebTokenSecret, { expiresIn: "15m" })
-}
+const User = require('../models/user');
+const { signToken } = require('../config/jwt');
 
 module.exports = {
     signup_emailPassword: async (req, res, next) => {
