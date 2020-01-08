@@ -18,8 +18,12 @@ folderNames.forEach(modelName => {
 
 module.exports = {
     connectToDatabase: function (success, err) {
-        mongoose.set('useFindAndModify', false);
-        mongoose.set('useUnifiedTopology', true);
+        const connectOptions = {
+            useNewUrlParser: true,
+            useCreateIndex: true,
+            useUnifiedTopology: true,
+            useFindAndModify: false
+        }
 
         mongoose.connection.on("error", error => {
             console.log("Database connection error:", error);
@@ -29,7 +33,7 @@ module.exports = {
             console.log("Connected to Database!");
         });
 
-        mongoose.connect('mongodb://mongodb:27017/budget', { useNewUrlParser: true, useCreateIndex: true })
+        mongoose.connect('mongodb://mongodb:27017/budget', connectOptions)
             .then(() => {
                 success();
             })
