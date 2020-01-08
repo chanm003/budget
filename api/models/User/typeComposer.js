@@ -1,7 +1,7 @@
 const { composeWithMongoose } = require('graphql-compose-mongoose/node8');
 const { serverErrors } = require('shared');
 
-const User = require('../user');
+const User = require('./model');
 const { signToken } = require('../../config/jwt');
 
 const UserTC = composeWithMongoose(User, {});

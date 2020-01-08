@@ -6,9 +6,9 @@
  */
 var chance = require('chance').Chance();
 const seeder = require('./seeder');
-const Directorate = require('../models/directorate');
-const Program = require('../models/program');
-const User = require('../models/user');
+const Directorate = require('../models/Directorate/model');
+const Program = require('../models/Program/model');
+const User = require('../models/User/model');
 const { roleNames } = require('shared');
 
 const createItems = (num, createFunc) => {

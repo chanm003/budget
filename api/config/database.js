@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const Directorate = require('../models/directorate');
-const User = require('../models/user');
+const Directorate = require('../models/Directorate/model');
+const User = require('../models/User/model');
 
 module.exports = {
     connectToDatabase: function (success, err) {

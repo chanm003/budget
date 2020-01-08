@@ -6,7 +6,7 @@ const { ExtractJwt } = require('passport-jwt');
 const LocalStrategy = require('passport-local').Strategy;
 const { validationSchemas: { User: { yupSchemas: { loginSchema } } } } = require('shared');
 const { isDevelopmentMode, jsonWebTokenSecret } = require('./keys');
-const User = require('../models/user')
+const User = require('../models/User/model')
 
 // JSON WEB TOKENS STRATEGY
 passport.use(new JwtStrategy({

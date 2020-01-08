@@ -1,6 +1,6 @@
 const { validationSchemas: { User: { yupSchemas: { registrationSchema } } } } = require('shared');
 
-const User = require('../models/user');
+const User = require('../models/User/model');
 const { signToken } = require('../config/jwt');
 
 module.exports = {
