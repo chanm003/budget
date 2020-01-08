@@ -25,16 +25,16 @@ const addReference = (relatedFields, typeComposer, referencedTypeComposer, onCre
         })
     });
 
-    ['createOne', 'createMany'].forEach(createMethodName => {
+    onCreating.resolverNames.forEach(createMethodName => {
         typeComposer.wrapResolverResolve(createMethodName, next => async rp => {
-            rp.beforeRecordMutate = async (doc, { context }) => onCreating(doc, context);
+            rp.beforeRecordMutate = async (doc, { context }) => onCreating.resolve(doc, context);
             return next(rp);
         });
     });
 
-    ['updateById', 'updateOne', 'updateMany'].forEach(updateMethodName => {
+    onUpdating.resolverNames.forEach(updateMethodName => {
         typeComposer.wrapResolverResolve(updateMethodName, next => async rp => {
-            rp.beforeRecordMutate = async (doc, { context }) => onUpdating(doc, context);
+            rp.beforeRecordMutate = async (doc, { context }) => onUpdating.resolve(doc, context);
             return next(rp);
         });
     })
