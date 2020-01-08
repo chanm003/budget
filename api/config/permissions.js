@@ -22,10 +22,11 @@ const generateRule = (hasPermissions) => {
     })
 }
 
-
 Object.keys(models).forEach(modelName => {
-    sfc.Query = { ...sfc.Query, ...apiPermissions[modelName].Query };
-    sfc.Mutation = { ...sfc.Mutation, ...apiPermissions[modelName].Mutation };
+    if (apiPermissions[modelName]) {
+        sfc.Query = { ...sfc.Query, ...apiPermissions[modelName].Query };
+        sfc.Mutation = { ...sfc.Mutation, ...apiPermissions[modelName].Mutation };
+    }
 })
 
 Object.keys(sfc.Query).forEach(operationName => {

@@ -1,6 +1,20 @@
 const mongoose = require('mongoose');
-const Directorate = require('../models/Directorate/model');
-const User = require('../models/User/model');
+const fs = require('fs')
+const { join } = require('path')
+
+function getDirectories(path) {
+    return fs.readdirSync(path).filter(function (file) {
+        return fs.statSync(path + '/' + file).isDirectory();
+    });
+}
+
+const folderNames = getDirectories(join(__dirname, '../models'));
+
+const models = {};
+folderNames.forEach(modelName => {
+    // import each file, that is responsible for creating and register mongoose models
+    models[modelName] = require(`../models/${modelName}/model`);
+})
 
 module.exports = {
     connectToDatabase: function (success, err) {
@@ -23,8 +37,5 @@ module.exports = {
                 err(err);
             });
     },
-    models: {
-        Directorate,
-        User
-    }
+    models
 }

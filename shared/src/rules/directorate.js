@@ -1,5 +1,4 @@
 const { roleNames } = require('../roleNames');
-const resourceName = 'Directorate';
 
 const grantsObject = {
     [roleNames.VISITOR]: {
@@ -25,21 +24,21 @@ const apiSecurity = {
     Directorate: {
         Query: {
             DirectorateById: ac => (user, data) => {
-                return ac.can(user.role)['readAny'](resourceName).granted;
+                return ac.can(user.role)['readAny']('Directorate').granted;
             },
             DirectorateMany: ac => (user, data) => {
-                return ac.can(user.role)['readAny'](resourceName).granted;
+                return ac.can(user.role)['readAny']('Directorate').granted;
             }
         },
         Mutation: {
             DirectorateCreateOne: ac => (user, data) => {
-                return ac.can(user.role)['createOwn'](resourceName).granted;
+                return ac.can(user.role)['createOwn']('Directorate').granted;
             },
             DirectorateRemoveById: ac => (user, data) => {
-                return ac.can(user.role)['deleteOwn'](resourceName).granted;
+                return ac.can(user.role)['deleteOwn']('Directorate').granted;
             },
             DirectorateUpdateById: ac => (user, data) => {
-                return ac.can(user.role)['updateOwn'](resourceName).granted;
+                return ac.can(user.role)['updateOwn']('Directorate').granted;
             }
         }
     }

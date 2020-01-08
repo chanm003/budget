@@ -1,7 +1,7 @@
 const Yup = require('yup');
 const { generateValidatorForSingleRecord, generateValidatorForMultipleRecords } = require('./helpers');
 
-const directorateSchema = Yup.object().shape({
+const defaultSchema = Yup.object().shape({
     title: Yup.string()
         .trim()
         .required('Title is required')
@@ -10,12 +10,12 @@ const directorateSchema = Yup.object().shape({
 module.exports = {
     Directorate: {
         yupSchemas: {
-            directorateSchema
+            defaultSchema
         },
         graphqlMutations: {
-            'DirectorateCreateOne': generateValidatorForSingleRecord(directorateSchema),
-            'DirectorateCreateMany': generateValidatorForMultipleRecords(directorateSchema),
-            'DirectorateUpdateById': generateValidatorForSingleRecord(directorateSchema),
+            'DirectorateCreateOne': generateValidatorForSingleRecord(defaultSchema),
+            'DirectorateCreateMany': generateValidatorForMultipleRecords(defaultSchema),
+            'DirectorateUpdateById': generateValidatorForSingleRecord(defaultSchema),
         }
     }
 }

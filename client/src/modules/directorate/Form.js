@@ -5,6 +5,8 @@ import { validationSchemas } from 'shared';
 
 import { handleValueChange, FormError } from '../common/formHelpers';
 
+const validationSchema = validationSchemas.Directorate.yupSchemas.defaultSchema;
+
 export default (props) => {
     const {
         register,
@@ -12,7 +14,7 @@ export default (props) => {
         handleSubmit,
         setValue,
         triggerValidation,
-    } = useForm({ validationSchema: validationSchemas.Directorate.yupSchemas.directorateSchema, defaultValues: props.initialValues });
+    } = useForm({ validationSchema, defaultValues: props.initialValues });
 
     useEffect(() => {
         register({ name: "title" });

@@ -1,13 +1,18 @@
 const { schemaComposer } = require('graphql-compose');
 
-const { typeComposer: UserTC, addCustomFields: addFieldsUserTC } = require('../models/User/typeComposer');
-const { typeComposer: DirectorateTC } = require('../models/Directorate/typeComposer');
 const { addToSchema } = require('./schemaHelpers');
+const { models } = require('./database');
 
 const generateSchema = () => {
-    addToSchema('User', UserTC, schemaComposer);
-    addFieldsUserTC(schemaComposer);
-    addToSchema('Directorate', DirectorateTC, schemaComposer);
+    Object.keys(models).forEach(modelName => {
+        const { typeComposer, addCustomFields } = require(`../models/${modelName}/typeComposer`);
+
+        if (addCustomFields) {
+            addCustomFields(schemaComposer);
+        }
+
+        addToSchema(modelName, typeComposer, schemaComposer)
+    });
     return schemaComposer.buildSchema();
 }
 
