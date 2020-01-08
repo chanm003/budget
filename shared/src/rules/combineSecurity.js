@@ -1,29 +1,33 @@
-const mergeApiPermissions = (accessControl, ...args) => {
-    let apiPermissions = {};
-    args.forEach(apiResourceSecurity => {
-        apiPermissions = { ...apiPermissions, ...apiResourceSecurity };
-    });
+const mergeApiPermissions = (accessControl, apiSecurities) => {
+    // merge security
+    let apiPermissions = apiSecurities.reduce((combined, apiResourceSecurity) => {
+        combined = { ...combined, ...apiResourceSecurity };
+        return combined;
+    }, {});
+
+    // iterate through each operation and update
     Object.keys(apiPermissions).forEach(modelName => {
-        Object.keys(apiPermissions[modelName].Query).forEach(queryName => {
-            apiPermissions[modelName].Query[queryName] = apiPermissions[modelName].Query[queryName](accessControl);
-        });
-        Object.keys(apiPermissions[modelName].Mutation).forEach(queryName => {
-            apiPermissions[modelName].Mutation[queryName] = apiPermissions[modelName].Mutation[queryName](accessControl);
+        ['Query', 'Mutation'].forEach(operationType => {
+            Object.keys(apiPermissions[modelName][operationType]).forEach(operationName => {
+                apiPermissions[modelName][operationType][operationName] = apiPermissions[modelName][operationType][operationName](accessControl);
+            })
         })
     })
+
     return apiPermissions;
 }
 
-const mergeResourceGrants = (roleNames, ...args) => {
-    const grantsObject = {};
-    args.forEach(resourceGrant => {
-        Object.values(roleNames).forEach(roleName => {
-            grantsObject[roleName] = grantsObject[roleName] || {};
-            grantsObject[roleName] = {
-                ...grantsObject[roleName], ...resourceGrant[roleName]
-            }
-        });
-    })
+const mergeResourceGrants = (roleNames, resourceGrants) => {
+    const grantsObject = resourceGrants.reduce(
+        (combined, resourceGrant) => {
+            Object.values(roleNames).forEach(roleName => {
+                combined[roleName] = combined[roleName] || {};
+                combined[roleName] = {
+                    ...combined[roleName], ...resourceGrant[roleName]
+                }
+            });
+            return combined;
+        }, {})
     return grantsObject;
 }
 

@@ -3,11 +3,6 @@ const { apiPermissions, roleNames, serverErrors } = require('shared');
 
 const { models } = require('./database');
 
-const sfc = {
-    Query: {},
-    Mutation: {}
-}
-
 const generateRule = (hasPermissions) => {
     return rule()(async (parent, args, ctx, info) => {
         if (ctx.user.role === roleNames.VISITOR) {
@@ -22,18 +17,24 @@ const generateRule = (hasPermissions) => {
     })
 }
 
-Object.keys(models).forEach(modelName => {
-    if (apiPermissions[modelName]) {
-        sfc.Query = { ...sfc.Query, ...apiPermissions[modelName].Query };
-        sfc.Mutation = { ...sfc.Mutation, ...apiPermissions[modelName].Mutation };
-    }
-})
+const sfc = Object.keys(models).reduce(
+    (combined, modelName) => {
+        if (apiPermissions[modelName]) {
+            combined.Query = { ...combined.Query, ...apiPermissions[modelName].Query };
+            combined.Mutation = { ...combined.Mutation, ...apiPermissions[modelName].Mutation };
+        }
+        return combined;
+    },
+    {
+        Query: {},
+        Mutation: {}
+    })
 
-Object.keys(sfc.Query).forEach(operationName => {
-    sfc.Query[operationName] = generateRule(sfc.Query[operationName])
-})
-Object.keys(sfc.Mutation).forEach(operationName => {
-    sfc.Mutation[operationName] = generateRule(sfc.Mutation[operationName])
+const operationTypes = ['Query', 'Mutation'];
+operationTypes.forEach(operationType => {
+    Object.keys(sfc[operationType]).forEach(operationName => {
+        sfc[operationType][operationName] = generateRule(sfc[operationType][operationName]);
+    });
 })
 
 const permissionsMiddleware = shield(sfc);
