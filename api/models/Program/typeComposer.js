@@ -5,8 +5,8 @@ const { addReference } = require('../../config/schemaHelpers');
 
 const typeComposer = composeWithMongoose(require('./model'), {});
 
-// two fields on this type that are related to type User
-addReference([{ name: 'createdBy' }, { name: 'updatedBy' }], typeComposer, UserTC,
+// three fields on this type that are related to type User
+addReference([{ name: 'createdBy' }, { name: 'updatedBy' }, { name: 'administrators', type: 'multiple' }], typeComposer, UserTC,
     {
         resolverNames: ['createOne', 'createMany'],
         resolve: (doc, ctx) => {

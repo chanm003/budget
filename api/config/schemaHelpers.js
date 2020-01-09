@@ -16,13 +16,29 @@ const addToSchema = (collectionName, TC, schemaComposer) => {
 
 const addReference = (relatedFields, typeComposer, referencedTypeComposer, onCreating, onUpdating) => {
     relatedFields.forEach(relatedField => {
-        typeComposer.addRelation(relatedField.name, {
-            resolver: () => referencedTypeComposer.getResolver('findById'),
-            prepareArgs: {
-                _id: source => source[relatedField.name] || null,
-            },
-            projection: { [relatedField.name]: true }
-        })
+        if (relatedField.type === 'multiple') {
+            typeComposer.addRelation(relatedField.name, {
+                resolver: () => referencedTypeComposer.getResolver('findMany'),
+                prepareArgs: {
+                    filter: source => ({
+                        _operators: {
+                            _id: {
+                                in: source[relatedField.name] || []
+                            }
+                        }
+                    })
+                },
+                projection: { [relatedField.name]: true }
+            });
+        } else {
+            typeComposer.addRelation(relatedField.name, {
+                resolver: () => referencedTypeComposer.getResolver('findById'),
+                prepareArgs: {
+                    _id: source => source[relatedField.name] || null,
+                },
+                projection: { [relatedField.name]: true }
+            });
+        }
     });
 
     onCreating.resolverNames.forEach(createMethodName => {

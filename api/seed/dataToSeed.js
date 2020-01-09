@@ -6,10 +6,10 @@
  */
 var chance = require('chance').Chance();
 const seeder = require('./seeder');
-const Directorate = require('../models/Directorate/model');
-const Program = require('../models/Program/model');
-const User = require('../models/User/model');
+const db = require('../config/database');
 const { roleNames } = require('shared');
+
+const { models: { Directorate, Program, User } } = db;
 
 const createItems = (num, createFunc) => {
     return Array.from({ length: num }).map(createFunc);
@@ -52,7 +52,7 @@ const createDirectorates = async user => {
 
 const createPrograms = async user => {
     const dataToSeed = [
-        ...createItems(6, (item, index) => (new Program({ title: `Program ${chance.radio()}` })))
+        ...createItems(6, (item, index) => (new Program({ title: `Program ${chance.radio()}`, administrators: [user._id] })))
     ];
     return insertDataWithUser(dataToSeed, user);
 }
