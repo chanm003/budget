@@ -9,7 +9,7 @@ const UserTC = composeWithMongoose(User, {});
 const addCustomizations = schemaComposer => {
     // password should not be returned via API
     // https://github.com/graphql-compose/graphql-compose-mongoose/issues/48
-    UserTC.removeField('local.password');
+    UserTC.getFieldOTC('local').removeField('password');
 
     // add a resolver
     const updateProfileResolver = schemaComposer.createResolver({

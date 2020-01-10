@@ -25,6 +25,9 @@ const schema = new mongoose.Schema(
         local: {
             password: {
                 type: String
+            },
+            expires: {
+                type: Date
             }
         },
         cac: {
