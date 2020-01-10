@@ -87,7 +87,7 @@ export default function RegisterUser(props) {
                 <Button type="submit">Register</Button>
             </Form>
             <br />
-            <p>Already have an account? Click here to <a onClick={props.hideForm}>Login</a></p>
+            <p>Already have an account? Click here to <a href="#login" className="ui" onClick={props.hideForm}>Login</a></p>
             <FormError errors={errors} serverError={serverError} />
         </React.Fragment>
     )

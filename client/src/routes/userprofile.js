@@ -6,6 +6,6 @@ export default {
         component: Edit,
         exact: true,
         auth: true,
-        operationName: 'UserUpdateById'
+        operationName: 'UserUpdateProfile'
     }
 }

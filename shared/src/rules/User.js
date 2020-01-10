@@ -27,10 +27,34 @@ const apiSecurity = {
         Query: {
             UserById: ac => (user, data) => {
                 return ac.can(user.role)['readAny'](resourceName).granted;
+            },
+            UserByIds: ac => (user, data) => {
+                return ac.can(user.role)['readAny'](resourceName).granted;
+            },
+            UserCount: ac => (user, data) => {
+                return ac.can(user.role)['readAny'](resourceName).granted;
+            },
+            UserMany: ac => (user, data) => {
+                return ac.can(user.role)['readAny'](resourceName).granted;
             }
         },
         Mutation: {
+            UserCreateOne: ac => (user, data) => {
+                throw new Error('use /api/users/signup_emailPassword');
+            },
+            UserCreateMany: ac => (user, data) => {
+                throw new Error('not implemented');
+            },
+            UserRemoveById: ac => (user, data) => {
+                throw new Error('not implemented');
+            },
+            UserRemoveMany: ac => (user, data) => {
+                throw new Error('not implemented');
+            },
             UserUpdateById: ac => (user, data) => {
+                throw new Error('use UserUpdateProfile instead');
+            },
+            UserUpdateProfile: ac => (user, data) => {
                 return ac.can(user.role)['updateOwn'](resourceName).granted;
             }
         }

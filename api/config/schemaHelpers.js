@@ -2,15 +2,15 @@ const addToSchema = (collectionName, TC, schemaComposer) => {
     let query = {};
     query[`${collectionName}ById`] = TC.getResolver('findById');
     query[`${collectionName}ByIds`] = TC.getResolver('findByIds');
-    query[`${collectionName}Many`] = TC.getResolver('findMany');
     query[`${collectionName}Count`] = TC.getResolver('count');
+    query[`${collectionName}Many`] = TC.getResolver('findMany');
     schemaComposer.Query.addFields(query);
     let mutation = {};
-    mutation[`${collectionName}CreateOne`] = TC.getResolver('createOne');
     mutation[`${collectionName}CreateMany`] = TC.getResolver('createMany');
-    mutation[`${collectionName}UpdateById`] = TC.getResolver('updateById');
+    mutation[`${collectionName}CreateOne`] = TC.getResolver('createOne');
     mutation[`${collectionName}RemoveById`] = TC.getResolver('removeById');
     mutation[`${collectionName}RemoveMany`] = TC.getResolver('removeMany');
+    mutation[`${collectionName}UpdateById`] = TC.getResolver('updateById');
     schemaComposer.Mutation.addFields(mutation);
 }
 

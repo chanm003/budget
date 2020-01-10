@@ -1,21 +1,16 @@
-import { apiPermissions } from 'shared';
+import { apiSecurity } from 'shared';
 
-const getAccessFunc = operationName => {
-
-    for (let model of Object.keys(apiPermissions)) {
-        if (apiPermissions[model].Query[operationName]) {
-            return apiPermissions[model].Query[operationName];
-        }
-
-        if (apiPermissions[model].Mutation[operationName]) {
-            return apiPermissions[model].Mutation[operationName];
-        }
+const operationsSecurity = Object.keys(apiSecurity).reduce((combined, modelName) => {
+    combined = {
+        ...combined,
+        ...apiSecurity[modelName].Query,
+        ...apiSecurity[modelName].Mutation
     }
-}
+    return combined;
+}, {});
 
 const Can = props => {
-    const checkPermissions = getAccessFunc(props.operationName);
-    const hasPermissions = checkPermissions(props.user, props.data);
+    const hasPermissions = operationsSecurity[props.operationName](props.user, props.data);
     return hasPermissions ? props.yes() : props.no();
 }
 

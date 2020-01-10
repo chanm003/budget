@@ -26,6 +26,12 @@ const apiSecurity = {
             ProgramById: ac => (user, data) => {
                 return ac.can(user.role)['readAny']('Program').granted;
             },
+            ProgramByIds: ac => (user, data) => {
+                return ac.can(user.role)['readAny']('Program').granted;
+            },
+            ProgramCount: ac => (user, data) => {
+                return ac.can(user.role)['readAny']('Program').granted;
+            },
             ProgramMany: ac => (user, data) => {
                 return ac.can(user.role)['readAny']('Program').granted;
             }
@@ -34,7 +40,13 @@ const apiSecurity = {
             ProgramCreateOne: ac => (user, data) => {
                 return ac.can(user.role)['createOwn']('Program').granted;
             },
+            ProgramCreateMany: ac => (user, data) => {
+                return ac.can(user.role)['createOwn']('Program').granted;
+            },
             ProgramRemoveById: ac => (user, data) => {
+                return ac.can(user.role)['deleteOwn']('Program').granted;
+            },
+            ProgramRemoveMany: ac => (user, data) => {
                 return ac.can(user.role)['deleteOwn']('Program').granted;
             },
             ProgramUpdateById: ac => (user, data) => {

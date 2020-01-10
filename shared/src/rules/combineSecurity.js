@@ -1,20 +1,20 @@
-const mergeApiPermissions = (accessControl, apiSecurities) => {
+const mergeSecurity = (accessControl, apiSecurities) => {
     // merge security
-    let apiPermissions = apiSecurities.reduce((combined, apiResourceSecurity) => {
+    let combinedSecurity = apiSecurities.reduce((combined, apiResourceSecurity) => {
         combined = { ...combined, ...apiResourceSecurity };
         return combined;
     }, {});
 
     // iterate through each operation and update
-    Object.keys(apiPermissions).forEach(modelName => {
+    Object.keys(combinedSecurity).forEach(modelName => {
         ['Query', 'Mutation'].forEach(operationType => {
-            Object.keys(apiPermissions[modelName][operationType]).forEach(operationName => {
-                apiPermissions[modelName][operationType][operationName] = apiPermissions[modelName][operationType][operationName](accessControl);
+            Object.keys(combinedSecurity[modelName][operationType]).forEach(operationName => {
+                combinedSecurity[modelName][operationType][operationName] = combinedSecurity[modelName][operationType][operationName](accessControl);
             })
         })
     })
 
-    return apiPermissions;
+    return combinedSecurity
 }
 
 const mergeResourceGrants = (roleNames, resourceGrants) => {
@@ -32,6 +32,6 @@ const mergeResourceGrants = (roleNames, resourceGrants) => {
 }
 
 module.exports = {
-    mergeApiPermissions,
+    mergeSecurity,
     mergeResourceGrants
 }

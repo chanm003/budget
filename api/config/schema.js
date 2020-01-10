@@ -5,13 +5,11 @@ const { models } = require('./database');
 
 const generateSchema = () => {
     Object.keys(models).forEach(modelName => {
-        const { typeComposer, addCustomFields } = require(`../models/${modelName}/typeComposer`);
-
-        if (addCustomFields) {
-            addCustomFields(schemaComposer);
+        const { typeComposer, addCustomizations } = require(`../models/${modelName}/typeComposer`);
+        addToSchema(modelName, typeComposer, schemaComposer);
+        if (addCustomizations) {
+            addCustomizations(schemaComposer);
         }
-
-        addToSchema(modelName, typeComposer, schemaComposer)
     });
     return schemaComposer.buildSchema();
 }

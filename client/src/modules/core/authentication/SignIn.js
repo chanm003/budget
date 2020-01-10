@@ -74,7 +74,7 @@ export default function SignIn(props) {
                 <Button type="submit">Sign in</Button>
             </Form>
             <br />
-            <p>Need an account? <a onClick={props.hideForm}>Sign up</a></p>
+            <p>Need an account? Click here to <a href="#register" className="ui" onClick={props.hideForm}>Register</a></p>
             <FormError errors={errors} serverError={serverError} />
         </React.Fragment>
     )

@@ -1,5 +1,5 @@
 const { shield, rule } = require('graphql-shield');
-const { apiPermissions, roleNames, serverErrors } = require('shared');
+const { apiSecurity, roleNames, serverErrors } = require('shared');
 
 const { models } = require('./database');
 
@@ -19,9 +19,9 @@ const generateRule = (hasPermissions) => {
 
 const sfc = Object.keys(models).reduce(
     (combined, modelName) => {
-        if (apiPermissions[modelName]) {
-            combined.Query = { ...combined.Query, ...apiPermissions[modelName].Query };
-            combined.Mutation = { ...combined.Mutation, ...apiPermissions[modelName].Mutation };
+        if (apiSecurity[modelName]) {
+            combined.Query = { ...combined.Query, ...apiSecurity[modelName].Query };
+            combined.Mutation = { ...combined.Mutation, ...apiSecurity[modelName].Mutation };
         }
         return combined;
     },

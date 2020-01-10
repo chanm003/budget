@@ -6,7 +6,12 @@ const { signToken } = require('../../config/jwt');
 
 const UserTC = composeWithMongoose(User, {});
 
-const addCustomFields = schemaComposer => {
+const addCustomizations = schemaComposer => {
+    // password should not be returned via API
+    // https://github.com/graphql-compose/graphql-compose-mongoose/issues/48
+    UserTC.removeField('local.password');
+
+    // add a resolver
     const updateProfileResolver = schemaComposer.createResolver({
         name: 'UpdateProfile',
         type: 'type UpdateProfileResponse { user: User, token: String! }',
@@ -33,6 +38,6 @@ const addCustomFields = schemaComposer => {
 }
 
 module.exports = {
-    addCustomFields,
+    addCustomizations,
     typeComposer: UserTC
 };
