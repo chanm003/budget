@@ -6,6 +6,7 @@ services:
             dockerfile: ./client/Dockerfile.dev
         volumes:
             - /packages/client/node_modules
+            - /packages/shared/node_modules
             - ./client:/packages/client
             - ./shared:/packages/shared
         environment:
@@ -16,6 +17,7 @@ services:
             dockerfile: ./api/Dockerfile.dev
         volumes:
             - /packages/api/node_modules
+            - /packages/shared/node_modules
             - ./api:/packages/api
             - ./shared:/packages/shared
         depends_on:
