@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import {
-    Segment,
-    Grid,
-    Divider,
-} from 'semantic-ui-react';
-import { useLocation } from 'react-router-dom';
+import { Segment, Grid, Divider } from 'semantic-ui-react';
+import { useLocation, RouteComponentProps } from 'react-router-dom';
 import { roleNames } from 'shared';
 
 import CacLoginButton from './CacLoginButton';
@@ -13,49 +9,64 @@ import { useAuth } from './authContext';
 import SignIn from './SignIn';
 import RegisterUser from './RegisterUser';
 
-export default (props) => {
-    const [visbleLocalStrategyForm, setVisbleLocalStrategyForm] = useState('SIGNIN');
+const Login: React.FC<RouteComponentProps> = props => {
+    const [
+        visbleLocalStrategyForm,
+        setVisbleLocalStrategyForm,
+    ] = useState('SIGNIN');
     const { user } = useAuth();
     const { state } = useLocation();
 
     useEffect(() => {
         if (user.role !== roleNames.VISITOR) {
-            props.history.push(localStorage.getItem('redirectPath'));
+            props.history.push(
+                localStorage.getItem('redirectPath') as string,
+            );
         }
     });
 
     const setRedirectPath = () => {
         const redirectPath = state && state.from ? state.from : '/';
         localStorage.setItem('redirectPath', redirectPath);
-    }
+    };
 
     const redirectUser = () => {
-        props.history.push(localStorage.getItem('redirectPath'));
-    }
+        props.history.push(
+            localStorage.getItem('redirectPath') as string,
+        );
+    };
 
     return (
         <Segment basic>
-            <Grid columns={2} relaxed='very'>
+            <Grid columns={2} relaxed="very">
                 <Grid.Column>
                     <CacLoginButton
                         redirectUser={redirectUser}
-                        setRedirectPath={setRedirectPath} />
+                        setRedirectPath={setRedirectPath}
+                    />
                     <br />
                     <GitLoginButton
-                        setRedirectPath={setRedirectPath} />
+                        setRedirectPath={setRedirectPath}
+                    />
                 </Grid.Column>
                 <Grid.Column>
                     {visbleLocalStrategyForm === 'SIGNIN' && (
                         <SignIn
-                            hideForm={() => setVisbleLocalStrategyForm('REGISTER')}
+                            hideForm={() =>
+                                setVisbleLocalStrategyForm('REGISTER')
+                            }
                             redirectUser={redirectUser}
-                            setRedirectPath={setRedirectPath} />
+                            setRedirectPath={setRedirectPath}
+                        />
                     )}
                     {visbleLocalStrategyForm === 'REGISTER' && (
                         <RegisterUser
-                            hideForm={() => setVisbleLocalStrategyForm('SIGNIN')}
+                            hideForm={() =>
+                                setVisbleLocalStrategyForm('SIGNIN')
+                            }
                             redirectUser={redirectUser}
-                            setRedirectPath={setRedirectPath} />
+                            setRedirectPath={setRedirectPath}
+                        />
                     )}
                 </Grid.Column>
             </Grid>
@@ -63,4 +74,6 @@ export default (props) => {
             <Divider vertical>OR</Divider>
         </Segment>
     );
-}
+};
+
+export default Login;

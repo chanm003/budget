@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react'
+import React, { useEffect } from 'react';
 import { Message } from 'semantic-ui-react';
 import { roleNames } from 'shared';
 
 import { useAuth } from './authContext';
 
-export default function Logout(props) {
+const Logout: React.FC = () => {
     const { user, logout } = useAuth();
 
     useEffect(() => {
@@ -15,8 +15,12 @@ export default function Logout(props) {
 
     return (
         <Message info>
-            <Message.Header>You have been successfully logged out</Message.Header>
+            <Message.Header>
+                You have been successfully logged out
+            </Message.Header>
             <p>You can now close your browser.</p>
         </Message>
-    )
-}
+    );
+};
+
+export default Logout;

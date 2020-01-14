@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Form, Button } from 'semantic-ui-react';
-import useForm from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { validationSchemas } from 'shared';
 
 import { handleValueChange, FormError } from '../common/formHelpers';
