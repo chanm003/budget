@@ -1,26 +1,30 @@
 import List from '../modules/directorate/List';
 import CreateOrEdit from '../modules/directorate/CreateOrEdit';
+import { RouteDictionary } from '../interfaces';
 
-export default {
+const routeDictionary: RouteDictionary = {
     directorateList: {
         path: '/admin/directorates',
         component: List,
         exact: true,
         auth: true,
-        operationName: 'DirectorateMany'
+        operationName: 'DirectorateMany',
     },
     directorateCreate: {
         path: '/admin/directorates/create',
         component: CreateOrEdit,
         exact: true,
         auth: true,
-        operationName: 'DirectorateCreateOne'
+        operationName: 'DirectorateCreateOne',
     },
     directorateEdit: {
-        path: (id = ':id') => (`/admin/directorates/${id}/edit`),
+        path: (id: string = ':id') =>
+            `/admin/directorates/${id}/edit`,
         component: CreateOrEdit,
         exact: true,
         auth: true,
-        operationName: 'DirectorateUpdateById'
-    }
-}
+        operationName: 'DirectorateUpdateById',
+    },
+};
+
+export default routeDictionary;

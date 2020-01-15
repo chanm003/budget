@@ -16,6 +16,7 @@
   },
   "homepage": "https://github.com/mcleanra/budget#readme",
   "devDependencies": {
+    "@types/react-toast-notifications": "^2.4.0",
     "yarn": "^1.19.1"
   },
   "private": true,

@@ -9,7 +9,7 @@ import { toastSettings } from './modules/core/layout/toaster/settings';
 export default function ({ children }) {
     return (
         <AuthProvider>
-            <ToastProvider components={toastSettings.components}>
+            <ToastProvider components={toastSettings.customRenderer.components}>
                 <ApolloProvider client={client}>
                     {children}
                 </ApolloProvider>

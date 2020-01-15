@@ -9,3 +9,7 @@ export interface AuthenticationPayload {
     token: string;
     user: any;
 }
+
+export interface RouteDictionary {
+    [key: string]: any;
+}
