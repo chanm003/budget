@@ -16,8 +16,8 @@ type Props = {
     data?: any;
     operationName: string;
     user: any;
-    yes: () => React.ReactElement | null;
-    no: () => React.ReactElement | null;
+    yes: () => React.ReactElement;
+    no?: () => React.ReactElement;
 };
 
 interface SecurityLookup {
@@ -29,12 +29,12 @@ const Can: React.FC<Props> = props => {
         props.user,
         props.data,
     );
-    return hasPermissions ? props.yes() : props.no();
-};
 
-Can.defaultProps = {
-    yes: () => null,
-    no: () => null,
-} as Partial<Props>;
+    if (hasPermissions) {
+        return props.yes();
+    } else {
+        return props.no ? props.no() : null;
+    }
+};
 
 export default Can;

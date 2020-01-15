@@ -2,7 +2,7 @@ import { RouteProps } from 'react-router-dom';
 
 export interface PrivateRouteProps extends RouteProps {
     operationName: string;
-    component: any;
+    auth: boolean;
 }
 
 export interface AuthenticationPayload {

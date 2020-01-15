@@ -12,7 +12,7 @@ import { PrivateRouteProps } from '../../../interfaces';
 export const AuthRoute: React.FC<PrivateRouteProps> = ({
     component: Component,
     ...rest
-}) => {
+}: any) => {
     const { operationName } = rest;
     const { user, logout } = useAuth();
     const { pathname } = useLocation();
