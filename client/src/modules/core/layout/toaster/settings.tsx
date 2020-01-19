@@ -9,12 +9,12 @@ const defaultToastSettings: Partial<Options> = {
     autoDismiss: true,
 };
 
-const success: Partial<Options> = {
+const success: Options = {
     ...defaultToastSettings,
     appearance: 'success',
 };
 
-const error: Partial<Options> = {
+const error: Options = {
     ...defaultToastSettings,
     appearance: 'error',
 };

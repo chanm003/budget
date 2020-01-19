@@ -1,0 +1,8 @@
+mutation DirectorateRemoveById($id: MongoID!) {
+    DirectorateRemoveById(_id: $id) {
+        record {
+            _id
+            title
+        }
+    }
+}

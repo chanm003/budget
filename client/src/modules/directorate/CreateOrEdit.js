@@ -1,25 +1,39 @@
-import React from 'react';
-import { useQuery, useMutation } from '@apollo/react-hooks';
-import { api, mutationOptions, responseParsers } from './api';
-import _ from 'lodash';
+import React, { useEffect } from 'react';
 import { useToasts } from 'react-toast-notifications';
-import { toastSettings } from '../core/layout/toaster/settings';
-import Form from './Form';
 import { Header } from 'semantic-ui-react';
 
+import { toastSettings } from '../core/layout/toaster/settings';
+import Form from './Form';
+import { useDirectorateByIdLazyQuery, useDirectorateCreateOneMutation, useDirectorateUpdateByIdMutation } from '../../generated/graphql';
+
 const identifyEditableFields = itemToEdit => {
-    return _.pick(itemToEdit, 'title');
+    const {
+        title
+    } = itemToEdit;
+
+    return {
+        title
+    }
 }
 
 export default props => {
     const { id } = props.match.params;
     const { addToast } = useToasts();
-    const [createItem] = useMutation(api.Mutation.CreateOne, mutationOptions.CreateOne);
-    const [updateItem] = useMutation(api.Mutation.UpdateById);
+    const [createOne] = useDirectorateCreateOneMutation();
+    const [updateItem] = useDirectorateUpdateByIdMutation();
+    const [getById, { loading, data }] = useDirectorateByIdLazyQuery({
+        variables: { id }
+    });
+
+    useEffect(() => {
+        if (id) {
+            getById();
+        }
+    }, [id, getById]);
 
     const onSubmit = async formData => {
         if (!id) {
-            const createdItem = responseParsers.CreateOne(await createItem({ variables: { ...formData } }));
+            const { data: { DirectorateCreateOne: { record: createdItem } } } = await createOne({ variables: { ...formData } });
             addToast(`'${createdItem.title}' has been created.`, toastSettings.success);
         } else {
             await updateItem({ variables: { id, ...formData } });
@@ -28,20 +42,22 @@ export default props => {
         props.history.push('/admin/directorates');
     }
 
-    let initialValues = {};
-    let header = 'New Form';
+    if (loading) { return null; }
 
-    if (id) {
-        const { loading, data } = useQuery(api.Query.ById, { variables: { id } });
-        if (loading) { return null; }
-        initialValues = identifyEditableFields(responseParsers.ById(data))
-        header = 'Edit Form';
+    if (data) {
+        const { DirectorateById: itemToEdit } = data;
+        return (
+            <div>
+                <Header as='h2'>Edit Form</Header>
+                <Form onSubmit={onSubmit} initialValues={identifyEditableFields(itemToEdit)} />
+            </div>
+        );
+    } else {
+        return (
+            <div>
+                <Header as='h2'>New Form</Header>
+                <Form onSubmit={onSubmit} initialValues={{}} />
+            </div>
+        );
     }
-
-    return (
-        <div>
-            <Header as='h2'>{header}</Header>
-            <Form onSubmit={onSubmit} initialValues={initialValues} />
-        </div>
-    );
 }

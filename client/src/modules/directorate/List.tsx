@@ -1,5 +1,4 @@
 import React from 'react';
-import { useQuery, useMutation } from '@apollo/react-hooks';
 import { Container, Button, Table } from 'semantic-ui-react'
 import { useToasts } from 'react-toast-notifications';
 import { useAuth } from '../core/authentication/authContext';
@@ -8,13 +7,15 @@ import DeleteButton from '../../modules/common/components/DeleteButton/DeleteBut
 import { Link } from 'react-router-dom';
 import ItemsTabular from '../common/components/Table/Table';
 import routeConfig from '../../routes/directorate';
-import { api, mutationOptions, responseParsers } from './api';
 import Can from '../core/security/Can';
+import { DirectorateManyQuery, DirectorateManyQueryVariables, useDirectorateManyQuery, useDirectorateRemoveByIdMutation, Directorate, DirectorateManyDocument } from '../../generated/graphql';
 
 export default function () {
     const { addToast } = useToasts();
-    const { loading, data } = useQuery(api.Query.Many);
-    const [deleteItem] = useMutation(api.Mutation.RemoveById, mutationOptions.RemoveById);
+    const { loading, data } = useDirectorateManyQuery({
+        fetchPolicy: 'cache-and-network'
+    });
+    const [deleteItem] = useDirectorateRemoveByIdMutation();
     const { user } = useAuth();
 
     const tableHeaderRowRender = () => (
@@ -27,7 +28,7 @@ export default function () {
         </Table.Row>
     )
 
-    const tableRowRender = ({ _id, title }) => (
+    const tableRowRender = ({ _id, title }: Directorate) => (
         <Table.Row key={_id}>
             <Table.Cell>{title}</Table.Cell>
             <Table.Cell collapsing textAlign='right'>
@@ -57,17 +58,42 @@ export default function () {
         </Table.Row>
     );
 
-    const onDeleteClicked = async (guid) => {
-        const removedItem = responseParsers.RemoveById(await deleteItem({ variables: { id: guid } }))
-        addToast(`'${removedItem.title}' has been deleted.`, toastSettings.success);
+    const onDeleteClicked = async (guid: string) => {
+        const result = await deleteItem({
+            variables: { id: guid },
+            update: (cache, result) => {
+                const deletedItem = result.data?.DirectorateRemoveById?.record;
+                const cachedItems = cache.readQuery<DirectorateManyQuery, DirectorateManyQueryVariables>(
+                    {
+                        query: DirectorateManyDocument
+                    }
+                );
+
+                if (cachedItems && cachedItems.DirectorateMany) {
+                    cache.writeQuery<DirectorateManyQuery, DirectorateManyQueryVariables>({
+                        query: DirectorateManyDocument,
+                        data: {
+                            DirectorateMany: cachedItems.DirectorateMany.filter(i => i?._id !== deletedItem?._id)
+                        }
+                    });
+                }
+            }
+        });
+
+        const removedItem = result.data?.DirectorateRemoveById?.record;
+        if (removedItem) {
+            addToast(`'${removedItem.title}' has been deleted.`, toastSettings.success);
+        }
     }
+
+    const items = data && data.DirectorateMany ? data.DirectorateMany : [];
 
     return (
         <Container fluid>
             <ItemsTabular
                 heading="Directorates"
                 isLoading={loading}
-                items={responseParsers.Many(data)}
+                items={items}
                 createItemPath={routeConfig.directorateCreate.path}
                 tableHeaderRowRender={tableHeaderRowRender}
                 tableRowRender={tableRowRender}

@@ -20,6 +20,8 @@ services:
             - ./shared:/packages/shared
             - /packages/api/node_modules
             - /packages/shared/node_modules
+        ports:
+            - 9000:9000
         depends_on:
             - mongodb
         environment:
