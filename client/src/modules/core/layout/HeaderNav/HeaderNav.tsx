@@ -16,6 +16,7 @@ import './HeaderNav.css';
 import logo from '../../../../assets/images/logo.jpg';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../authentication/authContext';
+import { User } from '../../../../generated/graphql';
 
 const HeaderNav: React.FC = () => {
     const { user } = useAuth();
@@ -83,14 +84,17 @@ const HeaderNav: React.FC = () => {
     );
 };
 
-const renderDropdown = (user: any) => {
+const renderDropdown = (user: User) => {
     const isProfileValid = isUserProfileValid(user);
     let trigger = null;
     let name = '';
 
     if (isProfileValid) {
         name = `${user.firstName} ${user.lastName}`;
-        const initials = `${user.firstName[0]}${user.lastName[0]}`;
+        const { firstName, lastName } = user;
+        const initials = `${firstName ? firstName[0] : ''}${
+            lastName ? lastName[0] : ''
+        }`;
         trigger = (
             <Label circular color="grey">
                 {initials}
@@ -130,11 +134,11 @@ const renderDropdown = (user: any) => {
     );
 };
 
-const isUserProfileValid = (user: any) => {
+const isUserProfileValid = (user: User) => {
     return (
-        !!user.firstName.trim() &&
-        !!user.lastName.trim() &&
-        !!user.email.trim()
+        user?.firstName?.trim() &&
+        user?.lastName?.trim() &&
+        user?.email?.trim()
     );
 };
 

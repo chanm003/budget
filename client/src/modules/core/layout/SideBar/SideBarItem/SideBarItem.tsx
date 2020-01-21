@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, Menu } from 'semantic-ui-react';
+import { Icon, Menu, SemanticICONS } from 'semantic-ui-react';
 import './SideBarItem.css';
 import { useLocation } from 'react-router';
 import { Link } from 'react-router-dom';
@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 interface Props {
     path?: string;
     label: string;
-    icon: any;
+    icon: SemanticICONS;
 }
 
 const SideBarItem: React.FC<Props> = props => {

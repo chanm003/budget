@@ -7,7 +7,7 @@ const routeDictionary: RouteDictionary = {
         component: Edit,
         exact: true,
         auth: true,
-        operationName: 'UserUpdateProfile',
+        operationName: 'UserUpdateMyProfile',
     },
 };
 

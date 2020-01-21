@@ -384,7 +384,7 @@ export type Mutation = {
   UserRemoveById?: Maybe<RemoveByIdUserPayload>,
   UserRemoveMany?: Maybe<RemoveManyUserPayload>,
   UserUpdateById?: Maybe<UpdateByIdUserPayload>,
-  UserUpdateProfile?: Maybe<UpdateProfileResponse>,
+  UserUpdateMyProfile?: Maybe<UpdateProfileResponse>,
 };
 
 
@@ -463,7 +463,7 @@ export type MutationUserUpdateByIdArgs = {
 };
 
 
-export type MutationUserUpdateProfileArgs = {
+export type MutationUserUpdateMyProfileArgs = {
   firstName: Scalars['String'],
   lastName: Scalars['String'],
   email: Scalars['String']
@@ -852,6 +852,38 @@ export type DirectorateUpdateByIdMutation = (
   )> }
 );
 
+export type UserByIdQueryVariables = {
+  id: Scalars['MongoID']
+};
+
+
+export type UserByIdQuery = (
+  { __typename?: 'Query' }
+  & { UserById: Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, '_id' | 'firstName' | 'lastName' | 'email'>
+  )> }
+);
+
+export type UserUpdateMyProfileMutationVariables = {
+  firstName: Scalars['String'],
+  lastName: Scalars['String'],
+  email: Scalars['String']
+};
+
+
+export type UserUpdateMyProfileMutation = (
+  { __typename?: 'Mutation' }
+  & { UserUpdateMyProfile: Maybe<(
+    { __typename?: 'UpdateProfileResponse' }
+    & Pick<UpdateProfileResponse, 'token'>
+    & { user: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, '_id' | 'firstName' | 'lastName' | 'email' | 'lastLoggedIn' | 'updatedAt'>
+    )> }
+  )> }
+);
+
 
 export const DirectorateByIdDocument = gql`
     query DirectorateById($id: MongoID!) {
@@ -1111,3 +1143,115 @@ export function useDirectorateUpdateByIdMutation(baseOptions?: ApolloReactHooks.
 export type DirectorateUpdateByIdMutationHookResult = ReturnType<typeof useDirectorateUpdateByIdMutation>;
 export type DirectorateUpdateByIdMutationResult = ApolloReactCommon.MutationResult<DirectorateUpdateByIdMutation>;
 export type DirectorateUpdateByIdMutationOptions = ApolloReactCommon.BaseMutationOptions<DirectorateUpdateByIdMutation, DirectorateUpdateByIdMutationVariables>;
+export const UserByIdDocument = gql`
+    query UserById($id: MongoID!) {
+  UserById(_id: $id) {
+    _id
+    firstName
+    lastName
+    email
+  }
+}
+    `;
+export type UserByIdComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<UserByIdQuery, UserByIdQueryVariables>, 'query'> & ({ variables: UserByIdQueryVariables; skip?: boolean; } | { skip: boolean; });
+
+    export const UserByIdComponent = (props: UserByIdComponentProps) => (
+      <ApolloReactComponents.Query<UserByIdQuery, UserByIdQueryVariables> query={UserByIdDocument} {...props} />
+    );
+    
+export type UserByIdProps<TChildProps = {}> = ApolloReactHoc.DataProps<UserByIdQuery, UserByIdQueryVariables> & TChildProps;
+export function withUserById<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  UserByIdQuery,
+  UserByIdQueryVariables,
+  UserByIdProps<TChildProps>>) {
+    return ApolloReactHoc.withQuery<TProps, UserByIdQuery, UserByIdQueryVariables, UserByIdProps<TChildProps>>(UserByIdDocument, {
+      alias: 'userById',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useUserByIdQuery__
+ *
+ * To run a query within a React component, call `useUserByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserByIdQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useUserByIdQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<UserByIdQuery, UserByIdQueryVariables>) {
+        return ApolloReactHooks.useQuery<UserByIdQuery, UserByIdQueryVariables>(UserByIdDocument, baseOptions);
+      }
+export function useUserByIdLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<UserByIdQuery, UserByIdQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<UserByIdQuery, UserByIdQueryVariables>(UserByIdDocument, baseOptions);
+        }
+export type UserByIdQueryHookResult = ReturnType<typeof useUserByIdQuery>;
+export type UserByIdLazyQueryHookResult = ReturnType<typeof useUserByIdLazyQuery>;
+export type UserByIdQueryResult = ApolloReactCommon.QueryResult<UserByIdQuery, UserByIdQueryVariables>;
+export const UserUpdateMyProfileDocument = gql`
+    mutation UserUpdateMyProfile($firstName: String!, $lastName: String!, $email: String!) {
+  UserUpdateMyProfile(firstName: $firstName, lastName: $lastName, email: $email) {
+    user {
+      _id
+      firstName
+      lastName
+      email
+      lastLoggedIn
+      updatedAt
+    }
+    token
+  }
+}
+    `;
+export type UserUpdateMyProfileMutationFn = ApolloReactCommon.MutationFunction<UserUpdateMyProfileMutation, UserUpdateMyProfileMutationVariables>;
+export type UserUpdateMyProfileComponentProps = Omit<ApolloReactComponents.MutationComponentOptions<UserUpdateMyProfileMutation, UserUpdateMyProfileMutationVariables>, 'mutation'>;
+
+    export const UserUpdateMyProfileComponent = (props: UserUpdateMyProfileComponentProps) => (
+      <ApolloReactComponents.Mutation<UserUpdateMyProfileMutation, UserUpdateMyProfileMutationVariables> mutation={UserUpdateMyProfileDocument} {...props} />
+    );
+    
+export type UserUpdateMyProfileProps<TChildProps = {}> = ApolloReactHoc.MutateProps<UserUpdateMyProfileMutation, UserUpdateMyProfileMutationVariables> & TChildProps;
+export function withUserUpdateMyProfile<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  UserUpdateMyProfileMutation,
+  UserUpdateMyProfileMutationVariables,
+  UserUpdateMyProfileProps<TChildProps>>) {
+    return ApolloReactHoc.withMutation<TProps, UserUpdateMyProfileMutation, UserUpdateMyProfileMutationVariables, UserUpdateMyProfileProps<TChildProps>>(UserUpdateMyProfileDocument, {
+      alias: 'userUpdateMyProfile',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useUserUpdateMyProfileMutation__
+ *
+ * To run a mutation, you first call `useUserUpdateMyProfileMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUserUpdateMyProfileMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [userUpdateMyProfileMutation, { data, loading, error }] = useUserUpdateMyProfileMutation({
+ *   variables: {
+ *      firstName: // value for 'firstName'
+ *      lastName: // value for 'lastName'
+ *      email: // value for 'email'
+ *   },
+ * });
+ */
+export function useUserUpdateMyProfileMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UserUpdateMyProfileMutation, UserUpdateMyProfileMutationVariables>) {
+        return ApolloReactHooks.useMutation<UserUpdateMyProfileMutation, UserUpdateMyProfileMutationVariables>(UserUpdateMyProfileDocument, baseOptions);
+      }
+export type UserUpdateMyProfileMutationHookResult = ReturnType<typeof useUserUpdateMyProfileMutation>;
+export type UserUpdateMyProfileMutationResult = ApolloReactCommon.MutationResult<UserUpdateMyProfileMutation>;
+export type UserUpdateMyProfileMutationOptions = ApolloReactCommon.BaseMutationOptions<UserUpdateMyProfileMutation, UserUpdateMyProfileMutationVariables>;

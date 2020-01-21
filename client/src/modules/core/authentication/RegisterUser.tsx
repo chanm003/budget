@@ -19,7 +19,6 @@ interface Props {
 const RegisterUser: React.FC<Props> = props => {
     const [serverError, setServerError] = useState('');
     const { login } = useAuth();
-
     const {
         register,
         errors,

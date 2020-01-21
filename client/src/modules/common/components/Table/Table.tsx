@@ -4,8 +4,9 @@ import { Link } from 'react-router-dom';
 import LoadingSegment from '../LoadingSegment/LoadingSegment';
 import Can from '../../../core/security/Can';
 import { useAuth } from '../../../core/authentication/authContext';
+import { User } from '../../../../generated/graphql';
 
-const renderActionButtons = (user: any, createItemPath: string) => (
+const renderActionButtons = (user: User, createItemPath: string) => (
     <Can
         user={user}
         operationName={'DirectorateCreateOne'}
@@ -19,13 +20,13 @@ const renderActionButtons = (user: any, createItemPath: string) => (
     />
 );
 
-const tableRender = (renderProps: TableRenderProps) => {
+function tableRender<T>(props: Props<T>) {
     const {
         items,
         tableRowRender,
         tableHeaderRowRender,
         tableRowNoItemsMessage,
-    } = renderProps;
+    } = props;
 
     if (!items) {
         return null;
@@ -40,28 +41,21 @@ const tableRender = (renderProps: TableRenderProps) => {
             </Table.Body>
         </Table>
     );
-};
+}
 
-interface Props {
+type Props<T> = {
     heading: string;
     createItemPath: string;
     isLoading: boolean;
-    items: Array<any>;
-    tableRowRender: any;
-    tableHeaderRowRender: any;
-    tableRowNoItemsMessage: any;
-}
+    items: Array<T>;
+    tableRowRender: (item: T) => JSX.Element;
+    tableHeaderRowRender: () => JSX.Element;
+    tableRowNoItemsMessage: () => JSX.Element;
+};
 
-type TableRenderProps = Partial<Props>;
-
-const ItemsTable: React.FC<Props> = props => {
+function ItemsTable<T>(props: Props<T>) {
     const { user } = useAuth();
-    const {
-        heading,
-        createItemPath,
-        isLoading,
-        ...tableRenderProps
-    } = props;
+    const { heading, createItemPath, isLoading } = props;
 
     return (
         <LoadingSegment
@@ -69,9 +63,9 @@ const ItemsTable: React.FC<Props> = props => {
             headingActions={renderActionButtons(user, createItemPath)}
             isLoading={isLoading}
         >
-            {tableRender(tableRenderProps)}
+            {tableRender(props)}
         </LoadingSegment>
     );
-};
+}
 
 export default ItemsTable;

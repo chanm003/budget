@@ -52,9 +52,9 @@ const apiSecurity = {
                 throw new Error('not implemented');
             },
             UserUpdateById: ac => (user, data) => {
-                throw new Error('use UserUpdateProfile instead');
+                throw new Error('use UserUpdateMyProfile instead');
             },
-            UserUpdateProfile: ac => (user, data) => {
+            UserUpdateMyProfile: ac => (user, data) => {
                 return ac.can(user.role)['updateOwn'](resourceName).granted;
             }
         }

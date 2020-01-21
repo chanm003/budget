@@ -1,4 +1,5 @@
 import { RouteProps } from 'react-router-dom';
+import { User } from '../generated/graphql';
 
 export interface PrivateRouteProps extends RouteProps {
     operationName: string;
@@ -7,7 +8,7 @@ export interface PrivateRouteProps extends RouteProps {
 
 export interface AuthenticationPayload {
     token: string;
-    user: any;
+    user: User;
 }
 
 export interface RouteDictionary {

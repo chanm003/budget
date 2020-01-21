@@ -5,7 +5,7 @@ type setValueFunc = (
     name: string,
     value: any,
     shouldValidate?: boolean,
-) => void;
+) => void | Promise<boolean>;
 
 type triggerValidationFunc = (
     payload?: string | string[],
@@ -35,7 +35,7 @@ export const handleValueChange = (
 
 interface Props {
     errors: any;
-    serverError: any;
+    serverError?: string;
 }
 
 export const FormError: React.FC<Props> = ({

@@ -1,5 +1,6 @@
 import React from 'react';
 import { apiSecurity } from 'shared';
+import { User } from '../../../generated/graphql';
 
 const operationsSecurity: SecurityLookup = Object.keys(
     apiSecurity,
@@ -15,13 +16,13 @@ const operationsSecurity: SecurityLookup = Object.keys(
 type Props = {
     data?: any;
     operationName: string;
-    user: any;
+    user: User;
     yes: () => React.ReactElement;
     no?: () => React.ReactElement;
 };
 
 interface SecurityLookup {
-    [key: string]: (user: any, data: any) => boolean;
+    [key: string]: (user: User, data: any) => boolean;
 }
 
 const Can: React.FC<Props> = props => {

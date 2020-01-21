@@ -1,6 +1,6 @@
 interface JwtDecodedResult {
     exp: number;
-    user: any;
+    user: User;
 }
 
 declare module 'jwt-decode' {

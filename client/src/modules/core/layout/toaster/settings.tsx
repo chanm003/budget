@@ -19,10 +19,6 @@ const error: Options = {
     appearance: 'error',
 };
 
-export interface CustomerToastContainerProps {
-    style: any;
-}
-
 const customRenderer: Partial<ToastProviderProps> = {
     components: {
         ToastContainer: ({ children, ...props }) => (

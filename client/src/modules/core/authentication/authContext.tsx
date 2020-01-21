@@ -2,14 +2,10 @@ import React, { useContext, useReducer, createContext } from 'react';
 import jwtDecode from 'jwt-decode';
 import { roleNames } from 'shared';
 import { AuthenticationPayload } from '../../../interfaces';
-
-interface IUser {
-    role: string;
-    [key: string]: any;
-}
+import { User } from '../../../generated/graphql';
 
 interface IAuth {
-    user: IUser;
+    user: User;
     login: (userData: AuthenticationPayload) => void;
     logout: () => void;
     updateProfile: (userData: AuthenticationPayload) => void;
@@ -22,25 +18,26 @@ enum ActionType {
 }
 
 interface IState {
-    user: IUser;
+    user: User;
 }
 
 interface IAction {
     type: ActionType;
-    payload?: any;
+    payload?: User;
 }
 
 const reducer: React.Reducer<IState, IAction> = (state, action) => {
+    const user = action.payload || getInitialState().user;
     switch (action.type) {
         case ActionType.UPDATE_PROFILE:
             return {
                 ...state,
-                user: { ...state.user, ...action.payload },
+                user: { ...state.user, ...user },
             };
         case ActionType.LOGIN:
             return {
                 ...state,
-                user: action.payload,
+                user: user,
             };
         case ActionType.LOGOUT:
             return {
@@ -65,7 +62,7 @@ const parseToken = () => {
             user = decodedToken.user;
         }
     }
-    return user;
+    return user as User;
 };
 
 const hasValidToken = () => {
