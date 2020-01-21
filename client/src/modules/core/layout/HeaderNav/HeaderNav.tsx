@@ -12,7 +12,7 @@ import {
 } from 'semantic-ui-react';
 import { roleNames } from 'shared';
 
-import './HeaderNav.scss';
+import './HeaderNav.css';
 import logo from '../../../../assets/images/logo.jpg';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../authentication/authContext';

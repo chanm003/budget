@@ -1,5 +1,5 @@
 import React from 'react';
-import './AppLayout.scss';
+import './AppLayout.css';
 import HeaderNav from '../HeaderNav/HeaderNav';
 import { SideBar } from '../SideBar/SideBar';
 import ScrollToTop from '../ScrollToTop/ScrollToTop';

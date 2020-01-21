@@ -1,6 +1,6 @@
 import React from 'react';
 import { Menu } from 'semantic-ui-react';
-import './SideBarHeader.scss';
+import './SideBarHeader.css';
 
 interface Props {
     title?: string;
