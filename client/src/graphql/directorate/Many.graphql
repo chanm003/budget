@@ -1,0 +1,6 @@
+query DirectorateMany {
+  DirectorateMany {
+    _id
+    title
+  }
+}

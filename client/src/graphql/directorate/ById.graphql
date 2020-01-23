@@ -1,0 +1,6 @@
+query DirectorateById($id: MongoID!) {
+    DirectorateById(_id: $id) {
+        _id
+        title
+    }
+}

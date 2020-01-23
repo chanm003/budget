@@ -5,9 +5,10 @@ services:
             context: ./
             dockerfile: ./client/Dockerfile.dev
         volumes:
-            - /packages/client/node_modules
             - ./client:/packages/client
             - ./shared:/packages/shared
+            - /packages/client/node_modules
+            - /packages/shared/node_modules
         environment:
             - CHOKIDAR_USEPOLLING=true
     api:
@@ -15,9 +16,12 @@ services:
             context: ./
             dockerfile: ./api/Dockerfile.dev
         volumes:
-            - /packages/api/node_modules
             - ./api:/packages/api
             - ./shared:/packages/shared
+            - /packages/api/node_modules
+            - /packages/shared/node_modules
+        ports:
+            - 9000:9000
         depends_on:
             - mongodb
         environment:

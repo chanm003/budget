@@ -33,7 +33,7 @@ const addCustomizations = schemaComposer => {
     });
 
     schemaComposer.Mutation.addFields({
-        UserUpdateProfile: updateProfileResolver,
+        UserUpdateMyProfile: updateProfileResolver,
     });
 }
 
