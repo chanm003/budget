@@ -1,11 +1,6 @@
 import React from 'react';
-import {
-    Dimmer,
-    Header,
-    Loader,
-    Segment,
-    Grid,
-} from 'semantic-ui-react';
+import { Dimmer, Header, Loader, Segment } from 'semantic-ui-react';
+import './LoadingSegment.css';
 
 interface Props {
     isLoading: boolean;
@@ -19,19 +14,14 @@ const LoadingSegment: React.FC<Props> = props => {
         props.isLoading ? 'active' : null,
     ];
     return (
-        <Segment>
-            <Grid>
-                <Grid.Column floated="left" width={5}>
-                    <Header as="h3">{props.heading}</Header>
-                </Grid.Column>
-                <Grid.Column
-                    floated="right"
-                    width={5}
-                    textAlign="right"
-                >
-                    {props.headingActions}
-                </Grid.Column>
-            </Grid>
+        <Segment className="segment">
+            <div className="heading">
+                <Header as="h3" className="headerText">
+                    {props.heading}
+                </Header>
+
+                <div className="actions">{props.headingActions}</div>
+            </div>
 
             <Dimmer className={dimmerClasses.join(' ')}>
                 <Loader>Loading</Loader>

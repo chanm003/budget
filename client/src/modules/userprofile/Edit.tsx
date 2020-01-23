@@ -56,7 +56,7 @@ const Edit: React.FC = () => {
 
     return (
         <div>
-            <Header as="h2">Edit User Profile</Header>
+            <Header as="h3">Edit User Profile</Header>
             <Form
                 onSubmit={onSubmit}
                 initialValues={identifyEditableFields(
