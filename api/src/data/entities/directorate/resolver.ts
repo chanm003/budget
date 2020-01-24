@@ -18,17 +18,17 @@ import { ObjectIdScalar } from '../../object-id.scalar';
 @Resolver(of => Directorate)
 export class DirectorateResolver {
     @Query(returns => Directorate, { nullable: true })
-    directorate(@Arg('id', type => ObjectIdScalar) id: ObjectId) {
+    DirectorateById(@Arg('id', type => ObjectIdScalar) id: ObjectId) {
         return DirectorateModel.findById(id);
     }
 
     @Query(returns => [Directorate])
-    async directorates(): Promise<Directorate[]> {
+    async DirectorateMany(): Promise<Directorate[]> {
         return await DirectorateModel.find({});
     }
 
     @Mutation(returns => Directorate)
-    async addDirectorate(
+    async DirectorateCreateOne(
         @Arg('input') input: DirectorateInput,
         @Ctx() { user }: Context,
     ): Promise<Directorate> {
@@ -42,7 +42,7 @@ export class DirectorateResolver {
     }
 
     @Mutation(returns => Directorate, { nullable: true })
-    async updateDirectorate(
+    async DirectorateUpdateById(
         @Arg('id', type => ObjectIdScalar) id: ObjectId,
         @Arg('input') input: DirectorateInput,
         @Ctx() { user }: Context,
@@ -59,7 +59,7 @@ export class DirectorateResolver {
     }
 
     @Mutation(returns => Directorate, { nullable: true })
-    async deleteDirectorate(
+    async DirectorateRemoveById(
         @Arg('id', type => ObjectIdScalar) id: ObjectId,
         @Ctx() { user }: Context,
     ) {

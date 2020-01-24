@@ -32,17 +32,17 @@ type LocalIdentity {
 }
 
 type Mutation {
-  addDirectorate(input: DirectorateInput!): Directorate!
-  updateDirectorate(input: DirectorateInput!, id: ObjectId!): Directorate
-  deleteDirectorate(id: ObjectId!): Directorate
+  DirectorateCreateOne(input: DirectorateInput!): Directorate!
+  DirectorateUpdateById(input: DirectorateInput!, id: ObjectId!): Directorate
+  DirectorateRemoveById(id: ObjectId!): Directorate
 }
 
 """Mongo object id scalar type"""
 scalar ObjectId
 
 type Query {
-  directorate(id: ObjectId!): Directorate
-  directorates: [Directorate!]!
+  DirectorateById(id: ObjectId!): Directorate
+  DirectorateMany: [Directorate!]!
 }
 
 type User {
