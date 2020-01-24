@@ -14,7 +14,6 @@ module.exports = {
         },
         graphqlMutations: {
             'ProgramCreateOne': generateValidatorForSingleRecord(defaultSchema),
-            'ProgramCreateMany': generateValidatorForMultipleRecords(defaultSchema),
             'ProgramUpdateById': generateValidatorForSingleRecord(defaultSchema),
         }
     }

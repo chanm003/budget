@@ -13,6 +13,7 @@ import { ObjectIdScalar } from './object-id.scalar';
 import { verifyToken } from '../config/jwt';
 import { User } from './entities/user/model';
 import { permissionsMiddleware } from '../config/permissions';
+import { validationMiddleware } from '../config/validation';
 
 const parseUserFromRequest = (req: any) => {
     let currentUser: Partial<User> = { role: roleNames.VISITOR };
@@ -45,7 +46,11 @@ export const configureGraphQL = async (app: express.Application) => {
     const schema = await generateSchema();
 
     const server = new ApolloServer({
-        schema: applyMiddleware(schema, permissionsMiddleware),
+        schema: applyMiddleware(
+            schema,
+            permissionsMiddleware,
+            validationMiddleware,
+        ),
         context: ({ req }) => {
             return {
                 req,

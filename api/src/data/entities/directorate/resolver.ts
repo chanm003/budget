@@ -53,6 +53,9 @@ export class DirectorateResolver {
                 ...input,
                 updatedBy: user._id,
             },
+            {
+                new: true,
+            },
         );
 
         return updatedItem;

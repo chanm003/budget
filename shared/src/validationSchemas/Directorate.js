@@ -14,7 +14,6 @@ module.exports = {
         },
         graphqlMutations: {
             'DirectorateCreateOne': generateValidatorForSingleRecord(defaultSchema),
-            'DirectorateCreateMany': generateValidatorForMultipleRecords(defaultSchema),
             'DirectorateUpdateById': generateValidatorForSingleRecord(defaultSchema),
         }
     }

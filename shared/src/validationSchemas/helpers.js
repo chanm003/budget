@@ -1,6 +1,6 @@
 const generateValidatorForSingleRecord = validationSchema => {
     return async (resolve, root, args, context, info) => {
-        await validationSchema.validate(args.record);
+        await validationSchema.validate(args.input);
         const result = await resolve(root, args, context, info)
         return result;
     };
