@@ -10,6 +10,15 @@ export const signToken = (user: User) => {
 };
 
 export const verifyToken = (token: string) => {
-    const result = jwt.verify(token, keys.jsonWebTokenSecret);
+    const result = jwt.verify(
+        token,
+        keys.jsonWebTokenSecret,
+    ) as JwtTokenVerificationResult;
     return result;
 };
+
+export interface JwtTokenVerificationResult {
+    user: User;
+    iat: number;
+    exp: number;
+}

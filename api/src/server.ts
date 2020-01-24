@@ -9,10 +9,10 @@ import { setupExpress } from './config/express';
 async function bootstrap() {
     try {
         await connectToDatabase(true);
-        const { defaultUser } = await seedDatabase();
+        await seedDatabase();
 
         const expressApp = setupExpress();
-        configureGraphQL(expressApp, { user: defaultUser });
+        configureGraphQL(expressApp);
 
         const httpServer = createServer(expressApp);
         httpServer.listen({ port: 9000 }, (): void =>

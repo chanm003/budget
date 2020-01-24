@@ -3,11 +3,25 @@ import * as path from 'path';
 import { buildSchema } from 'type-graphql';
 import { ApolloServer } from 'apollo-server-express';
 import express from 'express';
+const { roleNames } = require('shared');
 
 import { DirectorateResolver } from './entities/directorate/resolver';
 import { TypegooseMiddleware } from './typegoose-middleware';
 import { ObjectIdScalar } from './object-id.scalar';
-import { Context } from '../types';
+import { verifyToken } from '../config/jwt';
+import { User } from './entities/user/model';
+
+const parseUserFromRequest = (req: any) => {
+    let currentUser: Partial<User> = { role: roleNames.VISITOR };
+    try {
+        let authHeader = req.headers['authorization'] || '';
+        authHeader = authHeader && authHeader.replace('Bearer ', '');
+        currentUser = verifyToken(authHeader).user;
+    } catch (e) {
+        return currentUser;
+    }
+    return currentUser;
+};
 
 export const generateSchema = async () => {
     const locationForGeneratedFile = path.resolve(
@@ -24,15 +38,17 @@ export const generateSchema = async () => {
     return schema;
 };
 
-export const configureGraphQL = async (
-    app: express.Application,
-    context: Context,
-) => {
+export const configureGraphQL = async (app: express.Application) => {
     const schema = await generateSchema();
 
     const server = new ApolloServer({
         schema,
-        context,
+        context: ({ req }) => {
+            return {
+                req,
+                user: parseUserFromRequest(req),
+            };
+        },
     });
     server.applyMiddleware({ app, path: '/graphql' });
 };
