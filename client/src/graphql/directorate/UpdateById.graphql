@@ -1,8 +1,6 @@
-mutation DirectorateUpdateById($id: MongoID!, $title: String!) {
-    DirectorateUpdateById(record: {_id: $id, title: $title}){
-        record {
-            _id
-            title
-        }
+mutation DirectorateUpdateById($id: ObjectId!, $title: String!) {
+    DirectorateUpdateById(input: { title: $title }, id: $id) {
+        _id
+        title
     }
 }

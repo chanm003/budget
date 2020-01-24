@@ -13,774 +13,113 @@ export type Scalars = {
   Boolean: boolean,
   Int: number,
   Float: number,
-  MongoID: any,
-  Date: any,
-  JSON: any,
+  ObjectId: any,
+  DateTime: any,
 };
 
-
-export type _IdOperatorsFilterDirectorateInput = {
-  gt?: Maybe<Scalars['MongoID']>,
-  gte?: Maybe<Scalars['MongoID']>,
-  lt?: Maybe<Scalars['MongoID']>,
-  lte?: Maybe<Scalars['MongoID']>,
-  ne?: Maybe<Scalars['MongoID']>,
-  in?: Maybe<Array<Maybe<Scalars['MongoID']>>>,
-  nin?: Maybe<Array<Maybe<Scalars['MongoID']>>>,
-};
-
-export type _IdOperatorsFilterFindManyDirectorateInput = {
-  gt?: Maybe<Scalars['MongoID']>,
-  gte?: Maybe<Scalars['MongoID']>,
-  lt?: Maybe<Scalars['MongoID']>,
-  lte?: Maybe<Scalars['MongoID']>,
-  ne?: Maybe<Scalars['MongoID']>,
-  in?: Maybe<Array<Maybe<Scalars['MongoID']>>>,
-  nin?: Maybe<Array<Maybe<Scalars['MongoID']>>>,
-};
-
-export type _IdOperatorsFilterFindManyProgramInput = {
-  gt?: Maybe<Scalars['MongoID']>,
-  gte?: Maybe<Scalars['MongoID']>,
-  lt?: Maybe<Scalars['MongoID']>,
-  lte?: Maybe<Scalars['MongoID']>,
-  ne?: Maybe<Scalars['MongoID']>,
-  in?: Maybe<Array<Maybe<Scalars['MongoID']>>>,
-  nin?: Maybe<Array<Maybe<Scalars['MongoID']>>>,
-};
-
-export type _IdOperatorsFilterFindManyUserInput = {
-  gt?: Maybe<Scalars['MongoID']>,
-  gte?: Maybe<Scalars['MongoID']>,
-  lt?: Maybe<Scalars['MongoID']>,
-  lte?: Maybe<Scalars['MongoID']>,
-  ne?: Maybe<Scalars['MongoID']>,
-  in?: Maybe<Array<Maybe<Scalars['MongoID']>>>,
-  nin?: Maybe<Array<Maybe<Scalars['MongoID']>>>,
-};
-
-export type _IdOperatorsFilterProgramInput = {
-  gt?: Maybe<Scalars['MongoID']>,
-  gte?: Maybe<Scalars['MongoID']>,
-  lt?: Maybe<Scalars['MongoID']>,
-  lte?: Maybe<Scalars['MongoID']>,
-  ne?: Maybe<Scalars['MongoID']>,
-  in?: Maybe<Array<Maybe<Scalars['MongoID']>>>,
-  nin?: Maybe<Array<Maybe<Scalars['MongoID']>>>,
-};
-
-export type _IdOperatorsFilterRemoveManyDirectorateInput = {
-  gt?: Maybe<Scalars['MongoID']>,
-  gte?: Maybe<Scalars['MongoID']>,
-  lt?: Maybe<Scalars['MongoID']>,
-  lte?: Maybe<Scalars['MongoID']>,
-  ne?: Maybe<Scalars['MongoID']>,
-  in?: Maybe<Array<Maybe<Scalars['MongoID']>>>,
-  nin?: Maybe<Array<Maybe<Scalars['MongoID']>>>,
-};
-
-export type _IdOperatorsFilterRemoveManyProgramInput = {
-  gt?: Maybe<Scalars['MongoID']>,
-  gte?: Maybe<Scalars['MongoID']>,
-  lt?: Maybe<Scalars['MongoID']>,
-  lte?: Maybe<Scalars['MongoID']>,
-  ne?: Maybe<Scalars['MongoID']>,
-  in?: Maybe<Array<Maybe<Scalars['MongoID']>>>,
-  nin?: Maybe<Array<Maybe<Scalars['MongoID']>>>,
-};
-
-export type _IdOperatorsFilterRemoveManyUserInput = {
-  gt?: Maybe<Scalars['MongoID']>,
-  gte?: Maybe<Scalars['MongoID']>,
-  lt?: Maybe<Scalars['MongoID']>,
-  lte?: Maybe<Scalars['MongoID']>,
-  ne?: Maybe<Scalars['MongoID']>,
-  in?: Maybe<Array<Maybe<Scalars['MongoID']>>>,
-  nin?: Maybe<Array<Maybe<Scalars['MongoID']>>>,
-};
-
-export type _IdOperatorsFilterUserInput = {
-  gt?: Maybe<Scalars['MongoID']>,
-  gte?: Maybe<Scalars['MongoID']>,
-  lt?: Maybe<Scalars['MongoID']>,
-  lte?: Maybe<Scalars['MongoID']>,
-  ne?: Maybe<Scalars['MongoID']>,
-  in?: Maybe<Array<Maybe<Scalars['MongoID']>>>,
-  nin?: Maybe<Array<Maybe<Scalars['MongoID']>>>,
-};
-
-export type CreateManyDirectorateInput = {
-  title: Scalars['String'],
-  createdBy?: Maybe<Scalars['MongoID']>,
-  updatedBy?: Maybe<Scalars['MongoID']>,
-  updatedAt?: Maybe<Scalars['Date']>,
-  createdAt?: Maybe<Scalars['Date']>,
-};
-
-export type CreateManyDirectoratePayload = {
-   __typename?: 'CreateManyDirectoratePayload',
-  recordIds: Array<Maybe<Scalars['MongoID']>>,
-  records: Array<Maybe<Directorate>>,
-  createCount: Scalars['Int'],
-};
-
-export type CreateManyProgramInput = {
-  title: Scalars['String'],
-  createdBy?: Maybe<Scalars['MongoID']>,
-  updatedBy?: Maybe<Scalars['MongoID']>,
-  administrators?: Maybe<Array<Maybe<Scalars['MongoID']>>>,
-  updatedAt?: Maybe<Scalars['Date']>,
-  createdAt?: Maybe<Scalars['Date']>,
-};
-
-export type CreateManyProgramPayload = {
-   __typename?: 'CreateManyProgramPayload',
-  recordIds: Array<Maybe<Scalars['MongoID']>>,
-  records: Array<Maybe<Program>>,
-  createCount: Scalars['Int'],
-};
-
-export type CreateManyUserInput = {
-  firstName?: Maybe<Scalars['String']>,
-  lastName?: Maybe<Scalars['String']>,
-  email?: Maybe<Scalars['String']>,
-  method: EnumUserMethod,
-  local?: Maybe<UserLocalInput>,
-  cac?: Maybe<UserCacInput>,
-  github?: Maybe<UserGithubInput>,
-  lastLoggedIn?: Maybe<Scalars['Date']>,
-  role?: Maybe<Scalars['String']>,
-  updatedAt?: Maybe<Scalars['Date']>,
-  createdAt?: Maybe<Scalars['Date']>,
-};
-
-export type CreateManyUserPayload = {
-   __typename?: 'CreateManyUserPayload',
-  recordIds: Array<Maybe<Scalars['MongoID']>>,
-  records: Array<Maybe<User>>,
-  createCount: Scalars['Int'],
-};
-
-export type CreateOneDirectorateInput = {
-  title: Scalars['String'],
-  createdBy?: Maybe<Scalars['MongoID']>,
-  updatedBy?: Maybe<Scalars['MongoID']>,
-  updatedAt?: Maybe<Scalars['Date']>,
-  createdAt?: Maybe<Scalars['Date']>,
-};
-
-export type CreateOneDirectoratePayload = {
-   __typename?: 'CreateOneDirectoratePayload',
-  recordId?: Maybe<Scalars['MongoID']>,
-  record?: Maybe<Directorate>,
-};
-
-export type CreateOneProgramInput = {
-  title: Scalars['String'],
-  createdBy?: Maybe<Scalars['MongoID']>,
-  updatedBy?: Maybe<Scalars['MongoID']>,
-  administrators?: Maybe<Array<Maybe<Scalars['MongoID']>>>,
-  updatedAt?: Maybe<Scalars['Date']>,
-  createdAt?: Maybe<Scalars['Date']>,
-};
-
-export type CreateOneProgramPayload = {
-   __typename?: 'CreateOneProgramPayload',
-  recordId?: Maybe<Scalars['MongoID']>,
-  record?: Maybe<Program>,
-};
-
-export type CreateOneUserInput = {
-  firstName?: Maybe<Scalars['String']>,
-  lastName?: Maybe<Scalars['String']>,
-  email?: Maybe<Scalars['String']>,
-  method: EnumUserMethod,
-  local?: Maybe<UserLocalInput>,
-  cac?: Maybe<UserCacInput>,
-  github?: Maybe<UserGithubInput>,
-  lastLoggedIn?: Maybe<Scalars['Date']>,
-  role?: Maybe<Scalars['String']>,
-  updatedAt?: Maybe<Scalars['Date']>,
-  createdAt?: Maybe<Scalars['Date']>,
-};
-
-export type CreateOneUserPayload = {
-   __typename?: 'CreateOneUserPayload',
-  recordId?: Maybe<Scalars['MongoID']>,
-  record?: Maybe<User>,
+export type CacIdentity = {
+   __typename?: 'CacIdentity',
+  distinguishedName: Scalars['String'],
 };
 
 
 export type Directorate = {
    __typename?: 'Directorate',
-  title?: Maybe<Scalars['String']>,
-  createdBy?: Maybe<User>,
-  updatedBy?: Maybe<User>,
-  _id: Scalars['MongoID'],
-  updatedAt?: Maybe<Scalars['Date']>,
-  createdAt?: Maybe<Scalars['Date']>,
+  _id: Scalars['ObjectId'],
+  title: Scalars['String'],
+  createdBy: User,
+  updatedBy: User,
 };
 
-export enum EnumUserMethod {
-  Local = 'local',
-  Cac = 'cac',
-  Github = 'github'
-}
-
-export type FilterDirectorateInput = {
-  title?: Maybe<Scalars['String']>,
-  createdBy?: Maybe<Scalars['MongoID']>,
-  updatedBy?: Maybe<Scalars['MongoID']>,
-  _id?: Maybe<Scalars['MongoID']>,
-  updatedAt?: Maybe<Scalars['Date']>,
-  createdAt?: Maybe<Scalars['Date']>,
-  _ids?: Maybe<Array<Maybe<Scalars['MongoID']>>>,
-  _operators?: Maybe<OperatorsFilterDirectorateInput>,
-  OR?: Maybe<Array<FilterDirectorateInput>>,
-  AND?: Maybe<Array<FilterDirectorateInput>>,
+export type DirectorateInput = {
+  title: Scalars['String'],
 };
 
-export type FilterFindManyDirectorateInput = {
-  title?: Maybe<Scalars['String']>,
-  createdBy?: Maybe<Scalars['MongoID']>,
-  updatedBy?: Maybe<Scalars['MongoID']>,
-  _id?: Maybe<Scalars['MongoID']>,
-  updatedAt?: Maybe<Scalars['Date']>,
-  createdAt?: Maybe<Scalars['Date']>,
-  _ids?: Maybe<Array<Maybe<Scalars['MongoID']>>>,
-  _operators?: Maybe<OperatorsFilterFindManyDirectorateInput>,
-  OR?: Maybe<Array<FilterFindManyDirectorateInput>>,
-  AND?: Maybe<Array<FilterFindManyDirectorateInput>>,
+export type GithubIdentity = {
+   __typename?: 'GithubIdentity',
+  id: Scalars['String'],
 };
 
-export type FilterFindManyProgramInput = {
-  title?: Maybe<Scalars['String']>,
-  createdBy?: Maybe<Scalars['MongoID']>,
-  updatedBy?: Maybe<Scalars['MongoID']>,
-  administrators?: Maybe<Array<Maybe<Scalars['MongoID']>>>,
-  _id?: Maybe<Scalars['MongoID']>,
-  updatedAt?: Maybe<Scalars['Date']>,
-  createdAt?: Maybe<Scalars['Date']>,
-  _ids?: Maybe<Array<Maybe<Scalars['MongoID']>>>,
-  _operators?: Maybe<OperatorsFilterFindManyProgramInput>,
-  OR?: Maybe<Array<FilterFindManyProgramInput>>,
-  AND?: Maybe<Array<FilterFindManyProgramInput>>,
+export type LocalIdentity = {
+   __typename?: 'LocalIdentity',
+  expires: Scalars['DateTime'],
 };
-
-export type FilterFindManyUserInput = {
-  firstName?: Maybe<Scalars['String']>,
-  lastName?: Maybe<Scalars['String']>,
-  email?: Maybe<Scalars['String']>,
-  method?: Maybe<EnumUserMethod>,
-  local?: Maybe<UserLocalInput>,
-  cac?: Maybe<UserCacInput>,
-  github?: Maybe<UserGithubInput>,
-  lastLoggedIn?: Maybe<Scalars['Date']>,
-  role?: Maybe<Scalars['String']>,
-  _id?: Maybe<Scalars['MongoID']>,
-  updatedAt?: Maybe<Scalars['Date']>,
-  createdAt?: Maybe<Scalars['Date']>,
-  _ids?: Maybe<Array<Maybe<Scalars['MongoID']>>>,
-  _operators?: Maybe<OperatorsFilterFindManyUserInput>,
-  OR?: Maybe<Array<FilterFindManyUserInput>>,
-  AND?: Maybe<Array<FilterFindManyUserInput>>,
-};
-
-export type FilterProgramInput = {
-  title?: Maybe<Scalars['String']>,
-  createdBy?: Maybe<Scalars['MongoID']>,
-  updatedBy?: Maybe<Scalars['MongoID']>,
-  administrators?: Maybe<Array<Maybe<Scalars['MongoID']>>>,
-  _id?: Maybe<Scalars['MongoID']>,
-  updatedAt?: Maybe<Scalars['Date']>,
-  createdAt?: Maybe<Scalars['Date']>,
-  _ids?: Maybe<Array<Maybe<Scalars['MongoID']>>>,
-  _operators?: Maybe<OperatorsFilterProgramInput>,
-  OR?: Maybe<Array<FilterProgramInput>>,
-  AND?: Maybe<Array<FilterProgramInput>>,
-};
-
-export type FilterRemoveManyDirectorateInput = {
-  title?: Maybe<Scalars['String']>,
-  createdBy?: Maybe<Scalars['MongoID']>,
-  updatedBy?: Maybe<Scalars['MongoID']>,
-  _id?: Maybe<Scalars['MongoID']>,
-  updatedAt?: Maybe<Scalars['Date']>,
-  createdAt?: Maybe<Scalars['Date']>,
-  _ids?: Maybe<Array<Maybe<Scalars['MongoID']>>>,
-  _operators?: Maybe<OperatorsFilterRemoveManyDirectorateInput>,
-  OR?: Maybe<Array<FilterRemoveManyDirectorateInput>>,
-  AND?: Maybe<Array<FilterRemoveManyDirectorateInput>>,
-};
-
-export type FilterRemoveManyProgramInput = {
-  title?: Maybe<Scalars['String']>,
-  createdBy?: Maybe<Scalars['MongoID']>,
-  updatedBy?: Maybe<Scalars['MongoID']>,
-  administrators?: Maybe<Array<Maybe<Scalars['MongoID']>>>,
-  _id?: Maybe<Scalars['MongoID']>,
-  updatedAt?: Maybe<Scalars['Date']>,
-  createdAt?: Maybe<Scalars['Date']>,
-  _ids?: Maybe<Array<Maybe<Scalars['MongoID']>>>,
-  _operators?: Maybe<OperatorsFilterRemoveManyProgramInput>,
-  OR?: Maybe<Array<FilterRemoveManyProgramInput>>,
-  AND?: Maybe<Array<FilterRemoveManyProgramInput>>,
-};
-
-export type FilterRemoveManyUserInput = {
-  firstName?: Maybe<Scalars['String']>,
-  lastName?: Maybe<Scalars['String']>,
-  email?: Maybe<Scalars['String']>,
-  method?: Maybe<EnumUserMethod>,
-  local?: Maybe<UserLocalInput>,
-  cac?: Maybe<UserCacInput>,
-  github?: Maybe<UserGithubInput>,
-  lastLoggedIn?: Maybe<Scalars['Date']>,
-  role?: Maybe<Scalars['String']>,
-  _id?: Maybe<Scalars['MongoID']>,
-  updatedAt?: Maybe<Scalars['Date']>,
-  createdAt?: Maybe<Scalars['Date']>,
-  _ids?: Maybe<Array<Maybe<Scalars['MongoID']>>>,
-  _operators?: Maybe<OperatorsFilterRemoveManyUserInput>,
-  OR?: Maybe<Array<FilterRemoveManyUserInput>>,
-  AND?: Maybe<Array<FilterRemoveManyUserInput>>,
-};
-
-export type FilterUserInput = {
-  firstName?: Maybe<Scalars['String']>,
-  lastName?: Maybe<Scalars['String']>,
-  email?: Maybe<Scalars['String']>,
-  method?: Maybe<EnumUserMethod>,
-  local?: Maybe<UserLocalInput>,
-  cac?: Maybe<UserCacInput>,
-  github?: Maybe<UserGithubInput>,
-  lastLoggedIn?: Maybe<Scalars['Date']>,
-  role?: Maybe<Scalars['String']>,
-  _id?: Maybe<Scalars['MongoID']>,
-  updatedAt?: Maybe<Scalars['Date']>,
-  createdAt?: Maybe<Scalars['Date']>,
-  _ids?: Maybe<Array<Maybe<Scalars['MongoID']>>>,
-  _operators?: Maybe<OperatorsFilterUserInput>,
-  OR?: Maybe<Array<FilterUserInput>>,
-  AND?: Maybe<Array<FilterUserInput>>,
-};
-
-
 
 export type Mutation = {
    __typename?: 'Mutation',
-  DirectorateCreateMany?: Maybe<CreateManyDirectoratePayload>,
-  DirectorateCreateOne?: Maybe<CreateOneDirectoratePayload>,
-  DirectorateRemoveById?: Maybe<RemoveByIdDirectoratePayload>,
-  DirectorateRemoveMany?: Maybe<RemoveManyDirectoratePayload>,
-  DirectorateUpdateById?: Maybe<UpdateByIdDirectoratePayload>,
-  ProgramCreateMany?: Maybe<CreateManyProgramPayload>,
-  ProgramCreateOne?: Maybe<CreateOneProgramPayload>,
-  ProgramRemoveById?: Maybe<RemoveByIdProgramPayload>,
-  ProgramRemoveMany?: Maybe<RemoveManyProgramPayload>,
-  ProgramUpdateById?: Maybe<UpdateByIdProgramPayload>,
-  UserCreateMany?: Maybe<CreateManyUserPayload>,
-  UserCreateOne?: Maybe<CreateOneUserPayload>,
-  UserRemoveById?: Maybe<RemoveByIdUserPayload>,
-  UserRemoveMany?: Maybe<RemoveManyUserPayload>,
-  UserUpdateById?: Maybe<UpdateByIdUserPayload>,
-  UserUpdateMyProfile?: Maybe<UpdateProfileResponse>,
-};
-
-
-export type MutationDirectorateCreateManyArgs = {
-  records: Array<CreateManyDirectorateInput>
+  DirectorateCreateOne: Directorate,
+  DirectorateUpdateById?: Maybe<Directorate>,
+  DirectorateRemoveById?: Maybe<Directorate>,
+  UserUpdateMyProfile?: Maybe<UpdateMyProfileResult>,
 };
 
 
 export type MutationDirectorateCreateOneArgs = {
-  record: CreateOneDirectorateInput
-};
-
-
-export type MutationDirectorateRemoveByIdArgs = {
-  _id: Scalars['MongoID']
-};
-
-
-export type MutationDirectorateRemoveManyArgs = {
-  filter: FilterRemoveManyDirectorateInput
+  input: DirectorateInput
 };
 
 
 export type MutationDirectorateUpdateByIdArgs = {
-  record: UpdateByIdDirectorateInput
+  input: DirectorateInput,
+  id: Scalars['ObjectId']
 };
 
 
-export type MutationProgramCreateManyArgs = {
-  records: Array<CreateManyProgramInput>
-};
-
-
-export type MutationProgramCreateOneArgs = {
-  record: CreateOneProgramInput
-};
-
-
-export type MutationProgramRemoveByIdArgs = {
-  _id: Scalars['MongoID']
-};
-
-
-export type MutationProgramRemoveManyArgs = {
-  filter: FilterRemoveManyProgramInput
-};
-
-
-export type MutationProgramUpdateByIdArgs = {
-  record: UpdateByIdProgramInput
-};
-
-
-export type MutationUserCreateManyArgs = {
-  records: Array<CreateManyUserInput>
-};
-
-
-export type MutationUserCreateOneArgs = {
-  record: CreateOneUserInput
-};
-
-
-export type MutationUserRemoveByIdArgs = {
-  _id: Scalars['MongoID']
-};
-
-
-export type MutationUserRemoveManyArgs = {
-  filter: FilterRemoveManyUserInput
-};
-
-
-export type MutationUserUpdateByIdArgs = {
-  record: UpdateByIdUserInput
+export type MutationDirectorateRemoveByIdArgs = {
+  id: Scalars['ObjectId']
 };
 
 
 export type MutationUserUpdateMyProfileArgs = {
-  firstName: Scalars['String'],
-  lastName: Scalars['String'],
-  email: Scalars['String']
+  input: UserInput
 };
 
-export type OperatorsFilterDirectorateInput = {
-  _id?: Maybe<_IdOperatorsFilterDirectorateInput>,
-};
-
-export type OperatorsFilterFindManyDirectorateInput = {
-  _id?: Maybe<_IdOperatorsFilterFindManyDirectorateInput>,
-};
-
-export type OperatorsFilterFindManyProgramInput = {
-  _id?: Maybe<_IdOperatorsFilterFindManyProgramInput>,
-};
-
-export type OperatorsFilterFindManyUserInput = {
-  _id?: Maybe<_IdOperatorsFilterFindManyUserInput>,
-};
-
-export type OperatorsFilterProgramInput = {
-  _id?: Maybe<_IdOperatorsFilterProgramInput>,
-};
-
-export type OperatorsFilterRemoveManyDirectorateInput = {
-  _id?: Maybe<_IdOperatorsFilterRemoveManyDirectorateInput>,
-};
-
-export type OperatorsFilterRemoveManyProgramInput = {
-  _id?: Maybe<_IdOperatorsFilterRemoveManyProgramInput>,
-};
-
-export type OperatorsFilterRemoveManyUserInput = {
-  _id?: Maybe<_IdOperatorsFilterRemoveManyUserInput>,
-};
-
-export type OperatorsFilterUserInput = {
-  _id?: Maybe<_IdOperatorsFilterUserInput>,
-};
-
-export type Program = {
-   __typename?: 'Program',
-  title?: Maybe<Scalars['String']>,
-  createdBy?: Maybe<User>,
-  updatedBy?: Maybe<User>,
-  administrators?: Maybe<Array<Maybe<User>>>,
-  _id: Scalars['MongoID'],
-  updatedAt?: Maybe<Scalars['Date']>,
-  createdAt?: Maybe<Scalars['Date']>,
-};
-
-
-export type ProgramAdministratorsArgs = {
-  skip?: Maybe<Scalars['Int']>,
-  limit?: Maybe<Scalars['Int']>,
-  sort?: Maybe<SortFindManyUserInput>
-};
 
 export type Query = {
    __typename?: 'Query',
   DirectorateById?: Maybe<Directorate>,
-  DirectorateByIds?: Maybe<Array<Maybe<Directorate>>>,
-  DirectorateCount?: Maybe<Scalars['Int']>,
-  DirectorateMany?: Maybe<Array<Maybe<Directorate>>>,
-  ProgramById?: Maybe<Program>,
-  ProgramByIds?: Maybe<Array<Maybe<Program>>>,
-  ProgramCount?: Maybe<Scalars['Int']>,
-  ProgramMany?: Maybe<Array<Maybe<Program>>>,
+  DirectorateMany: Array<Directorate>,
   UserById?: Maybe<User>,
-  UserByIds?: Maybe<Array<Maybe<User>>>,
-  UserCount?: Maybe<Scalars['Int']>,
-  UserMany?: Maybe<Array<Maybe<User>>>,
 };
 
 
 export type QueryDirectorateByIdArgs = {
-  _id: Scalars['MongoID']
-};
-
-
-export type QueryDirectorateByIdsArgs = {
-  _ids: Array<Maybe<Scalars['MongoID']>>,
-  limit?: Maybe<Scalars['Int']>,
-  sort?: Maybe<SortFindByIdsDirectorateInput>
-};
-
-
-export type QueryDirectorateCountArgs = {
-  filter?: Maybe<FilterDirectorateInput>
-};
-
-
-export type QueryDirectorateManyArgs = {
-  filter?: Maybe<FilterFindManyDirectorateInput>,
-  skip?: Maybe<Scalars['Int']>,
-  limit?: Maybe<Scalars['Int']>,
-  sort?: Maybe<SortFindManyDirectorateInput>
-};
-
-
-export type QueryProgramByIdArgs = {
-  _id: Scalars['MongoID']
-};
-
-
-export type QueryProgramByIdsArgs = {
-  _ids: Array<Maybe<Scalars['MongoID']>>,
-  limit?: Maybe<Scalars['Int']>,
-  sort?: Maybe<SortFindByIdsProgramInput>
-};
-
-
-export type QueryProgramCountArgs = {
-  filter?: Maybe<FilterProgramInput>
-};
-
-
-export type QueryProgramManyArgs = {
-  filter?: Maybe<FilterFindManyProgramInput>,
-  skip?: Maybe<Scalars['Int']>,
-  limit?: Maybe<Scalars['Int']>,
-  sort?: Maybe<SortFindManyProgramInput>
+  id: Scalars['ObjectId']
 };
 
 
 export type QueryUserByIdArgs = {
-  _id: Scalars['MongoID']
+  id: Scalars['ObjectId']
 };
 
-
-export type QueryUserByIdsArgs = {
-  _ids: Array<Maybe<Scalars['MongoID']>>,
-  limit?: Maybe<Scalars['Int']>,
-  sort?: Maybe<SortFindByIdsUserInput>
-};
-
-
-export type QueryUserCountArgs = {
-  filter?: Maybe<FilterUserInput>
-};
-
-
-export type QueryUserManyArgs = {
-  filter?: Maybe<FilterFindManyUserInput>,
-  skip?: Maybe<Scalars['Int']>,
-  limit?: Maybe<Scalars['Int']>,
-  sort?: Maybe<SortFindManyUserInput>
-};
-
-export type RemoveByIdDirectoratePayload = {
-   __typename?: 'RemoveByIdDirectoratePayload',
-  recordId?: Maybe<Scalars['MongoID']>,
-  record?: Maybe<Directorate>,
-};
-
-export type RemoveByIdProgramPayload = {
-   __typename?: 'RemoveByIdProgramPayload',
-  recordId?: Maybe<Scalars['MongoID']>,
-  record?: Maybe<Program>,
-};
-
-export type RemoveByIdUserPayload = {
-   __typename?: 'RemoveByIdUserPayload',
-  recordId?: Maybe<Scalars['MongoID']>,
-  record?: Maybe<User>,
-};
-
-export type RemoveManyDirectoratePayload = {
-   __typename?: 'RemoveManyDirectoratePayload',
-  numAffected?: Maybe<Scalars['Int']>,
-};
-
-export type RemoveManyProgramPayload = {
-   __typename?: 'RemoveManyProgramPayload',
-  numAffected?: Maybe<Scalars['Int']>,
-};
-
-export type RemoveManyUserPayload = {
-   __typename?: 'RemoveManyUserPayload',
-  numAffected?: Maybe<Scalars['Int']>,
-};
-
-export enum SortFindByIdsDirectorateInput {
-  IdAsc = '_ID_ASC',
-  IdDesc = '_ID_DESC'
-}
-
-export enum SortFindByIdsProgramInput {
-  IdAsc = '_ID_ASC',
-  IdDesc = '_ID_DESC'
-}
-
-export enum SortFindByIdsUserInput {
-  IdAsc = '_ID_ASC',
-  IdDesc = '_ID_DESC'
-}
-
-export enum SortFindManyDirectorateInput {
-  IdAsc = '_ID_ASC',
-  IdDesc = '_ID_DESC'
-}
-
-export enum SortFindManyProgramInput {
-  IdAsc = '_ID_ASC',
-  IdDesc = '_ID_DESC'
-}
-
-export enum SortFindManyUserInput {
-  IdAsc = '_ID_ASC',
-  IdDesc = '_ID_DESC'
-}
-
-export type UpdateByIdDirectorateInput = {
-  title?: Maybe<Scalars['String']>,
-  createdBy?: Maybe<Scalars['MongoID']>,
-  updatedBy?: Maybe<Scalars['MongoID']>,
-  _id: Scalars['MongoID'],
-  updatedAt?: Maybe<Scalars['Date']>,
-  createdAt?: Maybe<Scalars['Date']>,
-};
-
-export type UpdateByIdDirectoratePayload = {
-   __typename?: 'UpdateByIdDirectoratePayload',
-  recordId?: Maybe<Scalars['MongoID']>,
-  record?: Maybe<Directorate>,
-};
-
-export type UpdateByIdProgramInput = {
-  title?: Maybe<Scalars['String']>,
-  createdBy?: Maybe<Scalars['MongoID']>,
-  updatedBy?: Maybe<Scalars['MongoID']>,
-  administrators?: Maybe<Array<Maybe<Scalars['MongoID']>>>,
-  _id: Scalars['MongoID'],
-  updatedAt?: Maybe<Scalars['Date']>,
-  createdAt?: Maybe<Scalars['Date']>,
-};
-
-export type UpdateByIdProgramPayload = {
-   __typename?: 'UpdateByIdProgramPayload',
-  recordId?: Maybe<Scalars['MongoID']>,
-  record?: Maybe<Program>,
-};
-
-export type UpdateByIdUserInput = {
-  firstName?: Maybe<Scalars['String']>,
-  lastName?: Maybe<Scalars['String']>,
-  email?: Maybe<Scalars['String']>,
-  method?: Maybe<EnumUserMethod>,
-  local?: Maybe<UserLocalInput>,
-  cac?: Maybe<UserCacInput>,
-  github?: Maybe<UserGithubInput>,
-  lastLoggedIn?: Maybe<Scalars['Date']>,
-  role?: Maybe<Scalars['String']>,
-  _id: Scalars['MongoID'],
-  updatedAt?: Maybe<Scalars['Date']>,
-  createdAt?: Maybe<Scalars['Date']>,
-};
-
-export type UpdateByIdUserPayload = {
-   __typename?: 'UpdateByIdUserPayload',
-  recordId?: Maybe<Scalars['MongoID']>,
-  record?: Maybe<User>,
-};
-
-export type UpdateProfileResponse = {
-   __typename?: 'UpdateProfileResponse',
-  user?: Maybe<User>,
+export type UpdateMyProfileResult = {
+   __typename?: 'UpdateMyProfileResult',
+  user: User,
   token: Scalars['String'],
 };
 
 export type User = {
    __typename?: 'User',
-  firstName?: Maybe<Scalars['String']>,
-  lastName?: Maybe<Scalars['String']>,
-  email?: Maybe<Scalars['String']>,
-  method?: Maybe<EnumUserMethod>,
-  local?: Maybe<UserLocal>,
-  cac?: Maybe<UserCac>,
-  github?: Maybe<UserGithub>,
-  lastLoggedIn?: Maybe<Scalars['Date']>,
-  role?: Maybe<Scalars['String']>,
-  _id: Scalars['MongoID'],
-  updatedAt?: Maybe<Scalars['Date']>,
-  createdAt?: Maybe<Scalars['Date']>,
+  _id: Scalars['ObjectId'],
+  firstName: Scalars['String'],
+  lastName: Scalars['String'],
+  email: Scalars['String'],
+  method: Scalars['String'],
+  cac?: Maybe<CacIdentity>,
+  github?: Maybe<GithubIdentity>,
+  local?: Maybe<LocalIdentity>,
+  lastLoggedIn: Scalars['DateTime'],
+  role: Scalars['String'],
 };
 
-export type UserCac = {
-   __typename?: 'UserCac',
-  distinguishedName?: Maybe<Scalars['String']>,
-};
-
-export type UserCacInput = {
-  distinguishedName?: Maybe<Scalars['String']>,
-};
-
-export type UserGithub = {
-   __typename?: 'UserGithub',
-  id?: Maybe<Scalars['String']>,
-};
-
-export type UserGithubInput = {
-  id?: Maybe<Scalars['String']>,
-};
-
-export type UserLocal = {
-   __typename?: 'UserLocal',
-  expires?: Maybe<Scalars['Date']>,
-};
-
-export type UserLocalInput = {
-  password?: Maybe<Scalars['String']>,
-  expires?: Maybe<Scalars['Date']>,
+export type UserInput = {
+  firstName: Scalars['String'],
+  lastName: Scalars['String'],
+  email: Scalars['String'],
 };
 
 export type DirectorateByIdQueryVariables = {
-  id: Scalars['MongoID']
+  id: Scalars['ObjectId']
 };
 
 
@@ -799,13 +138,10 @@ export type DirectorateCreateOneMutationVariables = {
 
 export type DirectorateCreateOneMutation = (
   { __typename?: 'Mutation' }
-  & { DirectorateCreateOne: Maybe<(
-    { __typename?: 'CreateOneDirectoratePayload' }
-    & { record: Maybe<(
-      { __typename?: 'Directorate' }
-      & Pick<Directorate, '_id' | 'title'>
-    )> }
-  )> }
+  & { DirectorateCreateOne: (
+    { __typename?: 'Directorate' }
+    & Pick<Directorate, '_id' | 'title'>
+  ) }
 );
 
 export type DirectorateManyQueryVariables = {};
@@ -813,30 +149,27 @@ export type DirectorateManyQueryVariables = {};
 
 export type DirectorateManyQuery = (
   { __typename?: 'Query' }
-  & { DirectorateMany: Maybe<Array<Maybe<(
+  & { DirectorateMany: Array<(
     { __typename?: 'Directorate' }
     & Pick<Directorate, '_id' | 'title'>
-  )>>> }
+  )> }
 );
 
 export type DirectorateRemoveByIdMutationVariables = {
-  id: Scalars['MongoID']
+  id: Scalars['ObjectId']
 };
 
 
 export type DirectorateRemoveByIdMutation = (
   { __typename?: 'Mutation' }
   & { DirectorateRemoveById: Maybe<(
-    { __typename?: 'RemoveByIdDirectoratePayload' }
-    & { record: Maybe<(
-      { __typename?: 'Directorate' }
-      & Pick<Directorate, '_id' | 'title'>
-    )> }
+    { __typename?: 'Directorate' }
+    & Pick<Directorate, '_id' | 'title'>
   )> }
 );
 
 export type DirectorateUpdateByIdMutationVariables = {
-  id: Scalars['MongoID'],
+  id: Scalars['ObjectId'],
   title: Scalars['String']
 };
 
@@ -844,16 +177,13 @@ export type DirectorateUpdateByIdMutationVariables = {
 export type DirectorateUpdateByIdMutation = (
   { __typename?: 'Mutation' }
   & { DirectorateUpdateById: Maybe<(
-    { __typename?: 'UpdateByIdDirectoratePayload' }
-    & { record: Maybe<(
-      { __typename?: 'Directorate' }
-      & Pick<Directorate, '_id' | 'title'>
-    )> }
+    { __typename?: 'Directorate' }
+    & Pick<Directorate, '_id' | 'title'>
   )> }
 );
 
 export type UserByIdQueryVariables = {
-  id: Scalars['MongoID']
+  id: Scalars['ObjectId']
 };
 
 
@@ -875,19 +205,19 @@ export type UserUpdateMyProfileMutationVariables = {
 export type UserUpdateMyProfileMutation = (
   { __typename?: 'Mutation' }
   & { UserUpdateMyProfile: Maybe<(
-    { __typename?: 'UpdateProfileResponse' }
-    & Pick<UpdateProfileResponse, 'token'>
-    & { user: Maybe<(
+    { __typename?: 'UpdateMyProfileResult' }
+    & Pick<UpdateMyProfileResult, 'token'>
+    & { user: (
       { __typename?: 'User' }
-      & Pick<User, '_id' | 'firstName' | 'lastName' | 'email' | 'lastLoggedIn' | 'updatedAt'>
-    )> }
+      & Pick<User, '_id' | 'firstName' | 'lastName' | 'email' | 'lastLoggedIn'>
+    ) }
   )> }
 );
 
 
 export const DirectorateByIdDocument = gql`
-    query DirectorateById($id: MongoID!) {
-  DirectorateById(_id: $id) {
+    query DirectorateById($id: ObjectId!) {
+  DirectorateById(id: $id) {
     _id
     title
   }
@@ -938,11 +268,9 @@ export type DirectorateByIdLazyQueryHookResult = ReturnType<typeof useDirectorat
 export type DirectorateByIdQueryResult = ApolloReactCommon.QueryResult<DirectorateByIdQuery, DirectorateByIdQueryVariables>;
 export const DirectorateCreateOneDocument = gql`
     mutation DirectorateCreateOne($title: String!) {
-  DirectorateCreateOne(record: {title: $title}) {
-    record {
-      _id
-      title
-    }
+  DirectorateCreateOne(input: {title: $title}) {
+    _id
+    title
   }
 }
     `;
@@ -1039,12 +367,10 @@ export type DirectorateManyQueryHookResult = ReturnType<typeof useDirectorateMan
 export type DirectorateManyLazyQueryHookResult = ReturnType<typeof useDirectorateManyLazyQuery>;
 export type DirectorateManyQueryResult = ApolloReactCommon.QueryResult<DirectorateManyQuery, DirectorateManyQueryVariables>;
 export const DirectorateRemoveByIdDocument = gql`
-    mutation DirectorateRemoveById($id: MongoID!) {
-  DirectorateRemoveById(_id: $id) {
-    record {
-      _id
-      title
-    }
+    mutation DirectorateRemoveById($id: ObjectId!) {
+  DirectorateRemoveById(id: $id) {
+    _id
+    title
   }
 }
     `;
@@ -1091,12 +417,10 @@ export type DirectorateRemoveByIdMutationHookResult = ReturnType<typeof useDirec
 export type DirectorateRemoveByIdMutationResult = ApolloReactCommon.MutationResult<DirectorateRemoveByIdMutation>;
 export type DirectorateRemoveByIdMutationOptions = ApolloReactCommon.BaseMutationOptions<DirectorateRemoveByIdMutation, DirectorateRemoveByIdMutationVariables>;
 export const DirectorateUpdateByIdDocument = gql`
-    mutation DirectorateUpdateById($id: MongoID!, $title: String!) {
-  DirectorateUpdateById(record: {_id: $id, title: $title}) {
-    record {
-      _id
-      title
-    }
+    mutation DirectorateUpdateById($id: ObjectId!, $title: String!) {
+  DirectorateUpdateById(input: {title: $title}, id: $id) {
+    _id
+    title
   }
 }
     `;
@@ -1144,8 +468,8 @@ export type DirectorateUpdateByIdMutationHookResult = ReturnType<typeof useDirec
 export type DirectorateUpdateByIdMutationResult = ApolloReactCommon.MutationResult<DirectorateUpdateByIdMutation>;
 export type DirectorateUpdateByIdMutationOptions = ApolloReactCommon.BaseMutationOptions<DirectorateUpdateByIdMutation, DirectorateUpdateByIdMutationVariables>;
 export const UserByIdDocument = gql`
-    query UserById($id: MongoID!) {
-  UserById(_id: $id) {
+    query UserById($id: ObjectId!) {
+  UserById(id: $id) {
     _id
     firstName
     lastName
@@ -1198,14 +522,13 @@ export type UserByIdLazyQueryHookResult = ReturnType<typeof useUserByIdLazyQuery
 export type UserByIdQueryResult = ApolloReactCommon.QueryResult<UserByIdQuery, UserByIdQueryVariables>;
 export const UserUpdateMyProfileDocument = gql`
     mutation UserUpdateMyProfile($firstName: String!, $lastName: String!, $email: String!) {
-  UserUpdateMyProfile(firstName: $firstName, lastName: $lastName, email: $email) {
+  UserUpdateMyProfile(input: {firstName: $firstName, lastName: $lastName, email: $email}) {
     user {
       _id
       firstName
       lastName
       email
       lastLoggedIn
-      updatedAt
     }
     token
   }

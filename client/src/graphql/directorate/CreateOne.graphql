@@ -1,8 +1,6 @@
 mutation DirectorateCreateOne($title: String!) {
-    DirectorateCreateOne(record: {title: $title}){
-        record {
-            _id
-            title
-        }
+    DirectorateCreateOne(input: { title: $title }) {
+        _id
+        title
     }
 }

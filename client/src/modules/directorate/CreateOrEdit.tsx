@@ -44,8 +44,7 @@ const CreateOrEdit: React.FC = () => {
                 variables: { ...formData },
                 refetchQueries: [{ query: DirectorateManyDocument }],
             });
-            const createdItem =
-                response.data?.DirectorateCreateOne?.record;
+            const createdItem = response.data?.DirectorateCreateOne;
             if (createdItem) {
                 addToast(
                     `'${createdItem.title}' has been created.`,

@@ -35,6 +35,7 @@ type Mutation {
   DirectorateCreateOne(input: DirectorateInput!): Directorate!
   DirectorateUpdateById(input: DirectorateInput!, id: ObjectId!): Directorate
   DirectorateRemoveById(id: ObjectId!): Directorate
+  UserUpdateMyProfile(input: UserInput!): UpdateMyProfileResult
 }
 
 """Mongo object id scalar type"""
@@ -43,6 +44,12 @@ scalar ObjectId
 type Query {
   DirectorateById(id: ObjectId!): Directorate
   DirectorateMany: [Directorate!]!
+  UserById(id: ObjectId!): User
+}
+
+type UpdateMyProfileResult {
+  user: User!
+  token: String!
 }
 
 type User {
@@ -56,4 +63,10 @@ type User {
   local: LocalIdentity
   lastLoggedIn: DateTime!
   role: String!
+}
+
+input UserInput {
+  firstName: String!
+  lastName: String!
+  email: String!
 }

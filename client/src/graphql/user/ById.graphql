@@ -1,5 +1,5 @@
-query UserById($id: MongoID!) {
-    UserById(_id: $id) {
+query UserById($id: ObjectId!) {
+    UserById(id: $id) {
         _id
         firstName
         lastName

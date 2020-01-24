@@ -4,9 +4,11 @@ mutation UserUpdateMyProfile(
     $email: String!
 ) {
     UserUpdateMyProfile(
-        firstName: $firstName
-        lastName: $lastName
-        email: $email
+        input: {
+            firstName: $firstName
+            lastName: $lastName
+            email: $email
+        }
     ) {
         user {
             _id
@@ -14,7 +16,6 @@ mutation UserUpdateMyProfile(
             lastName
             email
             lastLoggedIn
-            updatedAt
         }
         token
     }

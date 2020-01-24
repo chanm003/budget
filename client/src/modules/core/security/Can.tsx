@@ -26,10 +26,9 @@ interface SecurityLookup {
 }
 
 const Can: React.FC<Props> = props => {
-    const hasPermissions = operationsSecurity[props.operationName](
-        props.user,
-        props.data,
-    );
+    const checkPermissions = operationsSecurity[props.operationName];
+    const hasPermissions =
+        checkPermissions && checkPermissions(props.user, props.data);
 
     if (hasPermissions) {
         return props.yes();

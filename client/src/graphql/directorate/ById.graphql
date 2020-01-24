@@ -1,5 +1,5 @@
-query DirectorateById($id: MongoID!) {
-    DirectorateById(_id: $id) {
+query DirectorateById($id: ObjectId!) {
+    DirectorateById(id: $id) {
         _id
         title
     }

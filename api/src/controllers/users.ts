@@ -13,6 +13,10 @@ const signToken = (user: User) => {
     });
 };
 
+interface AuthenticatedRequest extends Request {
+    user: User;
+}
+
 export const routeHandlers = {
     signup_emailPassword: async (
         req: Request,
@@ -68,21 +72,23 @@ export const routeHandlers = {
         }
     },
     generateToken: async (
-        req: any,
+        req: Request,
         res: Response,
         next: NextFunction,
     ) => {
         // Generate token
-        const token = signToken(req.user);
-        res.status(200).json({ user: req.user, token });
+        const user = (req as AuthenticatedRequest).user;
+        const token = signToken(user);
+        res.status(200).json({ user, token });
     },
     generateTokenView: async (
-        req: any,
+        req: Request,
         res: Response,
         next: NextFunction,
     ) => {
         // Generate token
-        const token = signToken(req.user);
-        res.render('set-jwt', { user: req.user, token });
+        const user = (req as AuthenticatedRequest).user;
+        const token = signToken(user);
+        res.render('set-jwt', { user: user, token });
     },
 };

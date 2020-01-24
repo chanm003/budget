@@ -27,6 +27,9 @@ const apiSecurity = {
         Query: {
         },
         Mutation: {
+            UserUpdateMyProfile: ac => (user, data) => {
+                return ac.can(user.role)['updateOwn'](resourceName).granted;
+            }
         }
     }
 }

@@ -2,12 +2,13 @@ import { ObjectId } from 'mongodb';
 import * as path from 'path';
 import { buildSchema } from 'type-graphql';
 import { ApolloServer } from 'apollo-server-express';
-import express from 'express';
+import express, { Request } from 'express';
 import { applyMiddleware } from 'graphql-middleware';
 
 const { roleNames } = require('shared');
 
 import { DirectorateResolver } from './entities/directorate/resolver';
+import { UserResolver } from './entities/user/resolver';
 import { TypegooseMiddleware } from './typegoose-middleware';
 import { ObjectIdScalar } from './object-id.scalar';
 import { verifyToken } from '../config/jwt';
@@ -15,7 +16,7 @@ import { User } from './entities/user/model';
 import { permissionsMiddleware } from '../config/permissions';
 import { validationMiddleware } from '../config/validation';
 
-const parseUserFromRequest = (req: any) => {
+const parseUserFromRequest = (req: Request) => {
     let currentUser: Partial<User> = { role: roleNames.VISITOR };
     try {
         let authHeader = req.headers['authorization'] || '';
@@ -33,7 +34,7 @@ export const generateSchema = async () => {
         'schema.gql',
     );
     const schema = await buildSchema({
-        resolvers: [DirectorateResolver],
+        resolvers: [DirectorateResolver, UserResolver],
         emitSchemaFile: locationForGeneratedFile,
         globalMiddlewares: [TypegooseMiddleware],
         scalarsMap: [{ type: ObjectId, scalar: ObjectIdScalar }],

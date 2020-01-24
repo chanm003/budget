@@ -71,8 +71,7 @@ export default function() {
             refetchQueries: [{ query: DirectorateManyDocument }],
         });
 
-        const removedItem =
-            result.data?.DirectorateRemoveById?.record;
+        const removedItem = result.data?.DirectorateRemoveById;
         if (removedItem) {
             addToast(
                 `'${removedItem.title}' has been deleted.`,
