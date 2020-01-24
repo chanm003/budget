@@ -3,6 +3,8 @@ import * as path from 'path';
 import { buildSchema } from 'type-graphql';
 import { ApolloServer } from 'apollo-server-express';
 import express from 'express';
+import { applyMiddleware } from 'graphql-middleware';
+
 const { roleNames } = require('shared');
 
 import { DirectorateResolver } from './entities/directorate/resolver';
@@ -10,6 +12,7 @@ import { TypegooseMiddleware } from './typegoose-middleware';
 import { ObjectIdScalar } from './object-id.scalar';
 import { verifyToken } from '../config/jwt';
 import { User } from './entities/user/model';
+import { permissionsMiddleware } from '../config/permissions';
 
 const parseUserFromRequest = (req: any) => {
     let currentUser: Partial<User> = { role: roleNames.VISITOR };
@@ -42,7 +45,7 @@ export const configureGraphQL = async (app: express.Application) => {
     const schema = await generateSchema();
 
     const server = new ApolloServer({
-        schema,
+        schema: applyMiddleware(schema, permissionsMiddleware),
         context: ({ req }) => {
             return {
                 req,
