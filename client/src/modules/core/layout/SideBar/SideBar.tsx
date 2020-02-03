@@ -1,38 +1,59 @@
 import React from 'react';
-import SideBarItem from './SideBarItem/SideBarItem';
-import { Menu, Divider } from 'semantic-ui-react';
-import './SideBar.css';
-import { SideBarHeader } from './SideBarHeader/SideBarHeader';
 import { routes } from '../../../../routes';
+import { useLocation, useHistory } from 'react-router';
+import { Nav, INavLink } from 'office-ui-fabric-react/lib/Nav';
 
 export const SideBar: React.FC = () => {
+    const history = useHistory();
+    const { pathname } = useLocation();
+
+    const onLinkClick = (
+        ev?: React.MouseEvent<HTMLElement>,
+        item?: INavLink,
+    ) => {
+        if (ev && item) {
+            ev.preventDefault();
+            history.push(item.url);
+        }
+    };
+
     return (
-        <Menu
-            borderless
-            vertical
-            stackable
-            fixed="left"
-            className="side-nav"
-        >
-            <SideBarItem path="/" label="Home" icon="home" />
-
-            <Divider />
-
-            <React.Fragment>
-                <SideBarHeader title="Administration" />
-
-                <SideBarItem
-                    path={routes.directorateList.path}
-                    label="Directorates"
-                    icon="comment"
-                />
-
-                <Divider />
-            </React.Fragment>
-
-            <SideBarItem label="Report history" icon="flag" />
-            <SideBarItem label="Help" icon="help circle" />
-            <SideBarItem label="Send feedback" icon="comment" />
-        </Menu>
+        <Nav
+            onLinkClick={onLinkClick}
+            selectedKey={pathname}
+            selectedAriaLabel="Selected"
+            styles={{
+                root: {
+                    width: '17rem',
+                    boxSizing: 'border-box',
+                    border: '1px solid #eee',
+                    overflowY: 'auto',
+                },
+            }}
+            groups={[
+                {
+                    links: [
+                        {
+                            name: 'Home',
+                            url: '/',
+                            key: '/',
+                            icon: 'home',
+                        },
+                        {
+                            name: 'Admin',
+                            url: '',
+                            links: [
+                                {
+                                    name: 'Directorates',
+                                    url: routes.directorateList.path,
+                                    key: routes.directorateList.path,
+                                },
+                            ],
+                            isExpanded: true,
+                        },
+                    ],
+                },
+            ]}
+        />
     );
 };

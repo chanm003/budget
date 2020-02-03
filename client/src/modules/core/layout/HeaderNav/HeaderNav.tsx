@@ -1,136 +1,175 @@
 import React from 'react';
-import {
-    Form,
-    Icon,
-    Image,
-    Input,
-    Menu,
-    Button,
-    Label,
-    Dropdown,
-    Popup,
-} from 'semantic-ui-react';
+import { useHistory } from 'react-router';
 import { roleNames } from 'shared';
 
-import './HeaderNav.css';
-import logo from '../../../../assets/images/logo.jpg';
-import { Link } from 'react-router-dom';
 import { useAuth } from '../../authentication/authContext';
 import { User } from '../../../../generated/graphql';
+import {
+    CommandBar,
+    ICommandBarItemProps,
+    IContextualMenuItem,
+    DefaultButton,
+    IconButton,
+    Stack,
+    IStackStyles,
+    ICommandBarStyles,
+} from 'office-ui-fabric-react';
 
-const HeaderNav: React.FC = () => {
+interface Props {
+    onWaffleClicked: any;
+}
+
+const HeaderNav: React.FC<Props> = props => {
     const { user } = useAuth();
+    const history = useHistory();
+
+    const commandBarFloatRightStyles: IStackStyles = {
+        root: {
+            marginRight: '10px',
+            justifyContent: 'center',
+            alignItems: 'center',
+        },
+    };
+
+    const outerCommandBarStyles: ICommandBarStyles = {
+        root: {
+            backgroundColor: '#eee',
+            height: 50,
+            padding: 0,
+            boxShadow: '0 4px 6px -6px #222',
+        },
+    };
+
+    const farCommandBarItems = (): ICommandBarItemProps[] => {
+        let items: IContextualMenuItem[] = [
+            {
+                key: 'myProfile',
+                text: 'Edit My profile',
+                iconProps: {
+                    iconName: 'ProfileSearch',
+                    style: {
+                        color: '#258DE',
+                    },
+                },
+                onClick: () => history.push('/userprofile/edit'),
+            },
+
+            {
+                key: 'logOut',
+                text: 'Sign out',
+                iconProps: {
+                    iconName: 'SignOut',
+                    style: {
+                        color: '#258DE',
+                    },
+                },
+                onClick: () => history.push('/logout'),
+            },
+        ];
+
+        if (isUserProfileValid(user)) {
+            items = [
+                {
+                    key: 'currentUser',
+                    text: `Signed in as ${user.firstName} ${user.lastName}`,
+                    disabled: true,
+                },
+                ...items,
+            ];
+        }
+
+        return [
+            {
+                key: 'menuItem',
+                name: 'menuItem',
+                onRender: () => {
+                    return (
+                        <Stack
+                            horizontal
+                            styles={commandBarFloatRightStyles}
+                        >
+                            {user.role === roleNames.VISITOR ? (
+                                <DefaultButton
+                                    text="Login"
+                                    onClick={() =>
+                                        history.push('/login')
+                                    }
+                                />
+                            ) : (
+                                <IconButton
+                                    menuIconProps={{
+                                        iconName: 'CollapseMenu',
+                                    }}
+                                    menuProps={{ items }}
+                                />
+                            )}
+                        </Stack>
+                    );
+                },
+            },
+        ];
+    };
+
+    const outerCommandBarItems: ICommandBarItemProps[] = [
+        {
+            key: 'WaffleButton',
+            iconOnly: true,
+            iconProps: {
+                iconName: 'Waffle',
+                styles: {
+                    root: {
+                        color: 'white',
+                        fontSize: 20,
+                        fontWeight: 600,
+                    },
+                },
+            },
+            buttonStyles: {
+                root: {
+                    backgroundColor: '#0078d7',
+                    width: 50,
+                },
+                rootHovered: {
+                    backgroundColor: '#104a7d',
+                },
+                rootPressed: {
+                    backgroundColor: '#104a7d',
+                },
+            },
+            onClick: () => {
+                props.onWaffleClicked();
+            },
+        },
+        {
+            key: 'appName',
+            name: 'Spend Plan Tracker',
+            buttonStyles: {
+                root: {
+                    backgroundColor: '#eee',
+                    fontSize: 22,
+                    marginLeft: 20,
+                    paddingTop: '5px',
+                    padding: 0,
+                },
+                rootHovered: {
+                    backgroundColor: '#eee',
+                },
+                rootPressed: {
+                    backgroundColor: '#eee',
+                },
+                label: {
+                    margin: 0,
+                },
+            },
+        },
+    ];
 
     return (
-        <Menu borderless className="top-menu" fixed="top">
-            <Menu.Item header className="logo">
-                <Link to="/">
-                    <Image src={logo} size="tiny" />
-                </Link>
-            </Menu.Item>
-            <Menu.Menu className="nav-container">
-                <Menu.Item className="search-input">
-                    <Form>
-                        <Form.Field>
-                            <Input
-                                placeholder="Search"
-                                size="small"
-                                action="Go"
-                            />
-                        </Form.Field>
-                    </Form>
-                </Menu.Item>
-                <Menu.Menu position="right">
-                    <Menu.Item>
-                        <Icon
-                            className="header-icon"
-                            name="video camera"
-                            size="large"
-                        />
-                    </Menu.Item>
-                    <Menu.Item>
-                        <Icon
-                            className="header-icon"
-                            name="grid layout"
-                            size="large"
-                        />
-                    </Menu.Item>
-                    <Menu.Item>
-                        <Icon
-                            className="header-icon"
-                            name="chat"
-                            size="large"
-                        />
-                    </Menu.Item>
-                    <Menu.Item>
-                        <Icon
-                            className="header-icon"
-                            name="alarm"
-                            size="large"
-                        />
-                    </Menu.Item>
-                    <Menu.Item name="avatar">
-                        {user.role === roleNames.VISITOR ? (
-                            <Button as={Link} to="/login">
-                                Log-in
-                            </Button>
-                        ) : (
-                            renderDropdown(user)
-                        )}
-                    </Menu.Item>
-                </Menu.Menu>
-            </Menu.Menu>
-        </Menu>
-    );
-};
-
-const renderDropdown = (user: User) => {
-    const isProfileValid = isUserProfileValid(user);
-    let trigger = null;
-    let name = '';
-
-    if (isProfileValid) {
-        name = `${user.firstName} ${user.lastName}`;
-        const { firstName, lastName } = user;
-        const initials = `${firstName ? firstName[0] : ''}${
-            lastName ? lastName[0] : ''
-        }`;
-        trigger = (
-            <Label circular color="grey">
-                {initials}
-            </Label>
-        );
-    } else {
-        trigger = (
-            <Popup
-                content="Click to update your profile"
-                position="bottom right"
-                trigger={<Button circular negative icon="warning" />}
-            />
-        );
-    }
-
-    return (
-        <Dropdown pointing="top right" icon={null} trigger={trigger}>
-            <Dropdown.Menu>
-                {isProfileValid && (
-                    <Dropdown.Item
-                        text={`Signed in as ${name}`}
-                        disabled
-                    />
-                )}
-                <Dropdown.Item
-                    text="Edit Profile"
-                    as={Link}
-                    to="/userprofile/edit"
-                />
-                <Dropdown.Item
-                    text="Sign out"
-                    as={Link}
-                    to="/logout"
-                />
-            </Dropdown.Menu>
-        </Dropdown>
+        <CommandBar
+            items={outerCommandBarItems}
+            farItems={farCommandBarItems()}
+            styles={outerCommandBarStyles}
+        />
     );
 };
 
