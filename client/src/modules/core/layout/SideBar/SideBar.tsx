@@ -46,7 +46,11 @@ export const SideBar: React.FC = () => {
                                 {
                                     name: 'Directorates',
                                     url: routes.directorateList.path,
-                                    key: routes.directorateList.path,
+                                    key: pathname.includes(
+                                        routes.directorateList.path,
+                                    )
+                                        ? pathname
+                                        : routes.directorateList.path,
                                 },
                             ],
                             isExpanded: true,
