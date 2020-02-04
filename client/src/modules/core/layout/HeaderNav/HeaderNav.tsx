@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { useHistory } from 'react-router';
 import { roleNames } from 'shared';
+import { useConstCallback } from '@uifabric/react-hooks';
 
 import { useAuth } from '../../authentication/authContext';
 import { User } from '../../../../generated/graphql';
@@ -9,10 +10,12 @@ import {
     ICommandBarItemProps,
     IContextualMenuItem,
     DefaultButton,
-    IconButton,
+    Persona,
     Stack,
     IStackStyles,
     ICommandBarStyles,
+    ContextualMenu,
+    PersonaSize,
 } from 'office-ui-fabric-react';
 
 interface Props {
@@ -23,49 +26,8 @@ const HeaderNav: React.FC<Props> = props => {
     const { user } = useAuth();
     const history = useHistory();
 
-    const commandBarFloatRightStyles: IStackStyles = {
-        root: {
-            marginRight: '10px',
-            justifyContent: 'center',
-            alignItems: 'center',
-        },
-    };
-
-    const outerCommandBarStyles: ICommandBarStyles = {
-        root: {
-            backgroundColor: '#eee',
-            height: 50,
-            padding: 0,
-            boxShadow: '0 4px 6px -6px #222',
-        },
-    };
-
-    const farCommandBarItems = (): ICommandBarItemProps[] => {
-        let items: IContextualMenuItem[] = [
-            {
-                key: 'myProfile',
-                text: 'Edit My profile',
-                iconProps: {
-                    iconName: 'ProfileSearch',
-                    style: {
-                        color: '#258DE',
-                    },
-                },
-                onClick: () => history.push('/userprofile/edit'),
-            },
-
-            {
-                key: 'logOut',
-                text: 'Sign out',
-                iconProps: {
-                    iconName: 'SignOut',
-                    style: {
-                        color: '#258DE',
-                    },
-                },
-                onClick: () => history.push('/logout'),
-            },
-        ];
+    const generateCommandBarFarItems = (): ICommandBarItemProps[] => {
+        let items: IContextualMenuItem[] = [];
 
         if (isUserProfileValid(user)) {
             items = [
@@ -74,7 +36,28 @@ const HeaderNav: React.FC<Props> = props => {
                     text: `Signed in as ${user.firstName} ${user.lastName}`,
                     disabled: true,
                 },
-                ...items,
+                {
+                    key: 'myProfile',
+                    text: 'Edit My profile',
+                    iconProps: {
+                        iconName: 'ProfileSearch',
+                        style: {
+                            color: '#258DE',
+                        },
+                    },
+                    onClick: () => history.push('/userprofile/edit'),
+                },
+                {
+                    key: 'logOut',
+                    text: 'Sign out',
+                    iconProps: {
+                        iconName: 'SignOut',
+                        style: {
+                            color: '#258DE',
+                        },
+                    },
+                    onClick: () => history.push('/logout'),
+                },
             ];
         }
 
@@ -96,11 +79,9 @@ const HeaderNav: React.FC<Props> = props => {
                                     }
                                 />
                             ) : (
-                                <IconButton
-                                    menuIconProps={{
-                                        iconName: 'CollapseMenu',
-                                    }}
-                                    menuProps={{ items }}
+                                <LoggedInUser
+                                    user={user}
+                                    items={items}
                                 />
                             )}
                         </Stack>
@@ -110,67 +91,30 @@ const HeaderNav: React.FC<Props> = props => {
         ];
     };
 
-    const outerCommandBarItems: ICommandBarItemProps[] = [
-        {
-            key: 'WaffleButton',
-            iconOnly: true,
-            iconProps: {
-                iconName: 'Waffle',
-                styles: {
-                    root: {
-                        color: 'white',
-                        fontSize: 20,
-                        fontWeight: 600,
-                    },
-                },
-            },
-            buttonStyles: {
-                root: {
-                    backgroundColor: '#0078d7',
-                    width: 50,
-                },
-                rootHovered: {
-                    backgroundColor: '#104a7d',
-                },
-                rootPressed: {
-                    backgroundColor: '#104a7d',
-                },
-            },
-            onClick: () => {
-                props.onWaffleClicked();
-            },
-        },
-        {
-            key: 'appName',
-            name: 'Spend Plan Tracker',
-            buttonStyles: {
-                root: {
-                    backgroundColor: '#eee',
-                    fontSize: 22,
-                    marginLeft: 20,
-                    paddingTop: '5px',
-                    padding: 0,
-                },
-                rootHovered: {
-                    backgroundColor: '#eee',
-                },
-                rootPressed: {
-                    backgroundColor: '#eee',
-                },
-                label: {
-                    margin: 0,
-                },
-            },
-        },
-    ];
-
     return (
         <CommandBar
-            items={outerCommandBarItems}
-            farItems={farCommandBarItems()}
+            items={generateCommandBarItems(props)}
+            farItems={generateCommandBarFarItems()}
             styles={outerCommandBarStyles}
         />
     );
+};
+
+const commandBarFloatRightStyles: IStackStyles = {
+    root: {
+        marginRight: '10px',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+};
+
+const outerCommandBarStyles: ICommandBarStyles = {
+    root: {
+        backgroundColor: '#eee',
+        height: 50,
+        padding: 0,
+        boxShadow: '0 4px 6px -6px #222',
+    },
 };
 
 const isUserProfileValid = (user: User) => {
@@ -178,6 +122,105 @@ const isUserProfileValid = (user: User) => {
         user?.firstName?.trim() &&
         user?.lastName?.trim() &&
         user?.email?.trim()
+    );
+};
+
+const generateCommandBarItems = (
+    props: Props,
+): ICommandBarItemProps[] => [
+    {
+        key: 'WaffleButton',
+        iconOnly: true,
+        iconProps: {
+            iconName: 'Waffle',
+            styles: {
+                root: {
+                    color: 'white',
+                    fontSize: 20,
+                    fontWeight: 600,
+                },
+            },
+        },
+        buttonStyles: {
+            root: {
+                backgroundColor: '#0078d7',
+                width: 50,
+            },
+            rootHovered: {
+                backgroundColor: '#104a7d',
+            },
+            rootPressed: {
+                backgroundColor: '#104a7d',
+            },
+        },
+        onClick: () => {
+            props.onWaffleClicked();
+        },
+    },
+    {
+        key: 'appName',
+        name: 'Spend Plan Tracker',
+        buttonStyles: {
+            root: {
+                backgroundColor: '#eee',
+                fontSize: 22,
+                marginLeft: 20,
+                paddingTop: '5px',
+                padding: 0,
+            },
+            rootHovered: {
+                backgroundColor: '#eee',
+            },
+            rootPressed: {
+                backgroundColor: '#eee',
+            },
+            label: {
+                margin: 0,
+            },
+        },
+    },
+];
+
+interface LoggedInUserProps {
+    user: User;
+    items: IContextualMenuItem[];
+}
+
+const LoggedInUser: React.FC<LoggedInUserProps> = ({
+    items,
+    user: { firstName, lastName },
+}) => {
+    const linkRef = useRef(null);
+    const [showContextualMenu, setShowContextualMenu] = useState(
+        false,
+    );
+    const onShowContextualMenu = useConstCallback(() =>
+        setShowContextualMenu(true),
+    );
+    const onHideContextualMenu = useConstCallback(() =>
+        setShowContextualMenu(false),
+    );
+
+    const initials = `${firstName ? firstName[0] : ''}${
+        lastName ? lastName[0] : ''
+    }`;
+
+    return (
+        <>
+            <span ref={linkRef} onClick={onShowContextualMenu}>
+                <Persona
+                    imageInitials={initials}
+                    size={PersonaSize.size32}
+                />
+            </span>
+            <ContextualMenu
+                items={items}
+                hidden={!showContextualMenu}
+                target={linkRef}
+                onItemClick={onHideContextualMenu}
+                onDismiss={onHideContextualMenu}
+            />
+        </>
     );
 };
 
