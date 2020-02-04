@@ -22,6 +22,18 @@ export const handleCheckboxChange = (
     await triggerValidation(name);
 };
 
+export const handleTextFieldChange = (
+    setValue: setValueFunc,
+    triggerValidation: triggerValidationFunc,
+) => async (
+    event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
+    newValue?: string,
+) => {
+    const name = (event.target as HTMLInputElement).name;
+    setValue(name, newValue);
+    await triggerValidation(name);
+};
+
 export const handleValueChange = (
     setValue: setValueFunc,
     triggerValidation: triggerValidationFunc,
@@ -32,6 +44,13 @@ export const handleValueChange = (
     setValue(name, value);
     await triggerValidation(name);
 };
+
+export interface FormErrors {
+    [key: string]: {
+        message: string;
+        type: string;
+    };
+}
 
 interface Props {
     errors: any;

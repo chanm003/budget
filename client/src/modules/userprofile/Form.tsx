@@ -1,10 +1,17 @@
 import React, { useEffect } from 'react';
-import { Form, Button } from 'semantic-ui-react';
 import { useForm } from 'react-hook-form';
 import { validationSchemas } from 'shared';
 
-import { handleValueChange, FormError } from '../common/formHelpers';
+import {
+    handleTextFieldChange,
+    FormErrors,
+} from '../common/formHelpers';
 import { UserUpdateMyProfileMutationVariables } from '../../generated/graphql';
+import {
+    Stack,
+    TextField,
+    PrimaryButton,
+} from 'office-ui-fabric-react';
 
 export type FormData = UserUpdateMyProfileMutationVariables;
 
@@ -26,66 +33,89 @@ const CustomForm: React.FC<Props> = props => {
         defaultValues: props.initialValues,
     });
 
+    const formErrors = errors as FormErrors;
+
     useEffect(() => {
         register({ name: 'firstName' });
         register({ name: 'lastName' });
         register({ name: 'email' });
     }, [register]);
-
     return (
         <React.Fragment>
-            <Form
-                className="attached fluid segment"
+            <form
                 onSubmit={handleSubmit(data =>
                     props.onSubmit(data as FormData),
                 )}
             >
-                <Form.Group widths="equal">
-                    <Form.Input
-                        name="firstName"
-                        fluid
-                        defaultValue={props.initialValues.firstName}
-                        label="First Name"
-                        placeholder="First Name"
-                        autoComplete="off"
-                        onChange={handleValueChange(
-                            setValue,
-                            triggerValidation,
-                        )}
-                        error={errors.firstName ? true : false}
-                    />
-                    <Form.Input
-                        name="lastName"
-                        fluid
-                        defaultValue={props.initialValues.lastName}
-                        label="Last Name"
-                        placeholder="Last Name"
-                        autoComplete="off"
-                        onChange={handleValueChange(
-                            setValue,
-                            triggerValidation,
-                        )}
-                        error={errors.lastName ? true : false}
-                    />
-                </Form.Group>
-                <Form.Group widths="equal">
-                    <Form.Input
-                        name="email"
-                        fluid
-                        defaultValue={props.initialValues.email}
-                        label="Email"
-                        placeholder="Email"
-                        autoComplete="off"
-                        onChange={handleValueChange(
-                            setValue,
-                            triggerValidation,
-                        )}
-                        error={errors.email ? true : false}
-                    />
-                </Form.Group>
-                <Button type="submit">Submit</Button>
-            </Form>
-            <FormError errors={errors} />
+                <Stack tokens={{ childrenGap: 10 }}>
+                    <Stack horizontal tokens={{ childrenGap: 20 }}>
+                        <Stack.Item grow>
+                            <TextField
+                                name="firstName"
+                                defaultValue={
+                                    props.initialValues.firstName
+                                }
+                                label="First Name"
+                                placeholder="First Name"
+                                autoComplete="off"
+                                onChange={handleTextFieldChange(
+                                    setValue,
+                                    triggerValidation,
+                                )}
+                                errorMessage={
+                                    formErrors.firstName
+                                        ? formErrors.firstName.message
+                                        : ''
+                                }
+                            />
+                        </Stack.Item>
+                        <Stack.Item grow>
+                            <TextField
+                                name="lastName"
+                                defaultValue={
+                                    props.initialValues.lastName
+                                }
+                                label="Last Name"
+                                placeholder="Last Name"
+                                autoComplete="off"
+                                onChange={handleTextFieldChange(
+                                    setValue,
+                                    triggerValidation,
+                                )}
+                                errorMessage={
+                                    formErrors.lastName
+                                        ? formErrors.lastName.message
+                                        : ''
+                                }
+                            />
+                        </Stack.Item>
+                    </Stack>
+                    <Stack horizontal tokens={{ childrenGap: 20 }}>
+                        <Stack.Item grow>
+                            <TextField
+                                name="email"
+                                defaultValue={
+                                    props.initialValues.email
+                                }
+                                label="Email"
+                                placeholder="Email"
+                                autoComplete="off"
+                                onChange={handleTextFieldChange(
+                                    setValue,
+                                    triggerValidation,
+                                )}
+                                errorMessage={
+                                    formErrors.email
+                                        ? formErrors.email.message
+                                        : ''
+                                }
+                            />
+                        </Stack.Item>
+                    </Stack>
+                </Stack>
+                <br />
+                <PrimaryButton type="submit" text="Submit" />
+            </form>
         </React.Fragment>
     );
 };

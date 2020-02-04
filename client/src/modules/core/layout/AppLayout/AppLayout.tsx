@@ -14,9 +14,9 @@ const containerStackStyles: IStackStyles = {
 const contentStackStyles: IStackStyles = {
     root: {
         minHeight: '400px',
-        paddingLeft: '20px',
-        paddingRight: '20px',
-        paddingTop: '5px',
+        paddingLeft: '10px',
+        paddingRight: '10px',
+        paddingTop: '10px',
         boxSizing: 'border-box',
     },
 };
