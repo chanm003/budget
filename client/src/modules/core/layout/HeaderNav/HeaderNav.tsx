@@ -16,6 +16,7 @@ import {
     ICommandBarStyles,
     ContextualMenu,
     PersonaSize,
+    PersonaInitialsColor,
 } from 'office-ui-fabric-react';
 
 interface Props {
@@ -27,7 +28,30 @@ const HeaderNav: React.FC<Props> = props => {
     const history = useHistory();
 
     const generateCommandBarFarItems = (): ICommandBarItemProps[] => {
-        let items: IContextualMenuItem[] = [];
+        let items: IContextualMenuItem[] = [
+            {
+                key: 'myProfile',
+                text: 'Edit My profile',
+                iconProps: {
+                    iconName: 'ProfileSearch',
+                    style: {
+                        color: '#258DE',
+                    },
+                },
+                onClick: () => history.push('/userprofile/edit'),
+            },
+            {
+                key: 'logOut',
+                text: 'Sign out',
+                iconProps: {
+                    iconName: 'SignOut',
+                    style: {
+                        color: '#258DE',
+                    },
+                },
+                onClick: () => history.push('/logout'),
+            },
+        ];
 
         if (isUserProfileValid(user)) {
             items = [
@@ -36,28 +60,7 @@ const HeaderNav: React.FC<Props> = props => {
                     text: `Signed in as ${user.firstName} ${user.lastName}`,
                     disabled: true,
                 },
-                {
-                    key: 'myProfile',
-                    text: 'Edit My profile',
-                    iconProps: {
-                        iconName: 'ProfileSearch',
-                        style: {
-                            color: '#258DE',
-                        },
-                    },
-                    onClick: () => history.push('/userprofile/edit'),
-                },
-                {
-                    key: 'logOut',
-                    text: 'Sign out',
-                    iconProps: {
-                        iconName: 'SignOut',
-                        style: {
-                            color: '#258DE',
-                        },
-                    },
-                    onClick: () => history.push('/logout'),
-                },
+                ...items,
             ];
         }
 
@@ -188,7 +191,7 @@ interface LoggedInUserProps {
 
 const LoggedInUser: React.FC<LoggedInUserProps> = ({
     items,
-    user: { firstName, lastName },
+    user,
 }) => {
     const linkRef = useRef(null);
     const [showContextualMenu, setShowContextualMenu] = useState(
@@ -201,8 +204,8 @@ const LoggedInUser: React.FC<LoggedInUserProps> = ({
         setShowContextualMenu(false),
     );
 
-    const initials = `${firstName ? firstName[0] : ''}${
-        lastName ? lastName[0] : ''
+    const initials = `${user.firstName ? user.firstName[0] : ''}${
+        user.lastName ? user.lastName[0] : ''
     }`;
 
     return (
@@ -211,6 +214,16 @@ const LoggedInUser: React.FC<LoggedInUserProps> = ({
                 <Persona
                     imageInitials={initials}
                     size={PersonaSize.size32}
+                    initialsColor={
+                        isUserProfileValid(user)
+                            ? PersonaInitialsColor.blue
+                            : PersonaInitialsColor.red
+                    }
+                    text={
+                        isUserProfileValid(user)
+                            ? ''
+                            : 'Please update your profile'
+                    }
                 />
             </span>
             <ContextualMenu
