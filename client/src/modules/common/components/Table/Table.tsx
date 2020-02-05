@@ -1,10 +1,11 @@
 import React from 'react';
-import { Table, Button, Icon } from 'semantic-ui-react';
+import { Table } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import LoadingSegment from '../LoadingSegment/LoadingSegment';
 import Can from '../../../core/security/Can';
 import { useAuth } from '../../../core/authentication/authContext';
 import { User } from '../../../../generated/graphql';
+import { PrimaryButton } from 'office-ui-fabric-react';
 
 const renderActionButtons = (user: User, createItemPath: string) => (
     <Can
@@ -12,9 +13,10 @@ const renderActionButtons = (user: User, createItemPath: string) => (
         operationName={'DirectorateCreateOne'}
         yes={() => (
             <Link to={createItemPath}>
-                <Button primary>
-                    <Icon name="add" /> New
-                </Button>
+                <PrimaryButton
+                    text="New Item"
+                    iconProps={{ iconName: 'Add' }}
+                ></PrimaryButton>
             </Link>
         )}
     />

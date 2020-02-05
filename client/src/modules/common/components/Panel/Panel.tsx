@@ -24,7 +24,7 @@ export const Panel: React.FC<Props> = props => (
             tokens={{ childrenGap: 10 }}
         >
             <Stack.Item>
-                <h3 style={{ fontSize: FontSizes.size24 }}>
+                <h3 style={{ fontSize: FontSizes.size20 }}>
                     {props.header}
                 </h3>
             </Stack.Item>

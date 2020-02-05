@@ -1,11 +1,9 @@
-import React from 'react';
-import { Container, Button, Table } from 'semantic-ui-react';
+import React, { useState } from 'react';
+import moment from 'moment';
+import { useHistory } from 'react-router';
 import { useToasts } from 'react-toast-notifications';
 import { useAuth } from '../core/authentication/authContext';
 import { toastSettings } from '../core/layout/toaster/settings';
-import DeleteButton from '../../modules/common/components/DeleteButton/DeleteButton';
-import { Link } from 'react-router-dom';
-import ItemsTabular from '../common/components/Table/Table';
 import routeConfig from '../../routes/directorate';
 import Can from '../core/security/Can';
 import {
@@ -14,56 +12,147 @@ import {
     Directorate,
     DirectorateManyDocument,
 } from '../../generated/graphql';
+import {
+    IColumn,
+    DetailsList,
+    DetailsListLayoutMode,
+    SelectionMode,
+    IContextualMenuItem,
+    ContextualMenuItemType,
+    DefaultButton,
+} from 'office-ui-fabric-react';
+
+import {
+    DeleteDialog,
+    DeleteDialogState,
+} from '../common/components/DeleteDialog/DeleteDialog';
+
+const initialDialogState = {
+    visible: false,
+    guidToDelete: '',
+    subText: '',
+};
 
 export default function() {
+    const [deleteDialog, setDeleteDialog] = useState<
+        DeleteDialogState
+    >(initialDialogState);
     const { addToast } = useToasts();
+    const history = useHistory();
     const { loading, data } = useDirectorateManyQuery();
     const [deleteItem] = useDirectorateRemoveByIdMutation();
     const { user } = useAuth();
 
-    const tableHeaderRowRender = () => (
-        <Table.Row>
-            <Table.HeaderCell>Title</Table.HeaderCell>
-            <Table.HeaderCell></Table.HeaderCell>
-        </Table.Row>
-    );
+    const _getKey = (item: any, index?: number): string => {
+        return item._id;
+    };
 
-    const tableRowRender = ({ _id, title }: Directorate) => (
-        <Table.Row key={_id}>
-            <Table.Cell>{title}</Table.Cell>
-            <Table.Cell collapsing textAlign="right">
-                <Can
-                    user={user}
-                    operationName={'DirectorateUpdateById'}
-                    yes={() => (
-                        <Link
-                            to={routeConfig.directorateEdit.path(_id)}
-                        >
-                            <Button icon="pencil" primary />
-                        </Link>
-                    )}
-                />
-                <Can
-                    user={user}
-                    operationName={'DirectorateRemoveById'}
-                    yes={() => (
-                        <DeleteButton
-                            guid={_id}
-                            onDeleteConfirm={onDeleteClicked}
+    const columns = (): IColumn[] => {
+        return [
+            {
+                key: 'title',
+                name: 'Title',
+                fieldName: 'title',
+                minWidth: 210,
+                maxWidth: 350,
+                isRowHeader: true,
+                isResizable: true,
+                isPadded: true,
+            },
+            {
+                key: 'updatedAt',
+                name: 'Date Modified',
+                fieldName: 'updatedAt',
+                minWidth: 160,
+                maxWidth: 180,
+                isResizable: true,
+                onRender: ({ updatedAt }: Directorate) => {
+                    return (
+                        <span>{moment(updatedAt).format('LLL')}</span>
+                    );
+                },
+                isPadded: true,
+            },
+            {
+                key: 'updatedBy',
+                name: 'Modified By',
+                fieldName: 'updatedBy',
+                minWidth: 70,
+                maxWidth: 90,
+                isResizable: true,
+                isCollapsible: true,
+                onRender: ({
+                    updatedBy: { firstName, lastName },
+                }: Directorate) => {
+                    return <span>{`${firstName} ${lastName}`}</span>;
+                },
+                isPadded: true,
+            },
+            {
+                key: '_id',
+                name: '',
+                fieldName: '_id',
+                minWidth: 16,
+                maxWidth: 16,
+                onRender: (item: Directorate) => {
+                    const menuItems: IContextualMenuItem[] = [
+                        {
+                            key: 'actionsSections',
+                            itemType: ContextualMenuItemType.Section,
+                            sectionProps: {
+                                topDivider: true,
+                                bottomDivider: true,
+                                title: 'Actions',
+                                items: [
+                                    {
+                                        key: 'editItem',
+                                        text: 'Edit',
+                                        iconProps: {
+                                            iconName: 'Edit',
+                                        },
+                                        onClick: (
+                                            ev?: any,
+                                            menuItem?: IContextualMenuItem,
+                                        ) => {
+                                            history.push(
+                                                routeConfig.directorateEdit.path(
+                                                    item._id,
+                                                ),
+                                            );
+                                        },
+                                    },
+                                    {
+                                        key: 'deleteItem',
+                                        text: 'Delete',
+                                        iconProps: {
+                                            iconName: 'Delete',
+                                        },
+                                        onClick: (
+                                            ev?: any,
+                                            menuItem?: IContextualMenuItem,
+                                        ) => {
+                                            showDeleteDialog(item);
+                                        },
+                                    },
+                                ],
+                            },
+                        },
+                    ];
+                    return (
+                        <DefaultButton
+                            styles={{
+                                root: {
+                                    height: '22px',
+                                },
+                            }}
+                            text="Actions"
+                            menuProps={{ items: menuItems }}
                         />
-                    )}
-                />
-            </Table.Cell>
-        </Table.Row>
-    );
-
-    const tableRowNoItemsMessage = () => (
-        <Table.Row>
-            <Table.Cell colSpan="2">
-                No directorates have been added by an administrator
-            </Table.Cell>
-        </Table.Row>
-    );
+                    );
+                },
+            },
+        ];
+    };
 
     const onDeleteClicked = async (guid: string) => {
         const result = await deleteItem({
@@ -82,17 +171,31 @@ export default function() {
 
     const items = (data?.DirectorateMany as Directorate[]) || [];
 
+    const closeDeleteDialog = () =>
+        setDeleteDialog(initialDialogState);
+    const showDeleteDialog = (item: Directorate) =>
+        setDeleteDialog({
+            visible: true,
+            guidToDelete: item._id,
+            subText: `Are you sure you want to delete ${item.title}?`,
+        });
+
     return (
-        <Container fluid>
-            <ItemsTabular
-                heading="Directorates"
-                isLoading={loading}
+        <>
+            <DetailsList
                 items={items}
-                createItemPath={routeConfig.directorateCreate.path}
-                tableHeaderRowRender={tableHeaderRowRender}
-                tableRowRender={tableRowRender}
-                tableRowNoItemsMessage={tableRowNoItemsMessage}
-            ></ItemsTabular>
-        </Container>
+                columns={columns()}
+                getKey={_getKey}
+                setKey="none"
+                layoutMode={DetailsListLayoutMode.justified}
+                selectionMode={SelectionMode.none}
+                isHeaderVisible={true}
+            />
+            <DeleteDialog
+                dialogState={deleteDialog}
+                close={closeDeleteDialog}
+                onDeleteButtonClicked={onDeleteClicked}
+            />
+        </>
     );
 }
