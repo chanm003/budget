@@ -14,9 +14,17 @@ export class Directorate extends Typegoose {
     @Property({ required: true })
     title: string;
 
+    @Property({ default: () => Date.now() })
+    @Field()
+    createdAt: Date;
+
     @Field(type => User)
     @Property({ ref: User, required: true })
     createdBy: Ref<User>;
+
+    @Property({ default: () => Date.now() })
+    @Field()
+    updatedAt: Date;
 
     @Field(type => User)
     @Property({ ref: User, required: true })

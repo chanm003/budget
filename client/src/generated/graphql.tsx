@@ -14,7 +14,7 @@ export type Scalars = {
   Int: number,
   Float: number,
   ObjectId: any,
-  DateTime: any,
+  Timestamp: any,
 };
 
 export type CacIdentity = {
@@ -22,12 +22,13 @@ export type CacIdentity = {
   distinguishedName: Scalars['String'],
 };
 
-
 export type Directorate = {
    __typename?: 'Directorate',
   _id: Scalars['ObjectId'],
   title: Scalars['String'],
+  createdAt: Scalars['Timestamp'],
   createdBy: User,
+  updatedAt: Scalars['Timestamp'],
   updatedBy: User,
 };
 
@@ -42,7 +43,7 @@ export type GithubIdentity = {
 
 export type LocalIdentity = {
    __typename?: 'LocalIdentity',
-  expires: Scalars['DateTime'],
+  expires: Scalars['Timestamp'],
 };
 
 export type Mutation = {
@@ -92,6 +93,7 @@ export type QueryUserByIdArgs = {
   id: Scalars['ObjectId']
 };
 
+
 export type UpdateMyProfileResult = {
    __typename?: 'UpdateMyProfileResult',
   user: User,
@@ -108,7 +110,7 @@ export type User = {
   cac?: Maybe<CacIdentity>,
   github?: Maybe<GithubIdentity>,
   local?: Maybe<LocalIdentity>,
-  lastLoggedIn: Scalars['DateTime'],
+  lastLoggedIn: Scalars['Timestamp'],
   role: Scalars['String'],
 };
 
@@ -151,7 +153,11 @@ export type DirectorateManyQuery = (
   { __typename?: 'Query' }
   & { DirectorateMany: Array<(
     { __typename?: 'Directorate' }
-    & Pick<Directorate, '_id' | 'title'>
+    & Pick<Directorate, '_id' | 'title' | 'updatedAt'>
+    & { updatedBy: (
+      { __typename?: 'User' }
+      & Pick<User, '_id' | 'firstName' | 'lastName'>
+    ) }
   )> }
 );
 
@@ -321,6 +327,12 @@ export const DirectorateManyDocument = gql`
   DirectorateMany {
     _id
     title
+    updatedAt
+    updatedBy {
+      _id
+      firstName
+      lastName
+    }
   }
 }
     `;

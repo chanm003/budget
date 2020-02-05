@@ -1,6 +1,12 @@
 query DirectorateMany {
-  DirectorateMany {
-    _id
-    title
-  }
+    DirectorateMany {
+        _id
+        title
+        updatedAt
+        updatedBy {
+            _id
+            firstName
+            lastName
+        }
+    }
 }
