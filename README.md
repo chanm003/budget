@@ -18,9 +18,9 @@ docker-compose up
 4. nginx
 5. cac
 
-### Navigate to route seed data
+### Seed database
 
-[Open React App](https://localhost:8000/api/data/seed)
+[Navigate to route seed data](https://localhost:8000/api/data/seed)
 
 ### Navigate to application
 
