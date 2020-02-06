@@ -35,6 +35,7 @@ export const generateSchema = async () => {
     );
     const schema = await buildSchema({
         resolvers: [DirectorateResolver, UserResolver],
+        dateScalarMode: 'isoDate',
         emitSchemaFile: locationForGeneratedFile,
         globalMiddlewares: [TypegooseMiddleware],
         scalarsMap: [{ type: ObjectId, scalar: ObjectIdScalar }],

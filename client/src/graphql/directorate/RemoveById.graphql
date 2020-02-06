@@ -1,6 +1,0 @@
-mutation DirectorateRemoveById($id: ObjectId!) {
-    DirectorateRemoveById(id: $id) {
-        _id
-        title
-    }
-}

@@ -8,7 +8,7 @@ import { setupExpress } from './config/express';
 
 async function bootstrap() {
     try {
-        await connectToDatabase(true);
+        await connectToDatabase();
 
         const expressApp = setupExpress();
         configureGraphQL(expressApp);

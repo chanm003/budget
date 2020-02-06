@@ -2,28 +2,30 @@ import List from '../modules/directorate/List';
 import CreateOrEdit from '../modules/directorate/CreateOrEdit';
 import { RouteDictionary } from '../interfaces';
 
+const resourceName = 'Directorate';
+const basePath = '/admin/directorates';
+
 const routeDictionary: RouteDictionary = {
-    directorateList: {
-        path: '/admin/directorates',
+    [`${resourceName}Many`]: {
+        path: basePath,
         component: List,
         exact: true,
         auth: true,
-        operationName: 'DirectorateMany',
+        operationName: `${resourceName}Many`,
     },
-    directorateCreate: {
-        path: '/admin/directorates/create',
+    [`${resourceName}CreateOne`]: {
+        path: `${basePath}/create`,
         component: CreateOrEdit,
         exact: true,
         auth: true,
-        operationName: 'DirectorateCreateOne',
+        operationName: `${resourceName}CreateOne`,
     },
-    directorateEdit: {
-        path: (id: string = ':id') =>
-            `/admin/directorates/${id}/edit`,
+    [`${resourceName}UpdateById`]: {
+        path: (id: string = ':id') => `${basePath}/${id}/edit`,
         component: CreateOrEdit,
         exact: true,
         auth: true,
-        operationName: 'DirectorateUpdateById',
+        operationName: `${resourceName}UpdateById`,
     },
 };
 

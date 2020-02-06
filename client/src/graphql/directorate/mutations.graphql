@@ -1,0 +1,20 @@
+mutation DirectorateCreateOne($title: String!) {
+    DirectorateCreateOne(input: { title: $title }) {
+        _id
+        title
+    }
+}
+
+mutation DirectorateRemoveById($id: ObjectId!) {
+    DirectorateRemoveById(id: $id) {
+        _id
+        title
+    }
+}
+
+mutation DirectorateUpdateById($id: ObjectId!, $title: String!) {
+    DirectorateUpdateById(input: { title: $title }, id: $id) {
+        _id
+        title
+    }
+}

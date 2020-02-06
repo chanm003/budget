@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { Message } from 'semantic-ui-react';
+import { MessageBar, MessageBarType } from 'office-ui-fabric-react';
 
 const ErrorPage: React.FC = () => {
     const { state } = useLocation();
@@ -15,10 +15,16 @@ const ErrorPage: React.FC = () => {
     }
 
     return (
-        <Message negative>
-            <Message.Header>{header}</Message.Header>
+        <MessageBar
+            messageBarType={MessageBarType.error}
+            isMultiline={false}
+            dismissButtonAriaLabel="Close"
+            truncated={true}
+            overflowButtonAriaLabel="See more"
+        >
+            <b>{header}</b>
             <p>{errorMessage}</p>
-        </Message>
+        </MessageBar>
     );
 };
 

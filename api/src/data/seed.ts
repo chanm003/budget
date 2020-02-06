@@ -21,7 +21,7 @@ export async function seedDatabase() {
         role: roleNames.ADMIN,
     } as User).save();
 
-    await DirectorateModel.create([
+    const directorates = await DirectorateModel.create([
         {
             title: 'SOJ3',
             createdBy: defaultUser._id,
@@ -40,6 +40,7 @@ export async function seedDatabase() {
     ] as Directorate[]);
 
     return {
-        defaultUser: defaultUser,
+        user: defaultUser,
+        directorates,
     };
 }

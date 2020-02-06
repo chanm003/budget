@@ -1,16 +1,27 @@
 import React, { useEffect } from 'react';
 import { useToasts } from 'react-toast-notifications';
-import { Header } from 'semantic-ui-react';
 import { useParams, useHistory } from 'react-router-dom';
 
+import { Panel } from '../common/components/Panel/Panel';
 import { toastSettings } from '../core/layout/toaster/settings';
 import Form, { FormData } from './Form';
+
+import { routes } from '../../routes';
 import {
-    useDirectorateByIdLazyQuery,
-    useDirectorateCreateOneMutation,
-    useDirectorateUpdateByIdMutation,
-    DirectorateManyDocument,
+    useDirectorateByIdLazyQuery as useByIdLazyQuery,
+    useDirectorateCreateOneMutation as useCreateOneMutation,
+    useDirectorateUpdateByIdMutation as useUpdateByIdMutation,
+    DirectorateManyDocument as ManyDocument,
+    DirectorateByIdQuery as ByIdQuery,
+    DirectorateCreateOneMutation as CreateOneMutation,
 } from '../../generated/graphql';
+
+const parseCreateOneResponse = (data?: CreateOneMutation) =>
+    data?.DirectorateCreateOne;
+
+const parseByIdResponse = (data?: ByIdQuery) => data?.DirectorateById;
+
+const redirectToAllItemsPath = () => routes.DirectorateMany.path;
 
 const identifyEditableFields = (
     itemToEdit: Partial<FormData>,
@@ -26,9 +37,9 @@ const CreateOrEdit: React.FC = () => {
     const { id } = useParams();
     const history = useHistory();
     const { addToast } = useToasts();
-    const [createOne] = useDirectorateCreateOneMutation();
-    const [updateItem] = useDirectorateUpdateByIdMutation();
-    const [getById, { data }] = useDirectorateByIdLazyQuery({
+    const [createOne] = useCreateOneMutation();
+    const [updateItem] = useUpdateByIdMutation();
+    const [getById, { data }] = useByIdLazyQuery({
         variables: { id },
     });
 
@@ -42,9 +53,9 @@ const CreateOrEdit: React.FC = () => {
         if (!id) {
             const response = await createOne({
                 variables: { ...formData },
-                refetchQueries: [{ query: DirectorateManyDocument }],
+                refetchQueries: [{ query: ManyDocument }],
             });
-            const createdItem = response.data?.DirectorateCreateOne;
+            const createdItem = parseCreateOneResponse(response.data);
             if (createdItem) {
                 addToast(
                     `'${createdItem.title}' has been created.`,
@@ -58,27 +69,27 @@ const CreateOrEdit: React.FC = () => {
                 toastSettings.success,
             );
         }
-        history.push('/admin/directorates');
+        history.push(redirectToAllItemsPath());
     };
+
+    const itemToEdit = parseByIdResponse(data);
 
     if (!id) {
         return (
-            <div>
-                <Header as="h2">New Form</Header>
+            <Panel header="New Form">
                 <Form onSubmit={onSubmit} initialValues={{}} />
-            </div>
+            </Panel>
         );
-    } else if (id && data && data.DirectorateById) {
+    } else if (id && itemToEdit) {
         return (
-            <div>
-                <Header as="h2">Edit Form</Header>
+            <Panel header="Edit Form">
                 <Form
                     onSubmit={onSubmit}
                     initialValues={identifyEditableFields(
-                        data.DirectorateById as FormData,
+                        itemToEdit as FormData,
                     )}
                 />
-            </div>
+            </Panel>
         );
     } else {
         return null;

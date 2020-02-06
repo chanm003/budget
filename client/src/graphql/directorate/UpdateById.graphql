@@ -1,6 +1,0 @@
-mutation DirectorateUpdateById($id: ObjectId!, $title: String!) {
-    DirectorateUpdateById(input: { title: $title }, id: $id) {
-        _id
-        title
-    }
-}

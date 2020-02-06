@@ -1,6 +1,5 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { Header } from 'semantic-ui-react';
 import { useToasts } from 'react-toast-notifications';
 
 import { toastSettings } from '../core/layout/toaster/settings';
@@ -12,6 +11,7 @@ import {
 } from '../../generated/graphql';
 import { AuthenticationPayload } from '../../interfaces';
 import { FormData } from './Form';
+import { Panel } from '../common/components/Panel/Panel';
 
 const identifyEditableFields = (
     itemToEdit: Partial<FormData>,
@@ -55,15 +55,14 @@ const Edit: React.FC = () => {
     }
 
     return (
-        <div>
-            <Header as="h3">Edit User Profile</Header>
+        <Panel header="Edit User Profile">
             <Form
                 onSubmit={onSubmit}
                 initialValues={identifyEditableFields(
                     data.UserById as FormData,
                 )}
             />
-        </div>
+        </Panel>
     );
 };
 
