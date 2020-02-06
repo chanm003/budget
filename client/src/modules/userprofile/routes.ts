@@ -1,5 +1,5 @@
-import Edit from '../modules/userprofile/Edit';
-import { RouteDictionary } from '../interfaces';
+import Edit from './Edit';
+import { RouteDictionary } from '../../interfaces';
 
 const routeDictionary: RouteDictionary = {
     UserUpdateMyProfile: {

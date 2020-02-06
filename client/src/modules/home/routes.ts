@@ -1,5 +1,5 @@
-import Home from '../modules/home/Home';
-import { RouteDictionary } from '../interfaces';
+import Home from './Home';
+import { RouteDictionary } from '../../interfaces';
 
 // Home routes
 const routeDictionary: RouteDictionary = {

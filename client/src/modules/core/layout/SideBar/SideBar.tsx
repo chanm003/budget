@@ -1,5 +1,5 @@
 import React from 'react';
-import { routes } from '../../../../routes';
+import { routeConfig } from '../../../../combineRoutes';
 import { useLocation, useHistory } from 'react-router';
 import { Nav, INavLink } from 'office-ui-fabric-react/lib/Nav';
 
@@ -45,10 +45,13 @@ export const SideBar: React.FC = () => {
                             links: [
                                 {
                                     name: 'Directorates',
-                                    url: routes.DirectorateMany.path,
+                                    url:
+                                        routeConfig.DirectorateMany
+                                            .path,
                                     key: generateDynamicKeyBasedOnInclusion(
                                         pathname,
-                                        routes.DirectorateMany.path,
+                                        routeConfig.DirectorateMany
+                                            .path,
                                     ),
                                 },
                             ],

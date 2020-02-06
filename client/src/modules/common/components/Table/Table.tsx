@@ -17,7 +17,7 @@ import LoadingSegment from '../LoadingSegment/LoadingSegment';
 import Can from '../../../core/security/Can';
 import { useAuth } from '../../../core/authentication/authContext';
 import { User } from '../../../../generated/graphql';
-import { routes as routeConfig } from '../../../../routes';
+import { routeConfig } from '../../../../combineRoutes';
 
 function renderActionButtons(
     createItemOperationName: string,

@@ -1,13 +1,13 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 import AppLayout from './AppLayout/AppLayout';
-import { routes } from '../../../routes';
+import { routeConfig } from '../../../combineRoutes';
 import { AuthRoute } from '../security/AuthRoute';
 
 export default function App() {
     return (
         <AppLayout>
-            {Object.values(routes).map((route, index) => {
+            {Object.values(routeConfig).map((route, index) => {
                 const path =
                     typeof route.path === 'function'
                         ? route.path()

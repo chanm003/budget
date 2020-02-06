@@ -1,6 +1,6 @@
-import List from '../modules/directorate/List';
-import CreateOrEdit from '../modules/directorate/CreateOrEdit';
-import { RouteDictionary } from '../interfaces';
+import List from './List';
+import CreateOrEdit from './CreateOrEdit';
+import { RouteDictionary } from '../../interfaces';
 
 const resourceName = 'Directorate';
 const basePath = '/admin/directorates';

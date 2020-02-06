@@ -18,7 +18,7 @@ import {
     PersonaSize,
     PersonaInitialsColor,
 } from 'office-ui-fabric-react';
-import { routes } from '../../../../routes';
+import { routeConfig } from '../../../../combineRoutes';
 
 interface Props {
     onWaffleClicked: any;
@@ -40,7 +40,9 @@ const HeaderNav: React.FC<Props> = props => {
                     },
                 },
                 onClick: () =>
-                    history.push(routes.UserUpdateMyProfile.path),
+                    history.push(
+                        routeConfig.UserUpdateMyProfile.path,
+                    ),
             },
             {
                 key: 'logOut',

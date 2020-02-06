@@ -6,7 +6,7 @@ import { Panel } from '../common/components/Panel/Panel';
 import { toastSettings } from '../core/layout/toaster/settings';
 import Form, { FormData } from './Form';
 
-import { routes } from '../../routes';
+import { routeConfig } from '../../combineRoutes';
 import {
     useDirectorateByIdLazyQuery as useByIdLazyQuery,
     useDirectorateCreateOneMutation as useCreateOneMutation,
@@ -21,7 +21,7 @@ const parseCreateOneResponse = (data?: CreateOneMutation) =>
 
 const parseByIdResponse = (data?: ByIdQuery) => data?.DirectorateById;
 
-const redirectToAllItemsPath = () => routes.DirectorateMany.path;
+const redirectToAllItemsPath = () => routeConfig.DirectorateMany.path;
 
 const identifyEditableFields = (
     itemToEdit: Partial<FormData>,

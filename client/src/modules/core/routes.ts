@@ -1,7 +1,7 @@
-import Login from '../modules/core/authentication/Login';
-import Logout from '../modules/core/authentication/Logout';
-import ErrorPage from '../modules/core/layout/Error';
-import { RouteDictionary } from '../interfaces';
+import Login from './authentication/Login';
+import Logout from './authentication/Logout';
+import ErrorPage from './layout/Error';
+import { RouteDictionary } from '../../interfaces';
 
 // Home routes
 const routeDictionary: RouteDictionary = {
