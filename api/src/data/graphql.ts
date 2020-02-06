@@ -7,8 +7,7 @@ import { applyMiddleware } from 'graphql-middleware';
 
 const { roleNames } = require('shared');
 
-import { DirectorateResolver } from './entities/directorate/resolver';
-import { UserResolver } from './entities/user/resolver';
+import { combinedResolvers } from './combineResolvers';
 import { TypegooseMiddleware } from './typegoose-middleware';
 import { ObjectIdScalar } from './object-id.scalar';
 import { verifyToken } from '../config/jwt';
@@ -31,10 +30,11 @@ const parseUserFromRequest = (req: Request) => {
 export const generateSchema = async () => {
     const locationForGeneratedFile = path.resolve(
         __dirname,
+        'generated',
         'schema.gql',
     );
     const schema = await buildSchema({
-        resolvers: [DirectorateResolver, UserResolver],
+        resolvers: combinedResolvers,
         dateScalarMode: 'isoDate',
         emitSchemaFile: locationForGeneratedFile,
         globalMiddlewares: [TypegooseMiddleware],
