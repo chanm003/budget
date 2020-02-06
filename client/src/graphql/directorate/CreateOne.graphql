@@ -1,6 +1,0 @@
-mutation DirectorateCreateOne($title: String!) {
-    DirectorateCreateOne(input: { title: $title }) {
-        _id
-        title
-    }
-}

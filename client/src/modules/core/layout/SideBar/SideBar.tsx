@@ -45,12 +45,11 @@ export const SideBar: React.FC = () => {
                             links: [
                                 {
                                     name: 'Directorates',
-                                    url: routes.directorateList.path,
-                                    key: pathname.includes(
-                                        routes.directorateList.path,
-                                    )
-                                        ? pathname
-                                        : routes.directorateList.path,
+                                    url: routes.DirectorateMany.path,
+                                    key: generateDynamicKeyBasedOnInclusion(
+                                        pathname,
+                                        routes.DirectorateMany.path,
+                                    ),
                                 },
                             ],
                             isExpanded: true,
@@ -60,4 +59,13 @@ export const SideBar: React.FC = () => {
             ]}
         />
     );
+};
+
+const generateDynamicKeyBasedOnInclusion = (
+    pathname: string,
+    basePathForResource: string,
+): string => {
+    return pathname.includes(basePathForResource)
+        ? pathname
+        : basePathForResource;
 };

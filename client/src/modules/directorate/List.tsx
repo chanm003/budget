@@ -2,20 +2,33 @@ import React from 'react';
 import moment from 'moment';
 import { IColumn } from 'office-ui-fabric-react';
 import { useToasts } from 'react-toast-notifications';
+
 import { toastSettings } from '../core/layout/toaster/settings';
-import routeConfig from '../../routes/directorate';
-import {
-    useDirectorateManyQuery,
-    useDirectorateRemoveByIdMutation,
-    Directorate,
-    DirectorateManyDocument,
-} from '../../generated/graphql';
 import ItemsTabular from '../common/components/Table/Table';
+import {
+    useDirectorateManyQuery as useManyQuery,
+    useDirectorateRemoveByIdMutation as useRemoveByIdMutation,
+    Directorate as ItemType,
+    DirectorateManyDocument as ManyDocument,
+    DirectorateManyQuery as ManyQuery,
+    DirectorateRemoveByIdMutation as RemoveByIdMutation,
+} from '../../generated/graphql';
+
+const resourceName = 'Directorate';
+const resourceNamePlural = 'Directorates';
+const parseManyResponse = (data?: ManyQuery): ItemType[] => {
+    return (data?.DirectorateMany as ItemType[]) || [];
+};
+const parseRemoveByIdResponse = (
+    data?: RemoveByIdMutation,
+): ItemType | undefined => {
+    return data?.DirectorateRemoveById as ItemType;
+};
 
 export default function() {
     const { addToast } = useToasts();
-    const { loading, data } = useDirectorateManyQuery();
-    const [deleteItem] = useDirectorateRemoveByIdMutation();
+    const { loading, data } = useManyQuery();
+    const [deleteItem] = useRemoveByIdMutation();
 
     const columns: IColumn[] = [
         {
@@ -35,7 +48,7 @@ export default function() {
             minWidth: 160,
             maxWidth: 180,
             isResizable: true,
-            onRender: ({ updatedAt }: Directorate) => {
+            onRender: ({ updatedAt }: ItemType) => {
                 return <span>{moment(updatedAt).format('LLL')}</span>;
             },
             isPadded: true,
@@ -50,7 +63,7 @@ export default function() {
             isCollapsible: true,
             onRender: ({
                 updatedBy: { firstName, lastName },
-            }: Directorate) => {
+            }: ItemType) => {
                 return <span>{`${firstName} ${lastName}`}</span>;
             },
             isPadded: true,
@@ -60,10 +73,10 @@ export default function() {
     const onDeleteClicked = async (guid: string) => {
         const result = await deleteItem({
             variables: { id: guid },
-            refetchQueries: [{ query: DirectorateManyDocument }],
+            refetchQueries: [{ query: ManyDocument }],
         });
 
-        const removedItem = result.data?.DirectorateRemoveById;
+        const removedItem = parseRemoveByIdResponse(result.data);
         if (removedItem) {
             addToast(
                 `'${removedItem.title}' has been deleted.`,
@@ -72,20 +85,14 @@ export default function() {
         }
     };
 
-    const items = (data?.DirectorateMany as Directorate[]) || [];
+    const items = parseManyResponse(data);
 
     return (
-        <ItemsTabular<Directorate>
+        <ItemsTabular<ItemType>
             items={items}
             columns={columns}
-            heading="Directorates"
-            createItemOperationName="DirectorateCreateOne"
-            createItemPath={routeConfig.directorateCreate.path}
-            editItemPath={item =>
-                routeConfig.directorateEdit.path(item._id)
-            }
-            onEditItemPermissions="DirectorateUpdateById"
-            onDeleteItemPermissions="DirectorateRemoveById"
+            resourceName={resourceName}
+            resourceNamePlural={resourceNamePlural}
             onDeleteClicked={onDeleteClicked}
             deleteDialogState={item => ({
                 visible: true,

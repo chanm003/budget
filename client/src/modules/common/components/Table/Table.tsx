@@ -17,6 +17,7 @@ import LoadingSegment from '../LoadingSegment/LoadingSegment';
 import Can from '../../../core/security/Can';
 import { useAuth } from '../../../core/authentication/authContext';
 import { User } from '../../../../generated/graphql';
+import { routes as routeConfig } from '../../../../routes';
 
 function renderActionButtons(
     createItemOperationName: string,
@@ -39,21 +40,21 @@ function renderActionButtons(
     );
 }
 
-interface Props<T> {
+interface IMongoItem {
+    _id: string;
+}
+
+interface Props<T extends IMongoItem> {
     items: T[];
     columns: IColumn[];
-    heading: string;
-    createItemOperationName: string;
-    createItemPath: string;
-    editItemPath: (item: T) => string;
     isLoading: boolean;
     onDeleteClicked: any;
-    onEditItemPermissions: string;
-    onDeleteItemPermissions: string;
+    resourceName: string;
+    resourceNamePlural: string;
     deleteDialogState: (item: T) => DeleteDialogState;
 }
 
-const ItemsTable = <T extends object>(
+const ItemsTable = <T extends IMongoItem>(
     props: Props<T> & { children?: ReactNode },
 ) => {
     const initialDialogState = {
@@ -68,16 +69,12 @@ const ItemsTable = <T extends object>(
     const { user } = useAuth();
     const history = useHistory();
     const {
-        heading,
+        resourceNamePlural,
         columns,
         items,
         isLoading,
         onDeleteClicked,
-        createItemOperationName,
-        createItemPath,
-        editItemPath,
-        onEditItemPermissions,
-        onDeleteItemPermissions,
+        resourceName,
     } = props;
 
     const closeDeleteDialog = () =>
@@ -99,10 +96,14 @@ const ItemsTable = <T extends object>(
         onRender: (item: T) => {
             return (
                 <ActionsButton
-                    onEditItemPermissions={onEditItemPermissions}
-                    onDeleteItemPermissions={onDeleteItemPermissions}
+                    onEditItemPermissions={`${resourceName}UpdateById`}
+                    onDeleteItemPermissions={`${resourceName}RemoveById`}
                     onEditItemClicked={() => {
-                        history.push(editItemPath(item));
+                        history.push(
+                            routeConfig[
+                                `${resourceName}UpdateById`
+                            ].path((item as IMongoItem)._id),
+                        );
                     }}
                     onDeleteItemClicked={() => {
                         showDeleteDialog(item);
@@ -114,10 +115,10 @@ const ItemsTable = <T extends object>(
 
     return (
         <LoadingSegment
-            heading={heading}
+            heading={resourceNamePlural}
             headingActions={renderActionButtons(
-                createItemOperationName,
-                createItemPath,
+                `${resourceName}CreateOne`,
+                routeConfig[`${resourceName}CreateOne`].path,
                 user,
             )}
             isLoading={isLoading}

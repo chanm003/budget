@@ -33,13 +33,14 @@ const CustomForm: React.FC<Props> = props => {
         defaultValues: props.initialValues,
     });
 
-    const formErrors = errors as FormErrors;
-
     useEffect(() => {
         register({ name: 'firstName' });
         register({ name: 'lastName' });
         register({ name: 'email' });
     }, [register]);
+
+    const formErrors = errors as FormErrors;
+
     return (
         <React.Fragment>
             <form
@@ -114,7 +115,7 @@ const CustomForm: React.FC<Props> = props => {
                     </Stack>
                 </Stack>
                 <br />
-                <PrimaryButton type="submit" text="Submit" />
+                <PrimaryButton type="submit" text="Save" />
             </form>
         </React.Fragment>
     );

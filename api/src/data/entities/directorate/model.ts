@@ -1,6 +1,6 @@
 import { prop as Property, Typegoose } from 'typegoose';
 import { ObjectId } from 'mongodb';
-import { Field, ObjectType } from 'type-graphql';
+import { Field, InputType, ObjectType } from 'type-graphql';
 
 import { User } from '../user/model';
 import { Ref } from '../../../types';
@@ -35,3 +35,9 @@ export const DirectorateModel = new Directorate().getModelForClass(
     Directorate,
     { schemaOptions: { timestamps: true } },
 );
+
+@InputType()
+export class DirectorateInput implements Partial<Directorate> {
+    @Field()
+    title: string;
+}

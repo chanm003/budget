@@ -9,9 +9,12 @@ import {
     Ctx,
 } from 'type-graphql';
 
-import { Directorate, DirectorateModel } from './model';
+import {
+    Directorate,
+    DirectorateModel,
+    DirectorateInput,
+} from './model';
 import { User, UserModel } from '../user/model';
-import { DirectorateInput } from './input';
 import { Context } from '../../../types';
 import { ObjectIdScalar } from '../../object-id.scalar';
 

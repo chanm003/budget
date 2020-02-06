@@ -1,20 +1,27 @@
 import React, { useEffect } from 'react';
-import { Form, Button } from 'semantic-ui-react';
 import { useForm } from 'react-hook-form';
+import {
+    Stack,
+    TextField,
+    PrimaryButton,
+} from 'office-ui-fabric-react';
 import { validationSchemas } from 'shared';
 
-import { handleValueChange, FormError } from '../common/formHelpers';
 import {
-    DirectorateUpdateByIdMutationVariables,
-    DirectorateCreateOneMutationVariables,
+    handleTextFieldChange,
+    FormErrors,
+} from '../common/formHelpers';
+import {
+    DirectorateUpdateByIdMutationVariables as UpdateByIdMutationVariables,
+    DirectorateCreateOneMutationVariables as CreateOneMutationVariables,
 } from '../../generated/graphql';
 
 const validationSchema =
     validationSchemas.Directorate.yupSchemas.defaultSchema;
 
 export type FormData =
-    | DirectorateCreateOneMutationVariables
-    | DirectorateUpdateByIdMutationVariables;
+    | CreateOneMutationVariables
+    | UpdateByIdMutationVariables;
 
 interface Props {
     initialValues: Partial<FormData>;
@@ -37,32 +44,42 @@ const CustomForm: React.FC<Props> = props => {
         register({ name: 'title' });
     }, [register]);
 
+    const formErrors = errors as FormErrors;
+
     return (
         <React.Fragment>
-            <Form
-                className="attached fluid segment"
+            <form
                 onSubmit={handleSubmit(data =>
                     props.onSubmit(data as FormData),
                 )}
             >
-                <Form.Group widths="equal">
-                    <Form.Input
-                        name="title"
-                        fluid
-                        defaultValue={props.initialValues.title}
-                        label="Title"
-                        placeholder="Title"
-                        autoComplete="off"
-                        onChange={handleValueChange(
-                            setValue,
-                            triggerValidation,
-                        )}
-                        error={errors.title ? true : false}
-                    />
-                </Form.Group>
-                <Button type="submit">Submit</Button>
-            </Form>
-            <FormError errors={errors} />
+                <Stack tokens={{ childrenGap: 10 }}>
+                    <Stack horizontal tokens={{ childrenGap: 20 }}>
+                        <Stack.Item grow>
+                            <TextField
+                                name="title"
+                                defaultValue={
+                                    props.initialValues.title
+                                }
+                                label="Title"
+                                placeholder="Title"
+                                autoComplete="off"
+                                onChange={handleTextFieldChange(
+                                    setValue,
+                                    triggerValidation,
+                                )}
+                                errorMessage={
+                                    formErrors.title
+                                        ? formErrors.title.message
+                                        : ''
+                                }
+                            />
+                        </Stack.Item>
+                    </Stack>
+                </Stack>
+                <br />
+                <PrimaryButton type="submit" text="Save" />
+            </form>
         </React.Fragment>
     );
 };

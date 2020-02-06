@@ -1,6 +1,0 @@
-query DirectorateById($id: ObjectId!) {
-    DirectorateById(id: $id) {
-        _id
-        title
-    }
-}
