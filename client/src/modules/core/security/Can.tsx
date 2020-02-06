@@ -25,16 +25,29 @@ interface SecurityLookup {
     [key: string]: (user: User, data: any) => boolean;
 }
 
-const Can: React.FC<Props> = props => {
-    const checkPermissions = operationsSecurity[props.operationName];
-    const hasPermissions =
-        checkPermissions && checkPermissions(props.user, props.data);
+const Can: React.FC<Props> = ({
+    user,
+    data,
+    operationName,
+    yes,
+    no,
+}) => {
+    const shouldShow = hasPermissions(user, operationName, data);
 
-    if (hasPermissions) {
-        return props.yes();
+    if (shouldShow) {
+        return yes();
     } else {
-        return props.no ? props.no() : null;
+        return no ? no() : null;
     }
+};
+
+export const hasPermissions = (
+    user: User,
+    operationName: string,
+    data?: any,
+) => {
+    const checkPermissions = operationsSecurity[operationName];
+    return checkPermissions && checkPermissions(user, data);
 };
 
 export default Can;

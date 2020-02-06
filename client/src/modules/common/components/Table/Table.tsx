@@ -48,6 +48,8 @@ interface Props<T> {
     editItemPath: (item: T) => string;
     isLoading: boolean;
     onDeleteClicked: any;
+    onEditItemPermissions: string;
+    onDeleteItemPermissions: string;
     deleteDialogState: (item: T) => DeleteDialogState;
 }
 
@@ -74,6 +76,8 @@ const ItemsTable = <T extends object>(
         createItemOperationName,
         createItemPath,
         editItemPath,
+        onEditItemPermissions,
+        onDeleteItemPermissions,
     } = props;
 
     const closeDeleteDialog = () =>
@@ -95,6 +99,8 @@ const ItemsTable = <T extends object>(
         onRender: (item: T) => {
             return (
                 <ActionsButton
+                    onEditItemPermissions={onEditItemPermissions}
+                    onDeleteItemPermissions={onDeleteItemPermissions}
                     onEditItemClicked={() => {
                         history.push(editItemPath(item));
                     }}

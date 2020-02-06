@@ -1,19 +1,15 @@
-.segment {
-    overflow: hidden;
-}
-
-.segment .heading {
+.heading {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.segment .heading .headerText {
+.heading .headerText {
     margin: 0;
     padding: 0;
 }
 
-.segment .heading .actions {
+.heading .actions {
     display: flex;
     margin-left: 10px;
 }

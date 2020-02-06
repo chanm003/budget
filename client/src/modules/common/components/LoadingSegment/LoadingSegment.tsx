@@ -16,7 +16,10 @@ const LoadingSegment: React.FC<Props> = props => {
     ];
     return (
         <Panel header={props.heading}>
-            <div className="actions">{props.headingActions}</div>
+            <div className="heading">
+                <div className="headerTex"></div>
+                <div className="actions">{props.headingActions}</div>
+            </div>
             <Dimmer className={dimmerClasses.join(' ')}>
                 <Loader>Loading</Loader>
             </Dimmer>

@@ -84,6 +84,8 @@ export default function() {
             editItemPath={item =>
                 routeConfig.directorateEdit.path(item._id)
             }
+            onEditItemPermissions="DirectorateUpdateById"
+            onDeleteItemPermissions="DirectorateRemoveById"
             onDeleteClicked={onDeleteClicked}
             deleteDialogState={item => ({
                 visible: true,
