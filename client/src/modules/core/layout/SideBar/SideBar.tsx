@@ -66,6 +66,17 @@ export const SideBar: React.FC = () => {
                                     ),
                                 },
                                 {
+                                    name: 'Expenditure Types',
+                                    url:
+                                        routeConfig
+                                            .ExpenditureTypeMany.path,
+                                    key: generateDynamicKeyBasedOnInclusion(
+                                        pathname,
+                                        routeConfig
+                                            .ExpenditureTypeMany.path,
+                                    ),
+                                },
+                                {
                                     name: 'MFP Indicators',
                                     url:
                                         routeConfig.MfpIndicatorMany
