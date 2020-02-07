@@ -54,6 +54,14 @@ export const SideBar: React.FC = () => {
                                             .path,
                                     ),
                                 },
+                                {
+                                    name: 'Programs',
+                                    url: routeConfig.ProgramMany.path,
+                                    key: generateDynamicKeyBasedOnInclusion(
+                                        pathname,
+                                        routeConfig.ProgramMany.path,
+                                    ),
+                                },
                             ],
                             isExpanded: true,
                         },

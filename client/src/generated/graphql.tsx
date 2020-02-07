@@ -52,6 +52,9 @@ export type Mutation = {
   DirectorateCreateOne: Directorate,
   DirectorateUpdateById?: Maybe<Directorate>,
   DirectorateRemoveById?: Maybe<Directorate>,
+  ProgramCreateOne: Program,
+  ProgramUpdateById?: Maybe<Program>,
+  ProgramRemoveById?: Maybe<Program>,
   UserUpdateMyProfile?: Maybe<UpdateMyProfileResult>,
 };
 
@@ -72,20 +75,57 @@ export type MutationDirectorateRemoveByIdArgs = {
 };
 
 
+export type MutationProgramCreateOneArgs = {
+  input: ProgramInput
+};
+
+
+export type MutationProgramUpdateByIdArgs = {
+  input: ProgramInput,
+  id: Scalars['ObjectId']
+};
+
+
+export type MutationProgramRemoveByIdArgs = {
+  id: Scalars['ObjectId']
+};
+
+
 export type MutationUserUpdateMyProfileArgs = {
   input: UserInput
 };
 
 
+export type Program = {
+   __typename?: 'Program',
+  _id: Scalars['ObjectId'],
+  title: Scalars['String'],
+  createdAt: Scalars['DateTime'],
+  createdBy: User,
+  updatedAt: Scalars['DateTime'],
+  updatedBy: User,
+};
+
+export type ProgramInput = {
+  title: Scalars['String'],
+};
+
 export type Query = {
    __typename?: 'Query',
   DirectorateById?: Maybe<Directorate>,
   DirectorateMany: Array<Directorate>,
+  ProgramById?: Maybe<Program>,
+  ProgramMany: Array<Program>,
   UserById?: Maybe<User>,
 };
 
 
 export type QueryDirectorateByIdArgs = {
+  id: Scalars['ObjectId']
+};
+
+
+export type QueryProgramByIdArgs = {
   id: Scalars['ObjectId']
 };
 
@@ -185,6 +225,74 @@ export type DirectorateUpdateByIdMutation = (
   & { DirectorateUpdateById: Maybe<(
     { __typename?: 'Directorate' }
     & Pick<Directorate, '_id' | 'title'>
+  )> }
+);
+
+export type ProgramByIdQueryVariables = {
+  id: Scalars['ObjectId']
+};
+
+
+export type ProgramByIdQuery = (
+  { __typename?: 'Query' }
+  & { ProgramById: Maybe<(
+    { __typename?: 'Program' }
+    & Pick<Program, '_id' | 'title'>
+  )> }
+);
+
+export type ProgramManyQueryVariables = {};
+
+
+export type ProgramManyQuery = (
+  { __typename?: 'Query' }
+  & { ProgramMany: Array<(
+    { __typename?: 'Program' }
+    & Pick<Program, '_id' | 'title' | 'updatedAt'>
+    & { updatedBy: (
+      { __typename?: 'User' }
+      & Pick<User, '_id' | 'firstName' | 'lastName'>
+    ) }
+  )> }
+);
+
+export type ProgramCreateOneMutationVariables = {
+  title: Scalars['String']
+};
+
+
+export type ProgramCreateOneMutation = (
+  { __typename?: 'Mutation' }
+  & { ProgramCreateOne: (
+    { __typename?: 'Program' }
+    & Pick<Program, '_id' | 'title'>
+  ) }
+);
+
+export type ProgramRemoveByIdMutationVariables = {
+  id: Scalars['ObjectId']
+};
+
+
+export type ProgramRemoveByIdMutation = (
+  { __typename?: 'Mutation' }
+  & { ProgramRemoveById: Maybe<(
+    { __typename?: 'Program' }
+    & Pick<Program, '_id' | 'title'>
+  )> }
+);
+
+export type ProgramUpdateByIdMutationVariables = {
+  id: Scalars['ObjectId'],
+  title: Scalars['String']
+};
+
+
+export type ProgramUpdateByIdMutation = (
+  { __typename?: 'Mutation' }
+  & { ProgramUpdateById: Maybe<(
+    { __typename?: 'Program' }
+    & Pick<Program, '_id' | 'title'>
   )> }
 );
 
@@ -479,6 +587,264 @@ export function useDirectorateUpdateByIdMutation(baseOptions?: ApolloReactHooks.
 export type DirectorateUpdateByIdMutationHookResult = ReturnType<typeof useDirectorateUpdateByIdMutation>;
 export type DirectorateUpdateByIdMutationResult = ApolloReactCommon.MutationResult<DirectorateUpdateByIdMutation>;
 export type DirectorateUpdateByIdMutationOptions = ApolloReactCommon.BaseMutationOptions<DirectorateUpdateByIdMutation, DirectorateUpdateByIdMutationVariables>;
+export const ProgramByIdDocument = gql`
+    query ProgramById($id: ObjectId!) {
+  ProgramById(id: $id) {
+    _id
+    title
+  }
+}
+    `;
+export type ProgramByIdComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<ProgramByIdQuery, ProgramByIdQueryVariables>, 'query'> & ({ variables: ProgramByIdQueryVariables; skip?: boolean; } | { skip: boolean; });
+
+    export const ProgramByIdComponent = (props: ProgramByIdComponentProps) => (
+      <ApolloReactComponents.Query<ProgramByIdQuery, ProgramByIdQueryVariables> query={ProgramByIdDocument} {...props} />
+    );
+    
+export type ProgramByIdProps<TChildProps = {}> = ApolloReactHoc.DataProps<ProgramByIdQuery, ProgramByIdQueryVariables> & TChildProps;
+export function withProgramById<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  ProgramByIdQuery,
+  ProgramByIdQueryVariables,
+  ProgramByIdProps<TChildProps>>) {
+    return ApolloReactHoc.withQuery<TProps, ProgramByIdQuery, ProgramByIdQueryVariables, ProgramByIdProps<TChildProps>>(ProgramByIdDocument, {
+      alias: 'programById',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useProgramByIdQuery__
+ *
+ * To run a query within a React component, call `useProgramByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProgramByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProgramByIdQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useProgramByIdQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<ProgramByIdQuery, ProgramByIdQueryVariables>) {
+        return ApolloReactHooks.useQuery<ProgramByIdQuery, ProgramByIdQueryVariables>(ProgramByIdDocument, baseOptions);
+      }
+export function useProgramByIdLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<ProgramByIdQuery, ProgramByIdQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<ProgramByIdQuery, ProgramByIdQueryVariables>(ProgramByIdDocument, baseOptions);
+        }
+export type ProgramByIdQueryHookResult = ReturnType<typeof useProgramByIdQuery>;
+export type ProgramByIdLazyQueryHookResult = ReturnType<typeof useProgramByIdLazyQuery>;
+export type ProgramByIdQueryResult = ApolloReactCommon.QueryResult<ProgramByIdQuery, ProgramByIdQueryVariables>;
+export const ProgramManyDocument = gql`
+    query ProgramMany {
+  ProgramMany {
+    _id
+    title
+    updatedAt
+    updatedBy {
+      _id
+      firstName
+      lastName
+    }
+  }
+}
+    `;
+export type ProgramManyComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<ProgramManyQuery, ProgramManyQueryVariables>, 'query'>;
+
+    export const ProgramManyComponent = (props: ProgramManyComponentProps) => (
+      <ApolloReactComponents.Query<ProgramManyQuery, ProgramManyQueryVariables> query={ProgramManyDocument} {...props} />
+    );
+    
+export type ProgramManyProps<TChildProps = {}> = ApolloReactHoc.DataProps<ProgramManyQuery, ProgramManyQueryVariables> & TChildProps;
+export function withProgramMany<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  ProgramManyQuery,
+  ProgramManyQueryVariables,
+  ProgramManyProps<TChildProps>>) {
+    return ApolloReactHoc.withQuery<TProps, ProgramManyQuery, ProgramManyQueryVariables, ProgramManyProps<TChildProps>>(ProgramManyDocument, {
+      alias: 'programMany',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useProgramManyQuery__
+ *
+ * To run a query within a React component, call `useProgramManyQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProgramManyQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProgramManyQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useProgramManyQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<ProgramManyQuery, ProgramManyQueryVariables>) {
+        return ApolloReactHooks.useQuery<ProgramManyQuery, ProgramManyQueryVariables>(ProgramManyDocument, baseOptions);
+      }
+export function useProgramManyLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<ProgramManyQuery, ProgramManyQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<ProgramManyQuery, ProgramManyQueryVariables>(ProgramManyDocument, baseOptions);
+        }
+export type ProgramManyQueryHookResult = ReturnType<typeof useProgramManyQuery>;
+export type ProgramManyLazyQueryHookResult = ReturnType<typeof useProgramManyLazyQuery>;
+export type ProgramManyQueryResult = ApolloReactCommon.QueryResult<ProgramManyQuery, ProgramManyQueryVariables>;
+export const ProgramCreateOneDocument = gql`
+    mutation ProgramCreateOne($title: String!) {
+  ProgramCreateOne(input: {title: $title}) {
+    _id
+    title
+  }
+}
+    `;
+export type ProgramCreateOneMutationFn = ApolloReactCommon.MutationFunction<ProgramCreateOneMutation, ProgramCreateOneMutationVariables>;
+export type ProgramCreateOneComponentProps = Omit<ApolloReactComponents.MutationComponentOptions<ProgramCreateOneMutation, ProgramCreateOneMutationVariables>, 'mutation'>;
+
+    export const ProgramCreateOneComponent = (props: ProgramCreateOneComponentProps) => (
+      <ApolloReactComponents.Mutation<ProgramCreateOneMutation, ProgramCreateOneMutationVariables> mutation={ProgramCreateOneDocument} {...props} />
+    );
+    
+export type ProgramCreateOneProps<TChildProps = {}> = ApolloReactHoc.MutateProps<ProgramCreateOneMutation, ProgramCreateOneMutationVariables> & TChildProps;
+export function withProgramCreateOne<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  ProgramCreateOneMutation,
+  ProgramCreateOneMutationVariables,
+  ProgramCreateOneProps<TChildProps>>) {
+    return ApolloReactHoc.withMutation<TProps, ProgramCreateOneMutation, ProgramCreateOneMutationVariables, ProgramCreateOneProps<TChildProps>>(ProgramCreateOneDocument, {
+      alias: 'programCreateOne',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useProgramCreateOneMutation__
+ *
+ * To run a mutation, you first call `useProgramCreateOneMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useProgramCreateOneMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [programCreateOneMutation, { data, loading, error }] = useProgramCreateOneMutation({
+ *   variables: {
+ *      title: // value for 'title'
+ *   },
+ * });
+ */
+export function useProgramCreateOneMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ProgramCreateOneMutation, ProgramCreateOneMutationVariables>) {
+        return ApolloReactHooks.useMutation<ProgramCreateOneMutation, ProgramCreateOneMutationVariables>(ProgramCreateOneDocument, baseOptions);
+      }
+export type ProgramCreateOneMutationHookResult = ReturnType<typeof useProgramCreateOneMutation>;
+export type ProgramCreateOneMutationResult = ApolloReactCommon.MutationResult<ProgramCreateOneMutation>;
+export type ProgramCreateOneMutationOptions = ApolloReactCommon.BaseMutationOptions<ProgramCreateOneMutation, ProgramCreateOneMutationVariables>;
+export const ProgramRemoveByIdDocument = gql`
+    mutation ProgramRemoveById($id: ObjectId!) {
+  ProgramRemoveById(id: $id) {
+    _id
+    title
+  }
+}
+    `;
+export type ProgramRemoveByIdMutationFn = ApolloReactCommon.MutationFunction<ProgramRemoveByIdMutation, ProgramRemoveByIdMutationVariables>;
+export type ProgramRemoveByIdComponentProps = Omit<ApolloReactComponents.MutationComponentOptions<ProgramRemoveByIdMutation, ProgramRemoveByIdMutationVariables>, 'mutation'>;
+
+    export const ProgramRemoveByIdComponent = (props: ProgramRemoveByIdComponentProps) => (
+      <ApolloReactComponents.Mutation<ProgramRemoveByIdMutation, ProgramRemoveByIdMutationVariables> mutation={ProgramRemoveByIdDocument} {...props} />
+    );
+    
+export type ProgramRemoveByIdProps<TChildProps = {}> = ApolloReactHoc.MutateProps<ProgramRemoveByIdMutation, ProgramRemoveByIdMutationVariables> & TChildProps;
+export function withProgramRemoveById<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  ProgramRemoveByIdMutation,
+  ProgramRemoveByIdMutationVariables,
+  ProgramRemoveByIdProps<TChildProps>>) {
+    return ApolloReactHoc.withMutation<TProps, ProgramRemoveByIdMutation, ProgramRemoveByIdMutationVariables, ProgramRemoveByIdProps<TChildProps>>(ProgramRemoveByIdDocument, {
+      alias: 'programRemoveById',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useProgramRemoveByIdMutation__
+ *
+ * To run a mutation, you first call `useProgramRemoveByIdMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useProgramRemoveByIdMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [programRemoveByIdMutation, { data, loading, error }] = useProgramRemoveByIdMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useProgramRemoveByIdMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ProgramRemoveByIdMutation, ProgramRemoveByIdMutationVariables>) {
+        return ApolloReactHooks.useMutation<ProgramRemoveByIdMutation, ProgramRemoveByIdMutationVariables>(ProgramRemoveByIdDocument, baseOptions);
+      }
+export type ProgramRemoveByIdMutationHookResult = ReturnType<typeof useProgramRemoveByIdMutation>;
+export type ProgramRemoveByIdMutationResult = ApolloReactCommon.MutationResult<ProgramRemoveByIdMutation>;
+export type ProgramRemoveByIdMutationOptions = ApolloReactCommon.BaseMutationOptions<ProgramRemoveByIdMutation, ProgramRemoveByIdMutationVariables>;
+export const ProgramUpdateByIdDocument = gql`
+    mutation ProgramUpdateById($id: ObjectId!, $title: String!) {
+  ProgramUpdateById(input: {title: $title}, id: $id) {
+    _id
+    title
+  }
+}
+    `;
+export type ProgramUpdateByIdMutationFn = ApolloReactCommon.MutationFunction<ProgramUpdateByIdMutation, ProgramUpdateByIdMutationVariables>;
+export type ProgramUpdateByIdComponentProps = Omit<ApolloReactComponents.MutationComponentOptions<ProgramUpdateByIdMutation, ProgramUpdateByIdMutationVariables>, 'mutation'>;
+
+    export const ProgramUpdateByIdComponent = (props: ProgramUpdateByIdComponentProps) => (
+      <ApolloReactComponents.Mutation<ProgramUpdateByIdMutation, ProgramUpdateByIdMutationVariables> mutation={ProgramUpdateByIdDocument} {...props} />
+    );
+    
+export type ProgramUpdateByIdProps<TChildProps = {}> = ApolloReactHoc.MutateProps<ProgramUpdateByIdMutation, ProgramUpdateByIdMutationVariables> & TChildProps;
+export function withProgramUpdateById<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  ProgramUpdateByIdMutation,
+  ProgramUpdateByIdMutationVariables,
+  ProgramUpdateByIdProps<TChildProps>>) {
+    return ApolloReactHoc.withMutation<TProps, ProgramUpdateByIdMutation, ProgramUpdateByIdMutationVariables, ProgramUpdateByIdProps<TChildProps>>(ProgramUpdateByIdDocument, {
+      alias: 'programUpdateById',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useProgramUpdateByIdMutation__
+ *
+ * To run a mutation, you first call `useProgramUpdateByIdMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useProgramUpdateByIdMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [programUpdateByIdMutation, { data, loading, error }] = useProgramUpdateByIdMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      title: // value for 'title'
+ *   },
+ * });
+ */
+export function useProgramUpdateByIdMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ProgramUpdateByIdMutation, ProgramUpdateByIdMutationVariables>) {
+        return ApolloReactHooks.useMutation<ProgramUpdateByIdMutation, ProgramUpdateByIdMutationVariables>(ProgramUpdateByIdDocument, baseOptions);
+      }
+export type ProgramUpdateByIdMutationHookResult = ReturnType<typeof useProgramUpdateByIdMutation>;
+export type ProgramUpdateByIdMutationResult = ApolloReactCommon.MutationResult<ProgramUpdateByIdMutation>;
+export type ProgramUpdateByIdMutationOptions = ApolloReactCommon.BaseMutationOptions<ProgramUpdateByIdMutation, ProgramUpdateByIdMutationVariables>;
 export const UserByIdDocument = gql`
     query UserById($id: ObjectId!) {
   UserById(id: $id) {

@@ -1,0 +1,40 @@
+query ProgramById($id: ObjectId!) {
+    ProgramById(id: $id) {
+        _id
+        title
+    }
+}
+
+query ProgramMany {
+    ProgramMany {
+        _id
+        title
+        updatedAt
+        updatedBy {
+            _id
+            firstName
+            lastName
+        }
+    }
+}
+
+mutation ProgramCreateOne($title: String!) {
+    ProgramCreateOne(input: { title: $title }) {
+        _id
+        title
+    }
+}
+
+mutation ProgramRemoveById($id: ObjectId!) {
+    ProgramRemoveById(id: $id) {
+        _id
+        title
+    }
+}
+
+mutation ProgramUpdateById($id: ObjectId!, $title: String!) {
+    ProgramUpdateById(input: { title: $title }, id: $id) {
+        _id
+        title
+    }
+}

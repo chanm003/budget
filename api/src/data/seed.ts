@@ -14,10 +14,12 @@ const chance = new Chance();
 export async function seedDatabase() {
     const defaultUser = await createFirstUser();
     const directorates = await createDirectorates(defaultUser);
+    const programs = await createPrograms(defaultUser);
 
     return {
         user: defaultUser,
         directorates,
+        programs,
     };
 }
 
@@ -53,4 +55,18 @@ async function createFirstUser() {
         },
         role: roleNames.ADMIN,
     } as User).save();
+}
+
+async function createPrograms(user: User) {
+    let itemsToCreate: Partial<Program>[] = [];
+
+    _.times(3, () => {
+        itemsToCreate.push({
+            title: `Program-${chance.radio()}`,
+            createdBy: user._id,
+            updatedBy: user._id,
+        });
+    });
+
+    return (await ProgramModel.create(itemsToCreate)) as Program[];
 }
