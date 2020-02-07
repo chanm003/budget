@@ -21,6 +21,7 @@
         "office-ui-fabric-react": "^7.88.0",
         "react": "^16.12.0",
         "react-autosuggest": "^9.4.3",
+        "react-datasheet": "^1.4.0",
         "react-dom": "^16.12.0",
         "react-hook-form": "^4.5.2",
         "react-linkify": "^1.0.0-alpha",
