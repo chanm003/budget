@@ -1,0 +1,40 @@
+query MfpIndicatorById($id: ObjectId!) {
+    MfpIndicatorById(id: $id) {
+        _id
+        title
+    }
+}
+
+query MfpIndicatorMany {
+    MfpIndicatorMany {
+        _id
+        title
+        updatedAt
+        updatedBy {
+            _id
+            firstName
+            lastName
+        }
+    }
+}
+
+mutation MfpIndicatorCreateOne($title: String!) {
+    MfpIndicatorCreateOne(input: { title: $title }) {
+        _id
+        title
+    }
+}
+
+mutation MfpIndicatorRemoveById($id: ObjectId!) {
+    MfpIndicatorRemoveById(id: $id) {
+        _id
+        title
+    }
+}
+
+mutation MfpIndicatorUpdateById($id: ObjectId!, $title: String!) {
+    MfpIndicatorUpdateById(input: { title: $title }, id: $id) {
+        _id
+        title
+    }
+}

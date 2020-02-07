@@ -55,6 +55,17 @@ export const SideBar: React.FC = () => {
                                     ),
                                 },
                                 {
+                                    name: 'MFP Indicators',
+                                    url:
+                                        routeConfig.MfpIndicatorMany
+                                            .path,
+                                    key: generateDynamicKeyBasedOnInclusion(
+                                        pathname,
+                                        routeConfig.MfpIndicatorMany
+                                            .path,
+                                    ),
+                                },
+                                {
                                     name: 'Programs',
                                     url: routeConfig.ProgramMany.path,
                                     key: generateDynamicKeyBasedOnInclusion(

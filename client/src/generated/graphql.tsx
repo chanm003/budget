@@ -47,11 +47,28 @@ export type LocalIdentity = {
   expires: Scalars['DateTime'],
 };
 
+export type MfpIndicator = {
+   __typename?: 'MfpIndicator',
+  _id: Scalars['ObjectId'],
+  title: Scalars['String'],
+  createdAt: Scalars['DateTime'],
+  createdBy: User,
+  updatedAt: Scalars['DateTime'],
+  updatedBy: User,
+};
+
+export type MfpIndicatorInput = {
+  title: Scalars['String'],
+};
+
 export type Mutation = {
    __typename?: 'Mutation',
   DirectorateCreateOne: Directorate,
   DirectorateUpdateById?: Maybe<Directorate>,
   DirectorateRemoveById?: Maybe<Directorate>,
+  MfpIndicatorCreateOne: MfpIndicator,
+  MfpIndicatorUpdateById?: Maybe<MfpIndicator>,
+  MfpIndicatorRemoveById?: Maybe<MfpIndicator>,
   ProgramCreateOne: Program,
   ProgramUpdateById?: Maybe<Program>,
   ProgramRemoveById?: Maybe<Program>,
@@ -71,6 +88,22 @@ export type MutationDirectorateUpdateByIdArgs = {
 
 
 export type MutationDirectorateRemoveByIdArgs = {
+  id: Scalars['ObjectId']
+};
+
+
+export type MutationMfpIndicatorCreateOneArgs = {
+  input: MfpIndicatorInput
+};
+
+
+export type MutationMfpIndicatorUpdateByIdArgs = {
+  input: MfpIndicatorInput,
+  id: Scalars['ObjectId']
+};
+
+
+export type MutationMfpIndicatorRemoveByIdArgs = {
   id: Scalars['ObjectId']
 };
 
@@ -114,6 +147,8 @@ export type Query = {
    __typename?: 'Query',
   DirectorateById?: Maybe<Directorate>,
   DirectorateMany: Array<Directorate>,
+  MfpIndicatorById?: Maybe<MfpIndicator>,
+  MfpIndicatorMany: Array<MfpIndicator>,
   ProgramById?: Maybe<Program>,
   ProgramMany: Array<Program>,
   UserById?: Maybe<User>,
@@ -121,6 +156,11 @@ export type Query = {
 
 
 export type QueryDirectorateByIdArgs = {
+  id: Scalars['ObjectId']
+};
+
+
+export type QueryMfpIndicatorByIdArgs = {
   id: Scalars['ObjectId']
 };
 
@@ -225,6 +265,74 @@ export type DirectorateUpdateByIdMutation = (
   & { DirectorateUpdateById: Maybe<(
     { __typename?: 'Directorate' }
     & Pick<Directorate, '_id' | 'title'>
+  )> }
+);
+
+export type MfpIndicatorByIdQueryVariables = {
+  id: Scalars['ObjectId']
+};
+
+
+export type MfpIndicatorByIdQuery = (
+  { __typename?: 'Query' }
+  & { MfpIndicatorById: Maybe<(
+    { __typename?: 'MfpIndicator' }
+    & Pick<MfpIndicator, '_id' | 'title'>
+  )> }
+);
+
+export type MfpIndicatorManyQueryVariables = {};
+
+
+export type MfpIndicatorManyQuery = (
+  { __typename?: 'Query' }
+  & { MfpIndicatorMany: Array<(
+    { __typename?: 'MfpIndicator' }
+    & Pick<MfpIndicator, '_id' | 'title' | 'updatedAt'>
+    & { updatedBy: (
+      { __typename?: 'User' }
+      & Pick<User, '_id' | 'firstName' | 'lastName'>
+    ) }
+  )> }
+);
+
+export type MfpIndicatorCreateOneMutationVariables = {
+  title: Scalars['String']
+};
+
+
+export type MfpIndicatorCreateOneMutation = (
+  { __typename?: 'Mutation' }
+  & { MfpIndicatorCreateOne: (
+    { __typename?: 'MfpIndicator' }
+    & Pick<MfpIndicator, '_id' | 'title'>
+  ) }
+);
+
+export type MfpIndicatorRemoveByIdMutationVariables = {
+  id: Scalars['ObjectId']
+};
+
+
+export type MfpIndicatorRemoveByIdMutation = (
+  { __typename?: 'Mutation' }
+  & { MfpIndicatorRemoveById: Maybe<(
+    { __typename?: 'MfpIndicator' }
+    & Pick<MfpIndicator, '_id' | 'title'>
+  )> }
+);
+
+export type MfpIndicatorUpdateByIdMutationVariables = {
+  id: Scalars['ObjectId'],
+  title: Scalars['String']
+};
+
+
+export type MfpIndicatorUpdateByIdMutation = (
+  { __typename?: 'Mutation' }
+  & { MfpIndicatorUpdateById: Maybe<(
+    { __typename?: 'MfpIndicator' }
+    & Pick<MfpIndicator, '_id' | 'title'>
   )> }
 );
 
@@ -587,6 +695,264 @@ export function useDirectorateUpdateByIdMutation(baseOptions?: ApolloReactHooks.
 export type DirectorateUpdateByIdMutationHookResult = ReturnType<typeof useDirectorateUpdateByIdMutation>;
 export type DirectorateUpdateByIdMutationResult = ApolloReactCommon.MutationResult<DirectorateUpdateByIdMutation>;
 export type DirectorateUpdateByIdMutationOptions = ApolloReactCommon.BaseMutationOptions<DirectorateUpdateByIdMutation, DirectorateUpdateByIdMutationVariables>;
+export const MfpIndicatorByIdDocument = gql`
+    query MfpIndicatorById($id: ObjectId!) {
+  MfpIndicatorById(id: $id) {
+    _id
+    title
+  }
+}
+    `;
+export type MfpIndicatorByIdComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<MfpIndicatorByIdQuery, MfpIndicatorByIdQueryVariables>, 'query'> & ({ variables: MfpIndicatorByIdQueryVariables; skip?: boolean; } | { skip: boolean; });
+
+    export const MfpIndicatorByIdComponent = (props: MfpIndicatorByIdComponentProps) => (
+      <ApolloReactComponents.Query<MfpIndicatorByIdQuery, MfpIndicatorByIdQueryVariables> query={MfpIndicatorByIdDocument} {...props} />
+    );
+    
+export type MfpIndicatorByIdProps<TChildProps = {}> = ApolloReactHoc.DataProps<MfpIndicatorByIdQuery, MfpIndicatorByIdQueryVariables> & TChildProps;
+export function withMfpIndicatorById<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  MfpIndicatorByIdQuery,
+  MfpIndicatorByIdQueryVariables,
+  MfpIndicatorByIdProps<TChildProps>>) {
+    return ApolloReactHoc.withQuery<TProps, MfpIndicatorByIdQuery, MfpIndicatorByIdQueryVariables, MfpIndicatorByIdProps<TChildProps>>(MfpIndicatorByIdDocument, {
+      alias: 'mfpIndicatorById',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useMfpIndicatorByIdQuery__
+ *
+ * To run a query within a React component, call `useMfpIndicatorByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMfpIndicatorByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMfpIndicatorByIdQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useMfpIndicatorByIdQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<MfpIndicatorByIdQuery, MfpIndicatorByIdQueryVariables>) {
+        return ApolloReactHooks.useQuery<MfpIndicatorByIdQuery, MfpIndicatorByIdQueryVariables>(MfpIndicatorByIdDocument, baseOptions);
+      }
+export function useMfpIndicatorByIdLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<MfpIndicatorByIdQuery, MfpIndicatorByIdQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<MfpIndicatorByIdQuery, MfpIndicatorByIdQueryVariables>(MfpIndicatorByIdDocument, baseOptions);
+        }
+export type MfpIndicatorByIdQueryHookResult = ReturnType<typeof useMfpIndicatorByIdQuery>;
+export type MfpIndicatorByIdLazyQueryHookResult = ReturnType<typeof useMfpIndicatorByIdLazyQuery>;
+export type MfpIndicatorByIdQueryResult = ApolloReactCommon.QueryResult<MfpIndicatorByIdQuery, MfpIndicatorByIdQueryVariables>;
+export const MfpIndicatorManyDocument = gql`
+    query MfpIndicatorMany {
+  MfpIndicatorMany {
+    _id
+    title
+    updatedAt
+    updatedBy {
+      _id
+      firstName
+      lastName
+    }
+  }
+}
+    `;
+export type MfpIndicatorManyComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<MfpIndicatorManyQuery, MfpIndicatorManyQueryVariables>, 'query'>;
+
+    export const MfpIndicatorManyComponent = (props: MfpIndicatorManyComponentProps) => (
+      <ApolloReactComponents.Query<MfpIndicatorManyQuery, MfpIndicatorManyQueryVariables> query={MfpIndicatorManyDocument} {...props} />
+    );
+    
+export type MfpIndicatorManyProps<TChildProps = {}> = ApolloReactHoc.DataProps<MfpIndicatorManyQuery, MfpIndicatorManyQueryVariables> & TChildProps;
+export function withMfpIndicatorMany<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  MfpIndicatorManyQuery,
+  MfpIndicatorManyQueryVariables,
+  MfpIndicatorManyProps<TChildProps>>) {
+    return ApolloReactHoc.withQuery<TProps, MfpIndicatorManyQuery, MfpIndicatorManyQueryVariables, MfpIndicatorManyProps<TChildProps>>(MfpIndicatorManyDocument, {
+      alias: 'mfpIndicatorMany',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useMfpIndicatorManyQuery__
+ *
+ * To run a query within a React component, call `useMfpIndicatorManyQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMfpIndicatorManyQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMfpIndicatorManyQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMfpIndicatorManyQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<MfpIndicatorManyQuery, MfpIndicatorManyQueryVariables>) {
+        return ApolloReactHooks.useQuery<MfpIndicatorManyQuery, MfpIndicatorManyQueryVariables>(MfpIndicatorManyDocument, baseOptions);
+      }
+export function useMfpIndicatorManyLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<MfpIndicatorManyQuery, MfpIndicatorManyQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<MfpIndicatorManyQuery, MfpIndicatorManyQueryVariables>(MfpIndicatorManyDocument, baseOptions);
+        }
+export type MfpIndicatorManyQueryHookResult = ReturnType<typeof useMfpIndicatorManyQuery>;
+export type MfpIndicatorManyLazyQueryHookResult = ReturnType<typeof useMfpIndicatorManyLazyQuery>;
+export type MfpIndicatorManyQueryResult = ApolloReactCommon.QueryResult<MfpIndicatorManyQuery, MfpIndicatorManyQueryVariables>;
+export const MfpIndicatorCreateOneDocument = gql`
+    mutation MfpIndicatorCreateOne($title: String!) {
+  MfpIndicatorCreateOne(input: {title: $title}) {
+    _id
+    title
+  }
+}
+    `;
+export type MfpIndicatorCreateOneMutationFn = ApolloReactCommon.MutationFunction<MfpIndicatorCreateOneMutation, MfpIndicatorCreateOneMutationVariables>;
+export type MfpIndicatorCreateOneComponentProps = Omit<ApolloReactComponents.MutationComponentOptions<MfpIndicatorCreateOneMutation, MfpIndicatorCreateOneMutationVariables>, 'mutation'>;
+
+    export const MfpIndicatorCreateOneComponent = (props: MfpIndicatorCreateOneComponentProps) => (
+      <ApolloReactComponents.Mutation<MfpIndicatorCreateOneMutation, MfpIndicatorCreateOneMutationVariables> mutation={MfpIndicatorCreateOneDocument} {...props} />
+    );
+    
+export type MfpIndicatorCreateOneProps<TChildProps = {}> = ApolloReactHoc.MutateProps<MfpIndicatorCreateOneMutation, MfpIndicatorCreateOneMutationVariables> & TChildProps;
+export function withMfpIndicatorCreateOne<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  MfpIndicatorCreateOneMutation,
+  MfpIndicatorCreateOneMutationVariables,
+  MfpIndicatorCreateOneProps<TChildProps>>) {
+    return ApolloReactHoc.withMutation<TProps, MfpIndicatorCreateOneMutation, MfpIndicatorCreateOneMutationVariables, MfpIndicatorCreateOneProps<TChildProps>>(MfpIndicatorCreateOneDocument, {
+      alias: 'mfpIndicatorCreateOne',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useMfpIndicatorCreateOneMutation__
+ *
+ * To run a mutation, you first call `useMfpIndicatorCreateOneMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useMfpIndicatorCreateOneMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [mfpIndicatorCreateOneMutation, { data, loading, error }] = useMfpIndicatorCreateOneMutation({
+ *   variables: {
+ *      title: // value for 'title'
+ *   },
+ * });
+ */
+export function useMfpIndicatorCreateOneMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<MfpIndicatorCreateOneMutation, MfpIndicatorCreateOneMutationVariables>) {
+        return ApolloReactHooks.useMutation<MfpIndicatorCreateOneMutation, MfpIndicatorCreateOneMutationVariables>(MfpIndicatorCreateOneDocument, baseOptions);
+      }
+export type MfpIndicatorCreateOneMutationHookResult = ReturnType<typeof useMfpIndicatorCreateOneMutation>;
+export type MfpIndicatorCreateOneMutationResult = ApolloReactCommon.MutationResult<MfpIndicatorCreateOneMutation>;
+export type MfpIndicatorCreateOneMutationOptions = ApolloReactCommon.BaseMutationOptions<MfpIndicatorCreateOneMutation, MfpIndicatorCreateOneMutationVariables>;
+export const MfpIndicatorRemoveByIdDocument = gql`
+    mutation MfpIndicatorRemoveById($id: ObjectId!) {
+  MfpIndicatorRemoveById(id: $id) {
+    _id
+    title
+  }
+}
+    `;
+export type MfpIndicatorRemoveByIdMutationFn = ApolloReactCommon.MutationFunction<MfpIndicatorRemoveByIdMutation, MfpIndicatorRemoveByIdMutationVariables>;
+export type MfpIndicatorRemoveByIdComponentProps = Omit<ApolloReactComponents.MutationComponentOptions<MfpIndicatorRemoveByIdMutation, MfpIndicatorRemoveByIdMutationVariables>, 'mutation'>;
+
+    export const MfpIndicatorRemoveByIdComponent = (props: MfpIndicatorRemoveByIdComponentProps) => (
+      <ApolloReactComponents.Mutation<MfpIndicatorRemoveByIdMutation, MfpIndicatorRemoveByIdMutationVariables> mutation={MfpIndicatorRemoveByIdDocument} {...props} />
+    );
+    
+export type MfpIndicatorRemoveByIdProps<TChildProps = {}> = ApolloReactHoc.MutateProps<MfpIndicatorRemoveByIdMutation, MfpIndicatorRemoveByIdMutationVariables> & TChildProps;
+export function withMfpIndicatorRemoveById<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  MfpIndicatorRemoveByIdMutation,
+  MfpIndicatorRemoveByIdMutationVariables,
+  MfpIndicatorRemoveByIdProps<TChildProps>>) {
+    return ApolloReactHoc.withMutation<TProps, MfpIndicatorRemoveByIdMutation, MfpIndicatorRemoveByIdMutationVariables, MfpIndicatorRemoveByIdProps<TChildProps>>(MfpIndicatorRemoveByIdDocument, {
+      alias: 'mfpIndicatorRemoveById',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useMfpIndicatorRemoveByIdMutation__
+ *
+ * To run a mutation, you first call `useMfpIndicatorRemoveByIdMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useMfpIndicatorRemoveByIdMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [mfpIndicatorRemoveByIdMutation, { data, loading, error }] = useMfpIndicatorRemoveByIdMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useMfpIndicatorRemoveByIdMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<MfpIndicatorRemoveByIdMutation, MfpIndicatorRemoveByIdMutationVariables>) {
+        return ApolloReactHooks.useMutation<MfpIndicatorRemoveByIdMutation, MfpIndicatorRemoveByIdMutationVariables>(MfpIndicatorRemoveByIdDocument, baseOptions);
+      }
+export type MfpIndicatorRemoveByIdMutationHookResult = ReturnType<typeof useMfpIndicatorRemoveByIdMutation>;
+export type MfpIndicatorRemoveByIdMutationResult = ApolloReactCommon.MutationResult<MfpIndicatorRemoveByIdMutation>;
+export type MfpIndicatorRemoveByIdMutationOptions = ApolloReactCommon.BaseMutationOptions<MfpIndicatorRemoveByIdMutation, MfpIndicatorRemoveByIdMutationVariables>;
+export const MfpIndicatorUpdateByIdDocument = gql`
+    mutation MfpIndicatorUpdateById($id: ObjectId!, $title: String!) {
+  MfpIndicatorUpdateById(input: {title: $title}, id: $id) {
+    _id
+    title
+  }
+}
+    `;
+export type MfpIndicatorUpdateByIdMutationFn = ApolloReactCommon.MutationFunction<MfpIndicatorUpdateByIdMutation, MfpIndicatorUpdateByIdMutationVariables>;
+export type MfpIndicatorUpdateByIdComponentProps = Omit<ApolloReactComponents.MutationComponentOptions<MfpIndicatorUpdateByIdMutation, MfpIndicatorUpdateByIdMutationVariables>, 'mutation'>;
+
+    export const MfpIndicatorUpdateByIdComponent = (props: MfpIndicatorUpdateByIdComponentProps) => (
+      <ApolloReactComponents.Mutation<MfpIndicatorUpdateByIdMutation, MfpIndicatorUpdateByIdMutationVariables> mutation={MfpIndicatorUpdateByIdDocument} {...props} />
+    );
+    
+export type MfpIndicatorUpdateByIdProps<TChildProps = {}> = ApolloReactHoc.MutateProps<MfpIndicatorUpdateByIdMutation, MfpIndicatorUpdateByIdMutationVariables> & TChildProps;
+export function withMfpIndicatorUpdateById<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  MfpIndicatorUpdateByIdMutation,
+  MfpIndicatorUpdateByIdMutationVariables,
+  MfpIndicatorUpdateByIdProps<TChildProps>>) {
+    return ApolloReactHoc.withMutation<TProps, MfpIndicatorUpdateByIdMutation, MfpIndicatorUpdateByIdMutationVariables, MfpIndicatorUpdateByIdProps<TChildProps>>(MfpIndicatorUpdateByIdDocument, {
+      alias: 'mfpIndicatorUpdateById',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useMfpIndicatorUpdateByIdMutation__
+ *
+ * To run a mutation, you first call `useMfpIndicatorUpdateByIdMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useMfpIndicatorUpdateByIdMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [mfpIndicatorUpdateByIdMutation, { data, loading, error }] = useMfpIndicatorUpdateByIdMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      title: // value for 'title'
+ *   },
+ * });
+ */
+export function useMfpIndicatorUpdateByIdMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<MfpIndicatorUpdateByIdMutation, MfpIndicatorUpdateByIdMutationVariables>) {
+        return ApolloReactHooks.useMutation<MfpIndicatorUpdateByIdMutation, MfpIndicatorUpdateByIdMutationVariables>(MfpIndicatorUpdateByIdDocument, baseOptions);
+      }
+export type MfpIndicatorUpdateByIdMutationHookResult = ReturnType<typeof useMfpIndicatorUpdateByIdMutation>;
+export type MfpIndicatorUpdateByIdMutationResult = ApolloReactCommon.MutationResult<MfpIndicatorUpdateByIdMutation>;
+export type MfpIndicatorUpdateByIdMutationOptions = ApolloReactCommon.BaseMutationOptions<MfpIndicatorUpdateByIdMutation, MfpIndicatorUpdateByIdMutationVariables>;
 export const ProgramByIdDocument = gql`
     query ProgramById($id: ObjectId!) {
   ProgramById(id: $id) {
