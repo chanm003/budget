@@ -1,5 +1,6 @@
 const modelNames = [
     'Directorate',
+    'Program',
     'User'
 ];
 
