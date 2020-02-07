@@ -12,18 +12,26 @@ import {
     MfpIndicator,
     MfpIndicatorModel,
 } from './entities/mfpindicator/model';
+import {
+    ExecutionMethod,
+    ExecutionMethodModel,
+} from './entities/executionmethod/model';
 
 const chance = new Chance();
 
 export async function seedDatabase() {
     const defaultUser = await createFirstUser();
     const directorates = await createDirectorates(defaultUser);
+    const executionmMethods = await createExecutionMethods(
+        defaultUser,
+    );
     const mfpIndicators = await createMfpIndicators(defaultUser);
     const programs = await createPrograms(defaultUser);
 
     return {
         user: defaultUser,
         directorates,
+        executionmMethods,
         mfpIndicators,
         programs,
     };
@@ -47,6 +55,22 @@ async function createDirectorates(user: User) {
             updatedBy: user._id,
         },
     ] as Directorate[]);
+}
+
+async function createExecutionMethods(user: User) {
+    let itemsToCreate: Partial<ExecutionMethod>[] = [];
+
+    _.times(3, () => {
+        itemsToCreate.push({
+            title: `EXM-${chance.radio()}`,
+            createdBy: user._id,
+            updatedBy: user._id,
+        });
+    });
+
+    return (await ExecutionMethodModel.create(
+        itemsToCreate,
+    )) as ExecutionMethod[];
 }
 
 async function createFirstUser() {
