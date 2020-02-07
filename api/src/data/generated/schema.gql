@@ -37,15 +37,33 @@ type Mutation {
   DirectorateCreateOne(input: DirectorateInput!): Directorate!
   DirectorateUpdateById(input: DirectorateInput!, id: ObjectId!): Directorate
   DirectorateRemoveById(id: ObjectId!): Directorate
+  ProgramCreateOne(input: ProgramInput!): Program!
+  ProgramUpdateById(input: ProgramInput!, id: ObjectId!): Program
+  ProgramRemoveById(id: ObjectId!): Program
   UserUpdateMyProfile(input: UserInput!): UpdateMyProfileResult
 }
 
 """Mongo object id scalar type"""
 scalar ObjectId
 
+type Program {
+  _id: ObjectId!
+  title: String!
+  createdAt: DateTime!
+  createdBy: User!
+  updatedAt: DateTime!
+  updatedBy: User!
+}
+
+input ProgramInput {
+  title: String!
+}
+
 type Query {
   DirectorateById(id: ObjectId!): Directorate
   DirectorateMany: [Directorate!]!
+  ProgramById(id: ObjectId!): Program
+  ProgramMany: [Program!]!
   UserById(id: ObjectId!): User
 }
 
