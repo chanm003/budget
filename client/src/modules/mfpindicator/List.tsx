@@ -15,7 +15,7 @@ import {
 } from '../../generated/graphql';
 
 const resourceName = 'MfpIndicator';
-const resourceNamePlural = 'MfpIndicators';
+const resourceNamePlural = 'MFP Indicators';
 const parseManyResponse = (data?: ManyQuery): ItemType[] => {
     return (data?.MfpIndicatorMany as ItemType[]) || [];
 };
