@@ -33,10 +33,26 @@ type LocalIdentity {
   expires: DateTime!
 }
 
+type MfpIndicator {
+  _id: ObjectId!
+  title: String!
+  createdAt: DateTime!
+  createdBy: User!
+  updatedAt: DateTime!
+  updatedBy: User!
+}
+
+input MfpIndicatorInput {
+  title: String!
+}
+
 type Mutation {
   DirectorateCreateOne(input: DirectorateInput!): Directorate!
   DirectorateUpdateById(input: DirectorateInput!, id: ObjectId!): Directorate
   DirectorateRemoveById(id: ObjectId!): Directorate
+  MfpIndicatorCreateOne(input: MfpIndicatorInput!): MfpIndicator!
+  MfpIndicatorUpdateById(input: MfpIndicatorInput!, id: ObjectId!): MfpIndicator
+  MfpIndicatorRemoveById(id: ObjectId!): MfpIndicator
   ProgramCreateOne(input: ProgramInput!): Program!
   ProgramUpdateById(input: ProgramInput!, id: ObjectId!): Program
   ProgramRemoveById(id: ObjectId!): Program
@@ -62,6 +78,8 @@ input ProgramInput {
 type Query {
   DirectorateById(id: ObjectId!): Directorate
   DirectorateMany: [Directorate!]!
+  MfpIndicatorById(id: ObjectId!): MfpIndicator
+  MfpIndicatorMany: [MfpIndicator!]!
   ProgramById(id: ObjectId!): Program
   ProgramMany: [Program!]!
   UserById(id: ObjectId!): User

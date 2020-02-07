@@ -8,17 +8,23 @@ import { Program, ProgramModel } from './entities/program/model';
 import { User, UserModel } from './entities/user/model';
 const { roleNames } = require('shared');
 import { hashPassword } from '../config/password';
+import {
+    MfpIndicator,
+    MfpIndicatorModel,
+} from './entities/mfpindicator/model';
 
 const chance = new Chance();
 
 export async function seedDatabase() {
     const defaultUser = await createFirstUser();
     const directorates = await createDirectorates(defaultUser);
+    const mfpIndicators = await createMfpIndicators(defaultUser);
     const programs = await createPrograms(defaultUser);
 
     return {
         user: defaultUser,
         directorates,
+        mfpIndicators,
         programs,
     };
 }
@@ -55,6 +61,22 @@ async function createFirstUser() {
         },
         role: roleNames.ADMIN,
     } as User).save();
+}
+
+async function createMfpIndicators(user: User) {
+    let itemsToCreate: Partial<MfpIndicator>[] = [];
+
+    _.times(3, () => {
+        itemsToCreate.push({
+            title: `MFP-${chance.radio()}`,
+            createdBy: user._id,
+            updatedBy: user._id,
+        });
+    });
+
+    return (await MfpIndicatorModel.create(
+        itemsToCreate,
+    )) as MfpIndicator[];
 }
 
 async function createPrograms(user: User) {
