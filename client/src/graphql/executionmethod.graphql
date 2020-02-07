@@ -1,0 +1,40 @@
+query ExecutionMethodById($id: ObjectId!) {
+    ExecutionMethodById(id: $id) {
+        _id
+        title
+    }
+}
+
+query ExecutionMethodMany {
+    ExecutionMethodMany {
+        _id
+        title
+        updatedAt
+        updatedBy {
+            _id
+            firstName
+            lastName
+        }
+    }
+}
+
+mutation ExecutionMethodCreateOne($title: String!) {
+    ExecutionMethodCreateOne(input: { title: $title }) {
+        _id
+        title
+    }
+}
+
+mutation ExecutionMethodRemoveById($id: ObjectId!) {
+    ExecutionMethodRemoveById(id: $id) {
+        _id
+        title
+    }
+}
+
+mutation ExecutionMethodUpdateById($id: ObjectId!, $title: String!) {
+    ExecutionMethodUpdateById(input: { title: $title }, id: $id) {
+        _id
+        title
+    }
+}

@@ -55,6 +55,17 @@ export const SideBar: React.FC = () => {
                                     ),
                                 },
                                 {
+                                    name: 'Execution Methods',
+                                    url:
+                                        routeConfig
+                                            .ExecutionMethodMany.path,
+                                    key: generateDynamicKeyBasedOnInclusion(
+                                        pathname,
+                                        routeConfig
+                                            .ExecutionMethodMany.path,
+                                    ),
+                                },
+                                {
                                     name: 'MFP Indicators',
                                     url:
                                         routeConfig.MfpIndicatorMany

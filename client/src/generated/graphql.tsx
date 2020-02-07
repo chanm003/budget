@@ -37,6 +37,20 @@ export type DirectorateInput = {
   title: Scalars['String'],
 };
 
+export type ExecutionMethod = {
+   __typename?: 'ExecutionMethod',
+  _id: Scalars['ObjectId'],
+  title: Scalars['String'],
+  createdAt: Scalars['DateTime'],
+  createdBy: User,
+  updatedAt: Scalars['DateTime'],
+  updatedBy: User,
+};
+
+export type ExecutionMethodInput = {
+  title: Scalars['String'],
+};
+
 export type GithubIdentity = {
    __typename?: 'GithubIdentity',
   id: Scalars['String'],
@@ -66,6 +80,9 @@ export type Mutation = {
   DirectorateCreateOne: Directorate,
   DirectorateUpdateById?: Maybe<Directorate>,
   DirectorateRemoveById?: Maybe<Directorate>,
+  ExecutionMethodCreateOne: ExecutionMethod,
+  ExecutionMethodUpdateById?: Maybe<ExecutionMethod>,
+  ExecutionMethodRemoveById?: Maybe<ExecutionMethod>,
   MfpIndicatorCreateOne: MfpIndicator,
   MfpIndicatorUpdateById?: Maybe<MfpIndicator>,
   MfpIndicatorRemoveById?: Maybe<MfpIndicator>,
@@ -88,6 +105,22 @@ export type MutationDirectorateUpdateByIdArgs = {
 
 
 export type MutationDirectorateRemoveByIdArgs = {
+  id: Scalars['ObjectId']
+};
+
+
+export type MutationExecutionMethodCreateOneArgs = {
+  input: ExecutionMethodInput
+};
+
+
+export type MutationExecutionMethodUpdateByIdArgs = {
+  input: ExecutionMethodInput,
+  id: Scalars['ObjectId']
+};
+
+
+export type MutationExecutionMethodRemoveByIdArgs = {
   id: Scalars['ObjectId']
 };
 
@@ -147,6 +180,8 @@ export type Query = {
    __typename?: 'Query',
   DirectorateById?: Maybe<Directorate>,
   DirectorateMany: Array<Directorate>,
+  ExecutionMethodById?: Maybe<ExecutionMethod>,
+  ExecutionMethodMany: Array<ExecutionMethod>,
   MfpIndicatorById?: Maybe<MfpIndicator>,
   MfpIndicatorMany: Array<MfpIndicator>,
   ProgramById?: Maybe<Program>,
@@ -156,6 +191,11 @@ export type Query = {
 
 
 export type QueryDirectorateByIdArgs = {
+  id: Scalars['ObjectId']
+};
+
+
+export type QueryExecutionMethodByIdArgs = {
   id: Scalars['ObjectId']
 };
 
@@ -265,6 +305,74 @@ export type DirectorateUpdateByIdMutation = (
   & { DirectorateUpdateById: Maybe<(
     { __typename?: 'Directorate' }
     & Pick<Directorate, '_id' | 'title'>
+  )> }
+);
+
+export type ExecutionMethodByIdQueryVariables = {
+  id: Scalars['ObjectId']
+};
+
+
+export type ExecutionMethodByIdQuery = (
+  { __typename?: 'Query' }
+  & { ExecutionMethodById: Maybe<(
+    { __typename?: 'ExecutionMethod' }
+    & Pick<ExecutionMethod, '_id' | 'title'>
+  )> }
+);
+
+export type ExecutionMethodManyQueryVariables = {};
+
+
+export type ExecutionMethodManyQuery = (
+  { __typename?: 'Query' }
+  & { ExecutionMethodMany: Array<(
+    { __typename?: 'ExecutionMethod' }
+    & Pick<ExecutionMethod, '_id' | 'title' | 'updatedAt'>
+    & { updatedBy: (
+      { __typename?: 'User' }
+      & Pick<User, '_id' | 'firstName' | 'lastName'>
+    ) }
+  )> }
+);
+
+export type ExecutionMethodCreateOneMutationVariables = {
+  title: Scalars['String']
+};
+
+
+export type ExecutionMethodCreateOneMutation = (
+  { __typename?: 'Mutation' }
+  & { ExecutionMethodCreateOne: (
+    { __typename?: 'ExecutionMethod' }
+    & Pick<ExecutionMethod, '_id' | 'title'>
+  ) }
+);
+
+export type ExecutionMethodRemoveByIdMutationVariables = {
+  id: Scalars['ObjectId']
+};
+
+
+export type ExecutionMethodRemoveByIdMutation = (
+  { __typename?: 'Mutation' }
+  & { ExecutionMethodRemoveById: Maybe<(
+    { __typename?: 'ExecutionMethod' }
+    & Pick<ExecutionMethod, '_id' | 'title'>
+  )> }
+);
+
+export type ExecutionMethodUpdateByIdMutationVariables = {
+  id: Scalars['ObjectId'],
+  title: Scalars['String']
+};
+
+
+export type ExecutionMethodUpdateByIdMutation = (
+  { __typename?: 'Mutation' }
+  & { ExecutionMethodUpdateById: Maybe<(
+    { __typename?: 'ExecutionMethod' }
+    & Pick<ExecutionMethod, '_id' | 'title'>
   )> }
 );
 
@@ -695,6 +803,264 @@ export function useDirectorateUpdateByIdMutation(baseOptions?: ApolloReactHooks.
 export type DirectorateUpdateByIdMutationHookResult = ReturnType<typeof useDirectorateUpdateByIdMutation>;
 export type DirectorateUpdateByIdMutationResult = ApolloReactCommon.MutationResult<DirectorateUpdateByIdMutation>;
 export type DirectorateUpdateByIdMutationOptions = ApolloReactCommon.BaseMutationOptions<DirectorateUpdateByIdMutation, DirectorateUpdateByIdMutationVariables>;
+export const ExecutionMethodByIdDocument = gql`
+    query ExecutionMethodById($id: ObjectId!) {
+  ExecutionMethodById(id: $id) {
+    _id
+    title
+  }
+}
+    `;
+export type ExecutionMethodByIdComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<ExecutionMethodByIdQuery, ExecutionMethodByIdQueryVariables>, 'query'> & ({ variables: ExecutionMethodByIdQueryVariables; skip?: boolean; } | { skip: boolean; });
+
+    export const ExecutionMethodByIdComponent = (props: ExecutionMethodByIdComponentProps) => (
+      <ApolloReactComponents.Query<ExecutionMethodByIdQuery, ExecutionMethodByIdQueryVariables> query={ExecutionMethodByIdDocument} {...props} />
+    );
+    
+export type ExecutionMethodByIdProps<TChildProps = {}> = ApolloReactHoc.DataProps<ExecutionMethodByIdQuery, ExecutionMethodByIdQueryVariables> & TChildProps;
+export function withExecutionMethodById<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  ExecutionMethodByIdQuery,
+  ExecutionMethodByIdQueryVariables,
+  ExecutionMethodByIdProps<TChildProps>>) {
+    return ApolloReactHoc.withQuery<TProps, ExecutionMethodByIdQuery, ExecutionMethodByIdQueryVariables, ExecutionMethodByIdProps<TChildProps>>(ExecutionMethodByIdDocument, {
+      alias: 'executionMethodById',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useExecutionMethodByIdQuery__
+ *
+ * To run a query within a React component, call `useExecutionMethodByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useExecutionMethodByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useExecutionMethodByIdQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useExecutionMethodByIdQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<ExecutionMethodByIdQuery, ExecutionMethodByIdQueryVariables>) {
+        return ApolloReactHooks.useQuery<ExecutionMethodByIdQuery, ExecutionMethodByIdQueryVariables>(ExecutionMethodByIdDocument, baseOptions);
+      }
+export function useExecutionMethodByIdLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<ExecutionMethodByIdQuery, ExecutionMethodByIdQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<ExecutionMethodByIdQuery, ExecutionMethodByIdQueryVariables>(ExecutionMethodByIdDocument, baseOptions);
+        }
+export type ExecutionMethodByIdQueryHookResult = ReturnType<typeof useExecutionMethodByIdQuery>;
+export type ExecutionMethodByIdLazyQueryHookResult = ReturnType<typeof useExecutionMethodByIdLazyQuery>;
+export type ExecutionMethodByIdQueryResult = ApolloReactCommon.QueryResult<ExecutionMethodByIdQuery, ExecutionMethodByIdQueryVariables>;
+export const ExecutionMethodManyDocument = gql`
+    query ExecutionMethodMany {
+  ExecutionMethodMany {
+    _id
+    title
+    updatedAt
+    updatedBy {
+      _id
+      firstName
+      lastName
+    }
+  }
+}
+    `;
+export type ExecutionMethodManyComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<ExecutionMethodManyQuery, ExecutionMethodManyQueryVariables>, 'query'>;
+
+    export const ExecutionMethodManyComponent = (props: ExecutionMethodManyComponentProps) => (
+      <ApolloReactComponents.Query<ExecutionMethodManyQuery, ExecutionMethodManyQueryVariables> query={ExecutionMethodManyDocument} {...props} />
+    );
+    
+export type ExecutionMethodManyProps<TChildProps = {}> = ApolloReactHoc.DataProps<ExecutionMethodManyQuery, ExecutionMethodManyQueryVariables> & TChildProps;
+export function withExecutionMethodMany<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  ExecutionMethodManyQuery,
+  ExecutionMethodManyQueryVariables,
+  ExecutionMethodManyProps<TChildProps>>) {
+    return ApolloReactHoc.withQuery<TProps, ExecutionMethodManyQuery, ExecutionMethodManyQueryVariables, ExecutionMethodManyProps<TChildProps>>(ExecutionMethodManyDocument, {
+      alias: 'executionMethodMany',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useExecutionMethodManyQuery__
+ *
+ * To run a query within a React component, call `useExecutionMethodManyQuery` and pass it any options that fit your needs.
+ * When your component renders, `useExecutionMethodManyQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useExecutionMethodManyQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useExecutionMethodManyQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<ExecutionMethodManyQuery, ExecutionMethodManyQueryVariables>) {
+        return ApolloReactHooks.useQuery<ExecutionMethodManyQuery, ExecutionMethodManyQueryVariables>(ExecutionMethodManyDocument, baseOptions);
+      }
+export function useExecutionMethodManyLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<ExecutionMethodManyQuery, ExecutionMethodManyQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<ExecutionMethodManyQuery, ExecutionMethodManyQueryVariables>(ExecutionMethodManyDocument, baseOptions);
+        }
+export type ExecutionMethodManyQueryHookResult = ReturnType<typeof useExecutionMethodManyQuery>;
+export type ExecutionMethodManyLazyQueryHookResult = ReturnType<typeof useExecutionMethodManyLazyQuery>;
+export type ExecutionMethodManyQueryResult = ApolloReactCommon.QueryResult<ExecutionMethodManyQuery, ExecutionMethodManyQueryVariables>;
+export const ExecutionMethodCreateOneDocument = gql`
+    mutation ExecutionMethodCreateOne($title: String!) {
+  ExecutionMethodCreateOne(input: {title: $title}) {
+    _id
+    title
+  }
+}
+    `;
+export type ExecutionMethodCreateOneMutationFn = ApolloReactCommon.MutationFunction<ExecutionMethodCreateOneMutation, ExecutionMethodCreateOneMutationVariables>;
+export type ExecutionMethodCreateOneComponentProps = Omit<ApolloReactComponents.MutationComponentOptions<ExecutionMethodCreateOneMutation, ExecutionMethodCreateOneMutationVariables>, 'mutation'>;
+
+    export const ExecutionMethodCreateOneComponent = (props: ExecutionMethodCreateOneComponentProps) => (
+      <ApolloReactComponents.Mutation<ExecutionMethodCreateOneMutation, ExecutionMethodCreateOneMutationVariables> mutation={ExecutionMethodCreateOneDocument} {...props} />
+    );
+    
+export type ExecutionMethodCreateOneProps<TChildProps = {}> = ApolloReactHoc.MutateProps<ExecutionMethodCreateOneMutation, ExecutionMethodCreateOneMutationVariables> & TChildProps;
+export function withExecutionMethodCreateOne<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  ExecutionMethodCreateOneMutation,
+  ExecutionMethodCreateOneMutationVariables,
+  ExecutionMethodCreateOneProps<TChildProps>>) {
+    return ApolloReactHoc.withMutation<TProps, ExecutionMethodCreateOneMutation, ExecutionMethodCreateOneMutationVariables, ExecutionMethodCreateOneProps<TChildProps>>(ExecutionMethodCreateOneDocument, {
+      alias: 'executionMethodCreateOne',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useExecutionMethodCreateOneMutation__
+ *
+ * To run a mutation, you first call `useExecutionMethodCreateOneMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useExecutionMethodCreateOneMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [executionMethodCreateOneMutation, { data, loading, error }] = useExecutionMethodCreateOneMutation({
+ *   variables: {
+ *      title: // value for 'title'
+ *   },
+ * });
+ */
+export function useExecutionMethodCreateOneMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ExecutionMethodCreateOneMutation, ExecutionMethodCreateOneMutationVariables>) {
+        return ApolloReactHooks.useMutation<ExecutionMethodCreateOneMutation, ExecutionMethodCreateOneMutationVariables>(ExecutionMethodCreateOneDocument, baseOptions);
+      }
+export type ExecutionMethodCreateOneMutationHookResult = ReturnType<typeof useExecutionMethodCreateOneMutation>;
+export type ExecutionMethodCreateOneMutationResult = ApolloReactCommon.MutationResult<ExecutionMethodCreateOneMutation>;
+export type ExecutionMethodCreateOneMutationOptions = ApolloReactCommon.BaseMutationOptions<ExecutionMethodCreateOneMutation, ExecutionMethodCreateOneMutationVariables>;
+export const ExecutionMethodRemoveByIdDocument = gql`
+    mutation ExecutionMethodRemoveById($id: ObjectId!) {
+  ExecutionMethodRemoveById(id: $id) {
+    _id
+    title
+  }
+}
+    `;
+export type ExecutionMethodRemoveByIdMutationFn = ApolloReactCommon.MutationFunction<ExecutionMethodRemoveByIdMutation, ExecutionMethodRemoveByIdMutationVariables>;
+export type ExecutionMethodRemoveByIdComponentProps = Omit<ApolloReactComponents.MutationComponentOptions<ExecutionMethodRemoveByIdMutation, ExecutionMethodRemoveByIdMutationVariables>, 'mutation'>;
+
+    export const ExecutionMethodRemoveByIdComponent = (props: ExecutionMethodRemoveByIdComponentProps) => (
+      <ApolloReactComponents.Mutation<ExecutionMethodRemoveByIdMutation, ExecutionMethodRemoveByIdMutationVariables> mutation={ExecutionMethodRemoveByIdDocument} {...props} />
+    );
+    
+export type ExecutionMethodRemoveByIdProps<TChildProps = {}> = ApolloReactHoc.MutateProps<ExecutionMethodRemoveByIdMutation, ExecutionMethodRemoveByIdMutationVariables> & TChildProps;
+export function withExecutionMethodRemoveById<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  ExecutionMethodRemoveByIdMutation,
+  ExecutionMethodRemoveByIdMutationVariables,
+  ExecutionMethodRemoveByIdProps<TChildProps>>) {
+    return ApolloReactHoc.withMutation<TProps, ExecutionMethodRemoveByIdMutation, ExecutionMethodRemoveByIdMutationVariables, ExecutionMethodRemoveByIdProps<TChildProps>>(ExecutionMethodRemoveByIdDocument, {
+      alias: 'executionMethodRemoveById',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useExecutionMethodRemoveByIdMutation__
+ *
+ * To run a mutation, you first call `useExecutionMethodRemoveByIdMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useExecutionMethodRemoveByIdMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [executionMethodRemoveByIdMutation, { data, loading, error }] = useExecutionMethodRemoveByIdMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useExecutionMethodRemoveByIdMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ExecutionMethodRemoveByIdMutation, ExecutionMethodRemoveByIdMutationVariables>) {
+        return ApolloReactHooks.useMutation<ExecutionMethodRemoveByIdMutation, ExecutionMethodRemoveByIdMutationVariables>(ExecutionMethodRemoveByIdDocument, baseOptions);
+      }
+export type ExecutionMethodRemoveByIdMutationHookResult = ReturnType<typeof useExecutionMethodRemoveByIdMutation>;
+export type ExecutionMethodRemoveByIdMutationResult = ApolloReactCommon.MutationResult<ExecutionMethodRemoveByIdMutation>;
+export type ExecutionMethodRemoveByIdMutationOptions = ApolloReactCommon.BaseMutationOptions<ExecutionMethodRemoveByIdMutation, ExecutionMethodRemoveByIdMutationVariables>;
+export const ExecutionMethodUpdateByIdDocument = gql`
+    mutation ExecutionMethodUpdateById($id: ObjectId!, $title: String!) {
+  ExecutionMethodUpdateById(input: {title: $title}, id: $id) {
+    _id
+    title
+  }
+}
+    `;
+export type ExecutionMethodUpdateByIdMutationFn = ApolloReactCommon.MutationFunction<ExecutionMethodUpdateByIdMutation, ExecutionMethodUpdateByIdMutationVariables>;
+export type ExecutionMethodUpdateByIdComponentProps = Omit<ApolloReactComponents.MutationComponentOptions<ExecutionMethodUpdateByIdMutation, ExecutionMethodUpdateByIdMutationVariables>, 'mutation'>;
+
+    export const ExecutionMethodUpdateByIdComponent = (props: ExecutionMethodUpdateByIdComponentProps) => (
+      <ApolloReactComponents.Mutation<ExecutionMethodUpdateByIdMutation, ExecutionMethodUpdateByIdMutationVariables> mutation={ExecutionMethodUpdateByIdDocument} {...props} />
+    );
+    
+export type ExecutionMethodUpdateByIdProps<TChildProps = {}> = ApolloReactHoc.MutateProps<ExecutionMethodUpdateByIdMutation, ExecutionMethodUpdateByIdMutationVariables> & TChildProps;
+export function withExecutionMethodUpdateById<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  ExecutionMethodUpdateByIdMutation,
+  ExecutionMethodUpdateByIdMutationVariables,
+  ExecutionMethodUpdateByIdProps<TChildProps>>) {
+    return ApolloReactHoc.withMutation<TProps, ExecutionMethodUpdateByIdMutation, ExecutionMethodUpdateByIdMutationVariables, ExecutionMethodUpdateByIdProps<TChildProps>>(ExecutionMethodUpdateByIdDocument, {
+      alias: 'executionMethodUpdateById',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useExecutionMethodUpdateByIdMutation__
+ *
+ * To run a mutation, you first call `useExecutionMethodUpdateByIdMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useExecutionMethodUpdateByIdMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [executionMethodUpdateByIdMutation, { data, loading, error }] = useExecutionMethodUpdateByIdMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      title: // value for 'title'
+ *   },
+ * });
+ */
+export function useExecutionMethodUpdateByIdMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ExecutionMethodUpdateByIdMutation, ExecutionMethodUpdateByIdMutationVariables>) {
+        return ApolloReactHooks.useMutation<ExecutionMethodUpdateByIdMutation, ExecutionMethodUpdateByIdMutationVariables>(ExecutionMethodUpdateByIdDocument, baseOptions);
+      }
+export type ExecutionMethodUpdateByIdMutationHookResult = ReturnType<typeof useExecutionMethodUpdateByIdMutation>;
+export type ExecutionMethodUpdateByIdMutationResult = ApolloReactCommon.MutationResult<ExecutionMethodUpdateByIdMutation>;
+export type ExecutionMethodUpdateByIdMutationOptions = ApolloReactCommon.BaseMutationOptions<ExecutionMethodUpdateByIdMutation, ExecutionMethodUpdateByIdMutationVariables>;
 export const MfpIndicatorByIdDocument = gql`
     query MfpIndicatorById($id: ObjectId!) {
   MfpIndicatorById(id: $id) {

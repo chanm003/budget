@@ -25,6 +25,19 @@ input DirectorateInput {
   title: String!
 }
 
+type ExecutionMethod {
+  _id: ObjectId!
+  title: String!
+  createdAt: DateTime!
+  createdBy: User!
+  updatedAt: DateTime!
+  updatedBy: User!
+}
+
+input ExecutionMethodInput {
+  title: String!
+}
+
 type GithubIdentity {
   id: String!
 }
@@ -50,6 +63,9 @@ type Mutation {
   DirectorateCreateOne(input: DirectorateInput!): Directorate!
   DirectorateUpdateById(input: DirectorateInput!, id: ObjectId!): Directorate
   DirectorateRemoveById(id: ObjectId!): Directorate
+  ExecutionMethodCreateOne(input: ExecutionMethodInput!): ExecutionMethod!
+  ExecutionMethodUpdateById(input: ExecutionMethodInput!, id: ObjectId!): ExecutionMethod
+  ExecutionMethodRemoveById(id: ObjectId!): ExecutionMethod
   MfpIndicatorCreateOne(input: MfpIndicatorInput!): MfpIndicator!
   MfpIndicatorUpdateById(input: MfpIndicatorInput!, id: ObjectId!): MfpIndicator
   MfpIndicatorRemoveById(id: ObjectId!): MfpIndicator
@@ -78,6 +94,8 @@ input ProgramInput {
 type Query {
   DirectorateById(id: ObjectId!): Directorate
   DirectorateMany: [Directorate!]!
+  ExecutionMethodById(id: ObjectId!): ExecutionMethod
+  ExecutionMethodMany: [ExecutionMethod!]!
   MfpIndicatorById(id: ObjectId!): MfpIndicator
   MfpIndicatorMany: [MfpIndicator!]!
   ProgramById(id: ObjectId!): Program
