@@ -38,6 +38,19 @@ input ExecutionMethodInput {
   title: String!
 }
 
+type ExpenditureType {
+  _id: ObjectId!
+  title: String!
+  createdAt: DateTime!
+  createdBy: User!
+  updatedAt: DateTime!
+  updatedBy: User!
+}
+
+input ExpenditureTypeInput {
+  title: String!
+}
+
 type GithubIdentity {
   id: String!
 }
@@ -66,6 +79,9 @@ type Mutation {
   ExecutionMethodCreateOne(input: ExecutionMethodInput!): ExecutionMethod!
   ExecutionMethodUpdateById(input: ExecutionMethodInput!, id: ObjectId!): ExecutionMethod
   ExecutionMethodRemoveById(id: ObjectId!): ExecutionMethod
+  ExpenditureTypeCreateOne(input: ExpenditureTypeInput!): ExpenditureType!
+  ExpenditureTypeUpdateById(input: ExpenditureTypeInput!, id: ObjectId!): ExpenditureType
+  ExpenditureTypeRemoveById(id: ObjectId!): ExpenditureType
   MfpIndicatorCreateOne(input: MfpIndicatorInput!): MfpIndicator!
   MfpIndicatorUpdateById(input: MfpIndicatorInput!, id: ObjectId!): MfpIndicator
   MfpIndicatorRemoveById(id: ObjectId!): MfpIndicator
@@ -96,6 +112,8 @@ type Query {
   DirectorateMany: [Directorate!]!
   ExecutionMethodById(id: ObjectId!): ExecutionMethod
   ExecutionMethodMany: [ExecutionMethod!]!
+  ExpenditureTypeById(id: ObjectId!): ExpenditureType
+  ExpenditureTypeMany: [ExpenditureType!]!
   MfpIndicatorById(id: ObjectId!): MfpIndicator
   MfpIndicatorMany: [MfpIndicator!]!
   ProgramById(id: ObjectId!): Program

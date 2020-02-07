@@ -51,6 +51,20 @@ export type ExecutionMethodInput = {
   title: Scalars['String'],
 };
 
+export type ExpenditureType = {
+   __typename?: 'ExpenditureType',
+  _id: Scalars['ObjectId'],
+  title: Scalars['String'],
+  createdAt: Scalars['DateTime'],
+  createdBy: User,
+  updatedAt: Scalars['DateTime'],
+  updatedBy: User,
+};
+
+export type ExpenditureTypeInput = {
+  title: Scalars['String'],
+};
+
 export type GithubIdentity = {
    __typename?: 'GithubIdentity',
   id: Scalars['String'],
@@ -83,6 +97,9 @@ export type Mutation = {
   ExecutionMethodCreateOne: ExecutionMethod,
   ExecutionMethodUpdateById?: Maybe<ExecutionMethod>,
   ExecutionMethodRemoveById?: Maybe<ExecutionMethod>,
+  ExpenditureTypeCreateOne: ExpenditureType,
+  ExpenditureTypeUpdateById?: Maybe<ExpenditureType>,
+  ExpenditureTypeRemoveById?: Maybe<ExpenditureType>,
   MfpIndicatorCreateOne: MfpIndicator,
   MfpIndicatorUpdateById?: Maybe<MfpIndicator>,
   MfpIndicatorRemoveById?: Maybe<MfpIndicator>,
@@ -121,6 +138,22 @@ export type MutationExecutionMethodUpdateByIdArgs = {
 
 
 export type MutationExecutionMethodRemoveByIdArgs = {
+  id: Scalars['ObjectId']
+};
+
+
+export type MutationExpenditureTypeCreateOneArgs = {
+  input: ExpenditureTypeInput
+};
+
+
+export type MutationExpenditureTypeUpdateByIdArgs = {
+  input: ExpenditureTypeInput,
+  id: Scalars['ObjectId']
+};
+
+
+export type MutationExpenditureTypeRemoveByIdArgs = {
   id: Scalars['ObjectId']
 };
 
@@ -182,6 +215,8 @@ export type Query = {
   DirectorateMany: Array<Directorate>,
   ExecutionMethodById?: Maybe<ExecutionMethod>,
   ExecutionMethodMany: Array<ExecutionMethod>,
+  ExpenditureTypeById?: Maybe<ExpenditureType>,
+  ExpenditureTypeMany: Array<ExpenditureType>,
   MfpIndicatorById?: Maybe<MfpIndicator>,
   MfpIndicatorMany: Array<MfpIndicator>,
   ProgramById?: Maybe<Program>,
@@ -196,6 +231,11 @@ export type QueryDirectorateByIdArgs = {
 
 
 export type QueryExecutionMethodByIdArgs = {
+  id: Scalars['ObjectId']
+};
+
+
+export type QueryExpenditureTypeByIdArgs = {
   id: Scalars['ObjectId']
 };
 
@@ -373,6 +413,74 @@ export type ExecutionMethodUpdateByIdMutation = (
   & { ExecutionMethodUpdateById: Maybe<(
     { __typename?: 'ExecutionMethod' }
     & Pick<ExecutionMethod, '_id' | 'title'>
+  )> }
+);
+
+export type ExpenditureTypeByIdQueryVariables = {
+  id: Scalars['ObjectId']
+};
+
+
+export type ExpenditureTypeByIdQuery = (
+  { __typename?: 'Query' }
+  & { ExpenditureTypeById: Maybe<(
+    { __typename?: 'ExpenditureType' }
+    & Pick<ExpenditureType, '_id' | 'title'>
+  )> }
+);
+
+export type ExpenditureTypeManyQueryVariables = {};
+
+
+export type ExpenditureTypeManyQuery = (
+  { __typename?: 'Query' }
+  & { ExpenditureTypeMany: Array<(
+    { __typename?: 'ExpenditureType' }
+    & Pick<ExpenditureType, '_id' | 'title' | 'updatedAt'>
+    & { updatedBy: (
+      { __typename?: 'User' }
+      & Pick<User, '_id' | 'firstName' | 'lastName'>
+    ) }
+  )> }
+);
+
+export type ExpenditureTypeCreateOneMutationVariables = {
+  title: Scalars['String']
+};
+
+
+export type ExpenditureTypeCreateOneMutation = (
+  { __typename?: 'Mutation' }
+  & { ExpenditureTypeCreateOne: (
+    { __typename?: 'ExpenditureType' }
+    & Pick<ExpenditureType, '_id' | 'title'>
+  ) }
+);
+
+export type ExpenditureTypeRemoveByIdMutationVariables = {
+  id: Scalars['ObjectId']
+};
+
+
+export type ExpenditureTypeRemoveByIdMutation = (
+  { __typename?: 'Mutation' }
+  & { ExpenditureTypeRemoveById: Maybe<(
+    { __typename?: 'ExpenditureType' }
+    & Pick<ExpenditureType, '_id' | 'title'>
+  )> }
+);
+
+export type ExpenditureTypeUpdateByIdMutationVariables = {
+  id: Scalars['ObjectId'],
+  title: Scalars['String']
+};
+
+
+export type ExpenditureTypeUpdateByIdMutation = (
+  { __typename?: 'Mutation' }
+  & { ExpenditureTypeUpdateById: Maybe<(
+    { __typename?: 'ExpenditureType' }
+    & Pick<ExpenditureType, '_id' | 'title'>
   )> }
 );
 
@@ -1061,6 +1169,264 @@ export function useExecutionMethodUpdateByIdMutation(baseOptions?: ApolloReactHo
 export type ExecutionMethodUpdateByIdMutationHookResult = ReturnType<typeof useExecutionMethodUpdateByIdMutation>;
 export type ExecutionMethodUpdateByIdMutationResult = ApolloReactCommon.MutationResult<ExecutionMethodUpdateByIdMutation>;
 export type ExecutionMethodUpdateByIdMutationOptions = ApolloReactCommon.BaseMutationOptions<ExecutionMethodUpdateByIdMutation, ExecutionMethodUpdateByIdMutationVariables>;
+export const ExpenditureTypeByIdDocument = gql`
+    query ExpenditureTypeById($id: ObjectId!) {
+  ExpenditureTypeById(id: $id) {
+    _id
+    title
+  }
+}
+    `;
+export type ExpenditureTypeByIdComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<ExpenditureTypeByIdQuery, ExpenditureTypeByIdQueryVariables>, 'query'> & ({ variables: ExpenditureTypeByIdQueryVariables; skip?: boolean; } | { skip: boolean; });
+
+    export const ExpenditureTypeByIdComponent = (props: ExpenditureTypeByIdComponentProps) => (
+      <ApolloReactComponents.Query<ExpenditureTypeByIdQuery, ExpenditureTypeByIdQueryVariables> query={ExpenditureTypeByIdDocument} {...props} />
+    );
+    
+export type ExpenditureTypeByIdProps<TChildProps = {}> = ApolloReactHoc.DataProps<ExpenditureTypeByIdQuery, ExpenditureTypeByIdQueryVariables> & TChildProps;
+export function withExpenditureTypeById<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  ExpenditureTypeByIdQuery,
+  ExpenditureTypeByIdQueryVariables,
+  ExpenditureTypeByIdProps<TChildProps>>) {
+    return ApolloReactHoc.withQuery<TProps, ExpenditureTypeByIdQuery, ExpenditureTypeByIdQueryVariables, ExpenditureTypeByIdProps<TChildProps>>(ExpenditureTypeByIdDocument, {
+      alias: 'expenditureTypeById',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useExpenditureTypeByIdQuery__
+ *
+ * To run a query within a React component, call `useExpenditureTypeByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useExpenditureTypeByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useExpenditureTypeByIdQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useExpenditureTypeByIdQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<ExpenditureTypeByIdQuery, ExpenditureTypeByIdQueryVariables>) {
+        return ApolloReactHooks.useQuery<ExpenditureTypeByIdQuery, ExpenditureTypeByIdQueryVariables>(ExpenditureTypeByIdDocument, baseOptions);
+      }
+export function useExpenditureTypeByIdLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<ExpenditureTypeByIdQuery, ExpenditureTypeByIdQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<ExpenditureTypeByIdQuery, ExpenditureTypeByIdQueryVariables>(ExpenditureTypeByIdDocument, baseOptions);
+        }
+export type ExpenditureTypeByIdQueryHookResult = ReturnType<typeof useExpenditureTypeByIdQuery>;
+export type ExpenditureTypeByIdLazyQueryHookResult = ReturnType<typeof useExpenditureTypeByIdLazyQuery>;
+export type ExpenditureTypeByIdQueryResult = ApolloReactCommon.QueryResult<ExpenditureTypeByIdQuery, ExpenditureTypeByIdQueryVariables>;
+export const ExpenditureTypeManyDocument = gql`
+    query ExpenditureTypeMany {
+  ExpenditureTypeMany {
+    _id
+    title
+    updatedAt
+    updatedBy {
+      _id
+      firstName
+      lastName
+    }
+  }
+}
+    `;
+export type ExpenditureTypeManyComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<ExpenditureTypeManyQuery, ExpenditureTypeManyQueryVariables>, 'query'>;
+
+    export const ExpenditureTypeManyComponent = (props: ExpenditureTypeManyComponentProps) => (
+      <ApolloReactComponents.Query<ExpenditureTypeManyQuery, ExpenditureTypeManyQueryVariables> query={ExpenditureTypeManyDocument} {...props} />
+    );
+    
+export type ExpenditureTypeManyProps<TChildProps = {}> = ApolloReactHoc.DataProps<ExpenditureTypeManyQuery, ExpenditureTypeManyQueryVariables> & TChildProps;
+export function withExpenditureTypeMany<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  ExpenditureTypeManyQuery,
+  ExpenditureTypeManyQueryVariables,
+  ExpenditureTypeManyProps<TChildProps>>) {
+    return ApolloReactHoc.withQuery<TProps, ExpenditureTypeManyQuery, ExpenditureTypeManyQueryVariables, ExpenditureTypeManyProps<TChildProps>>(ExpenditureTypeManyDocument, {
+      alias: 'expenditureTypeMany',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useExpenditureTypeManyQuery__
+ *
+ * To run a query within a React component, call `useExpenditureTypeManyQuery` and pass it any options that fit your needs.
+ * When your component renders, `useExpenditureTypeManyQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useExpenditureTypeManyQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useExpenditureTypeManyQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<ExpenditureTypeManyQuery, ExpenditureTypeManyQueryVariables>) {
+        return ApolloReactHooks.useQuery<ExpenditureTypeManyQuery, ExpenditureTypeManyQueryVariables>(ExpenditureTypeManyDocument, baseOptions);
+      }
+export function useExpenditureTypeManyLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<ExpenditureTypeManyQuery, ExpenditureTypeManyQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<ExpenditureTypeManyQuery, ExpenditureTypeManyQueryVariables>(ExpenditureTypeManyDocument, baseOptions);
+        }
+export type ExpenditureTypeManyQueryHookResult = ReturnType<typeof useExpenditureTypeManyQuery>;
+export type ExpenditureTypeManyLazyQueryHookResult = ReturnType<typeof useExpenditureTypeManyLazyQuery>;
+export type ExpenditureTypeManyQueryResult = ApolloReactCommon.QueryResult<ExpenditureTypeManyQuery, ExpenditureTypeManyQueryVariables>;
+export const ExpenditureTypeCreateOneDocument = gql`
+    mutation ExpenditureTypeCreateOne($title: String!) {
+  ExpenditureTypeCreateOne(input: {title: $title}) {
+    _id
+    title
+  }
+}
+    `;
+export type ExpenditureTypeCreateOneMutationFn = ApolloReactCommon.MutationFunction<ExpenditureTypeCreateOneMutation, ExpenditureTypeCreateOneMutationVariables>;
+export type ExpenditureTypeCreateOneComponentProps = Omit<ApolloReactComponents.MutationComponentOptions<ExpenditureTypeCreateOneMutation, ExpenditureTypeCreateOneMutationVariables>, 'mutation'>;
+
+    export const ExpenditureTypeCreateOneComponent = (props: ExpenditureTypeCreateOneComponentProps) => (
+      <ApolloReactComponents.Mutation<ExpenditureTypeCreateOneMutation, ExpenditureTypeCreateOneMutationVariables> mutation={ExpenditureTypeCreateOneDocument} {...props} />
+    );
+    
+export type ExpenditureTypeCreateOneProps<TChildProps = {}> = ApolloReactHoc.MutateProps<ExpenditureTypeCreateOneMutation, ExpenditureTypeCreateOneMutationVariables> & TChildProps;
+export function withExpenditureTypeCreateOne<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  ExpenditureTypeCreateOneMutation,
+  ExpenditureTypeCreateOneMutationVariables,
+  ExpenditureTypeCreateOneProps<TChildProps>>) {
+    return ApolloReactHoc.withMutation<TProps, ExpenditureTypeCreateOneMutation, ExpenditureTypeCreateOneMutationVariables, ExpenditureTypeCreateOneProps<TChildProps>>(ExpenditureTypeCreateOneDocument, {
+      alias: 'expenditureTypeCreateOne',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useExpenditureTypeCreateOneMutation__
+ *
+ * To run a mutation, you first call `useExpenditureTypeCreateOneMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useExpenditureTypeCreateOneMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [expenditureTypeCreateOneMutation, { data, loading, error }] = useExpenditureTypeCreateOneMutation({
+ *   variables: {
+ *      title: // value for 'title'
+ *   },
+ * });
+ */
+export function useExpenditureTypeCreateOneMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ExpenditureTypeCreateOneMutation, ExpenditureTypeCreateOneMutationVariables>) {
+        return ApolloReactHooks.useMutation<ExpenditureTypeCreateOneMutation, ExpenditureTypeCreateOneMutationVariables>(ExpenditureTypeCreateOneDocument, baseOptions);
+      }
+export type ExpenditureTypeCreateOneMutationHookResult = ReturnType<typeof useExpenditureTypeCreateOneMutation>;
+export type ExpenditureTypeCreateOneMutationResult = ApolloReactCommon.MutationResult<ExpenditureTypeCreateOneMutation>;
+export type ExpenditureTypeCreateOneMutationOptions = ApolloReactCommon.BaseMutationOptions<ExpenditureTypeCreateOneMutation, ExpenditureTypeCreateOneMutationVariables>;
+export const ExpenditureTypeRemoveByIdDocument = gql`
+    mutation ExpenditureTypeRemoveById($id: ObjectId!) {
+  ExpenditureTypeRemoveById(id: $id) {
+    _id
+    title
+  }
+}
+    `;
+export type ExpenditureTypeRemoveByIdMutationFn = ApolloReactCommon.MutationFunction<ExpenditureTypeRemoveByIdMutation, ExpenditureTypeRemoveByIdMutationVariables>;
+export type ExpenditureTypeRemoveByIdComponentProps = Omit<ApolloReactComponents.MutationComponentOptions<ExpenditureTypeRemoveByIdMutation, ExpenditureTypeRemoveByIdMutationVariables>, 'mutation'>;
+
+    export const ExpenditureTypeRemoveByIdComponent = (props: ExpenditureTypeRemoveByIdComponentProps) => (
+      <ApolloReactComponents.Mutation<ExpenditureTypeRemoveByIdMutation, ExpenditureTypeRemoveByIdMutationVariables> mutation={ExpenditureTypeRemoveByIdDocument} {...props} />
+    );
+    
+export type ExpenditureTypeRemoveByIdProps<TChildProps = {}> = ApolloReactHoc.MutateProps<ExpenditureTypeRemoveByIdMutation, ExpenditureTypeRemoveByIdMutationVariables> & TChildProps;
+export function withExpenditureTypeRemoveById<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  ExpenditureTypeRemoveByIdMutation,
+  ExpenditureTypeRemoveByIdMutationVariables,
+  ExpenditureTypeRemoveByIdProps<TChildProps>>) {
+    return ApolloReactHoc.withMutation<TProps, ExpenditureTypeRemoveByIdMutation, ExpenditureTypeRemoveByIdMutationVariables, ExpenditureTypeRemoveByIdProps<TChildProps>>(ExpenditureTypeRemoveByIdDocument, {
+      alias: 'expenditureTypeRemoveById',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useExpenditureTypeRemoveByIdMutation__
+ *
+ * To run a mutation, you first call `useExpenditureTypeRemoveByIdMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useExpenditureTypeRemoveByIdMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [expenditureTypeRemoveByIdMutation, { data, loading, error }] = useExpenditureTypeRemoveByIdMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useExpenditureTypeRemoveByIdMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ExpenditureTypeRemoveByIdMutation, ExpenditureTypeRemoveByIdMutationVariables>) {
+        return ApolloReactHooks.useMutation<ExpenditureTypeRemoveByIdMutation, ExpenditureTypeRemoveByIdMutationVariables>(ExpenditureTypeRemoveByIdDocument, baseOptions);
+      }
+export type ExpenditureTypeRemoveByIdMutationHookResult = ReturnType<typeof useExpenditureTypeRemoveByIdMutation>;
+export type ExpenditureTypeRemoveByIdMutationResult = ApolloReactCommon.MutationResult<ExpenditureTypeRemoveByIdMutation>;
+export type ExpenditureTypeRemoveByIdMutationOptions = ApolloReactCommon.BaseMutationOptions<ExpenditureTypeRemoveByIdMutation, ExpenditureTypeRemoveByIdMutationVariables>;
+export const ExpenditureTypeUpdateByIdDocument = gql`
+    mutation ExpenditureTypeUpdateById($id: ObjectId!, $title: String!) {
+  ExpenditureTypeUpdateById(input: {title: $title}, id: $id) {
+    _id
+    title
+  }
+}
+    `;
+export type ExpenditureTypeUpdateByIdMutationFn = ApolloReactCommon.MutationFunction<ExpenditureTypeUpdateByIdMutation, ExpenditureTypeUpdateByIdMutationVariables>;
+export type ExpenditureTypeUpdateByIdComponentProps = Omit<ApolloReactComponents.MutationComponentOptions<ExpenditureTypeUpdateByIdMutation, ExpenditureTypeUpdateByIdMutationVariables>, 'mutation'>;
+
+    export const ExpenditureTypeUpdateByIdComponent = (props: ExpenditureTypeUpdateByIdComponentProps) => (
+      <ApolloReactComponents.Mutation<ExpenditureTypeUpdateByIdMutation, ExpenditureTypeUpdateByIdMutationVariables> mutation={ExpenditureTypeUpdateByIdDocument} {...props} />
+    );
+    
+export type ExpenditureTypeUpdateByIdProps<TChildProps = {}> = ApolloReactHoc.MutateProps<ExpenditureTypeUpdateByIdMutation, ExpenditureTypeUpdateByIdMutationVariables> & TChildProps;
+export function withExpenditureTypeUpdateById<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  ExpenditureTypeUpdateByIdMutation,
+  ExpenditureTypeUpdateByIdMutationVariables,
+  ExpenditureTypeUpdateByIdProps<TChildProps>>) {
+    return ApolloReactHoc.withMutation<TProps, ExpenditureTypeUpdateByIdMutation, ExpenditureTypeUpdateByIdMutationVariables, ExpenditureTypeUpdateByIdProps<TChildProps>>(ExpenditureTypeUpdateByIdDocument, {
+      alias: 'expenditureTypeUpdateById',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useExpenditureTypeUpdateByIdMutation__
+ *
+ * To run a mutation, you first call `useExpenditureTypeUpdateByIdMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useExpenditureTypeUpdateByIdMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [expenditureTypeUpdateByIdMutation, { data, loading, error }] = useExpenditureTypeUpdateByIdMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      title: // value for 'title'
+ *   },
+ * });
+ */
+export function useExpenditureTypeUpdateByIdMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ExpenditureTypeUpdateByIdMutation, ExpenditureTypeUpdateByIdMutationVariables>) {
+        return ApolloReactHooks.useMutation<ExpenditureTypeUpdateByIdMutation, ExpenditureTypeUpdateByIdMutationVariables>(ExpenditureTypeUpdateByIdDocument, baseOptions);
+      }
+export type ExpenditureTypeUpdateByIdMutationHookResult = ReturnType<typeof useExpenditureTypeUpdateByIdMutation>;
+export type ExpenditureTypeUpdateByIdMutationResult = ApolloReactCommon.MutationResult<ExpenditureTypeUpdateByIdMutation>;
+export type ExpenditureTypeUpdateByIdMutationOptions = ApolloReactCommon.BaseMutationOptions<ExpenditureTypeUpdateByIdMutation, ExpenditureTypeUpdateByIdMutationVariables>;
 export const MfpIndicatorByIdDocument = gql`
     query MfpIndicatorById($id: ObjectId!) {
   MfpIndicatorById(id: $id) {

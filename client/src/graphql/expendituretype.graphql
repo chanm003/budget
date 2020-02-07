@@ -1,0 +1,40 @@
+query ExpenditureTypeById($id: ObjectId!) {
+    ExpenditureTypeById(id: $id) {
+        _id
+        title
+    }
+}
+
+query ExpenditureTypeMany {
+    ExpenditureTypeMany {
+        _id
+        title
+        updatedAt
+        updatedBy {
+            _id
+            firstName
+            lastName
+        }
+    }
+}
+
+mutation ExpenditureTypeCreateOne($title: String!) {
+    ExpenditureTypeCreateOne(input: { title: $title }) {
+        _id
+        title
+    }
+}
+
+mutation ExpenditureTypeRemoveById($id: ObjectId!) {
+    ExpenditureTypeRemoveById(id: $id) {
+        _id
+        title
+    }
+}
+
+mutation ExpenditureTypeUpdateById($id: ObjectId!, $title: String!) {
+    ExpenditureTypeUpdateById(input: { title: $title }, id: $id) {
+        _id
+        title
+    }
+}

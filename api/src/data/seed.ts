@@ -16,6 +16,10 @@ import {
     ExecutionMethod,
     ExecutionMethodModel,
 } from './entities/executionmethod/model';
+import {
+    ExpenditureType,
+    ExpenditureTypeModel,
+} from './entities/expendituretype/model';
 
 const chance = new Chance();
 
@@ -25,6 +29,9 @@ export async function seedDatabase() {
     const executionmMethods = await createExecutionMethods(
         defaultUser,
     );
+    const expenditureTypes = await createExpenditureTypes(
+        defaultUser,
+    );
     const mfpIndicators = await createMfpIndicators(defaultUser);
     const programs = await createPrograms(defaultUser);
 
@@ -32,6 +39,7 @@ export async function seedDatabase() {
         user: defaultUser,
         directorates,
         executionmMethods,
+        expenditureTypes,
         mfpIndicators,
         programs,
     };
@@ -71,6 +79,22 @@ async function createExecutionMethods(user: User) {
     return (await ExecutionMethodModel.create(
         itemsToCreate,
     )) as ExecutionMethod[];
+}
+
+async function createExpenditureTypes(user: User) {
+    let itemsToCreate: Partial<ExpenditureType>[] = [];
+
+    _.times(3, () => {
+        itemsToCreate.push({
+            title: `EXP-${chance.radio()}`,
+            createdBy: user._id,
+            updatedBy: user._id,
+        });
+    });
+
+    return (await ExpenditureTypeModel.create(
+        itemsToCreate,
+    )) as ExpenditureType[];
 }
 
 async function createFirstUser() {
