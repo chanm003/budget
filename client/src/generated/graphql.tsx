@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
-import * as ApolloReactCommon from '@apollo/react-common';
 import * as React from 'react';
+import * as ApolloReactCommon from '@apollo/react-common';
 import * as ApolloReactComponents from '@apollo/react-components';
 import * as ApolloReactHoc from '@apollo/react-hoc';
 import * as ApolloReactHooks from '@apollo/react-hooks';
@@ -120,6 +120,34 @@ export type UserInput = {
   email: Scalars['String'],
 };
 
+export type DirectorateByIdQueryVariables = {
+  id: Scalars['ObjectId']
+};
+
+
+export type DirectorateByIdQuery = (
+  { __typename?: 'Query' }
+  & { DirectorateById: Maybe<(
+    { __typename?: 'Directorate' }
+    & Pick<Directorate, '_id' | 'title'>
+  )> }
+);
+
+export type DirectorateManyQueryVariables = {};
+
+
+export type DirectorateManyQuery = (
+  { __typename?: 'Query' }
+  & { DirectorateMany: Array<(
+    { __typename?: 'Directorate' }
+    & Pick<Directorate, '_id' | 'title' | 'updatedAt'>
+    & { updatedBy: (
+      { __typename?: 'User' }
+      & Pick<User, '_id' | 'firstName' | 'lastName'>
+    ) }
+  )> }
+);
+
 export type DirectorateCreateOneMutationVariables = {
   title: Scalars['String']
 };
@@ -160,31 +188,16 @@ export type DirectorateUpdateByIdMutation = (
   )> }
 );
 
-export type DirectorateByIdQueryVariables = {
+export type UserByIdQueryVariables = {
   id: Scalars['ObjectId']
 };
 
 
-export type DirectorateByIdQuery = (
+export type UserByIdQuery = (
   { __typename?: 'Query' }
-  & { DirectorateById: Maybe<(
-    { __typename?: 'Directorate' }
-    & Pick<Directorate, '_id' | 'title'>
-  )> }
-);
-
-export type DirectorateManyQueryVariables = {};
-
-
-export type DirectorateManyQuery = (
-  { __typename?: 'Query' }
-  & { DirectorateMany: Array<(
-    { __typename?: 'Directorate' }
-    & Pick<Directorate, '_id' | 'title' | 'updatedAt'>
-    & { updatedBy: (
-      { __typename?: 'User' }
-      & Pick<User, '_id' | 'firstName' | 'lastName'>
-    ) }
+  & { UserById: Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, '_id' | 'firstName' | 'lastName' | 'email'>
   )> }
 );
 
@@ -207,20 +220,114 @@ export type UserUpdateMyProfileMutation = (
   )> }
 );
 
-export type UserByIdQueryVariables = {
-  id: Scalars['ObjectId']
+
+export const DirectorateByIdDocument = gql`
+    query DirectorateById($id: ObjectId!) {
+  DirectorateById(id: $id) {
+    _id
+    title
+  }
+}
+    `;
+export type DirectorateByIdComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<DirectorateByIdQuery, DirectorateByIdQueryVariables>, 'query'> & ({ variables: DirectorateByIdQueryVariables; skip?: boolean; } | { skip: boolean; });
+
+    export const DirectorateByIdComponent = (props: DirectorateByIdComponentProps) => (
+      <ApolloReactComponents.Query<DirectorateByIdQuery, DirectorateByIdQueryVariables> query={DirectorateByIdDocument} {...props} />
+    );
+    
+export type DirectorateByIdProps<TChildProps = {}> = ApolloReactHoc.DataProps<DirectorateByIdQuery, DirectorateByIdQueryVariables> & TChildProps;
+export function withDirectorateById<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  DirectorateByIdQuery,
+  DirectorateByIdQueryVariables,
+  DirectorateByIdProps<TChildProps>>) {
+    return ApolloReactHoc.withQuery<TProps, DirectorateByIdQuery, DirectorateByIdQueryVariables, DirectorateByIdProps<TChildProps>>(DirectorateByIdDocument, {
+      alias: 'directorateById',
+      ...operationOptions
+    });
 };
 
+/**
+ * __useDirectorateByIdQuery__
+ *
+ * To run a query within a React component, call `useDirectorateByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useDirectorateByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useDirectorateByIdQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDirectorateByIdQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<DirectorateByIdQuery, DirectorateByIdQueryVariables>) {
+        return ApolloReactHooks.useQuery<DirectorateByIdQuery, DirectorateByIdQueryVariables>(DirectorateByIdDocument, baseOptions);
+      }
+export function useDirectorateByIdLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<DirectorateByIdQuery, DirectorateByIdQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<DirectorateByIdQuery, DirectorateByIdQueryVariables>(DirectorateByIdDocument, baseOptions);
+        }
+export type DirectorateByIdQueryHookResult = ReturnType<typeof useDirectorateByIdQuery>;
+export type DirectorateByIdLazyQueryHookResult = ReturnType<typeof useDirectorateByIdLazyQuery>;
+export type DirectorateByIdQueryResult = ApolloReactCommon.QueryResult<DirectorateByIdQuery, DirectorateByIdQueryVariables>;
+export const DirectorateManyDocument = gql`
+    query DirectorateMany {
+  DirectorateMany {
+    _id
+    title
+    updatedAt
+    updatedBy {
+      _id
+      firstName
+      lastName
+    }
+  }
+}
+    `;
+export type DirectorateManyComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<DirectorateManyQuery, DirectorateManyQueryVariables>, 'query'>;
 
-export type UserByIdQuery = (
-  { __typename?: 'Query' }
-  & { UserById: Maybe<(
-    { __typename?: 'User' }
-    & Pick<User, '_id' | 'firstName' | 'lastName' | 'email'>
-  )> }
-);
+    export const DirectorateManyComponent = (props: DirectorateManyComponentProps) => (
+      <ApolloReactComponents.Query<DirectorateManyQuery, DirectorateManyQueryVariables> query={DirectorateManyDocument} {...props} />
+    );
+    
+export type DirectorateManyProps<TChildProps = {}> = ApolloReactHoc.DataProps<DirectorateManyQuery, DirectorateManyQueryVariables> & TChildProps;
+export function withDirectorateMany<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  DirectorateManyQuery,
+  DirectorateManyQueryVariables,
+  DirectorateManyProps<TChildProps>>) {
+    return ApolloReactHoc.withQuery<TProps, DirectorateManyQuery, DirectorateManyQueryVariables, DirectorateManyProps<TChildProps>>(DirectorateManyDocument, {
+      alias: 'directorateMany',
+      ...operationOptions
+    });
+};
 
-
+/**
+ * __useDirectorateManyQuery__
+ *
+ * To run a query within a React component, call `useDirectorateManyQuery` and pass it any options that fit your needs.
+ * When your component renders, `useDirectorateManyQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useDirectorateManyQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useDirectorateManyQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<DirectorateManyQuery, DirectorateManyQueryVariables>) {
+        return ApolloReactHooks.useQuery<DirectorateManyQuery, DirectorateManyQueryVariables>(DirectorateManyDocument, baseOptions);
+      }
+export function useDirectorateManyLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<DirectorateManyQuery, DirectorateManyQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<DirectorateManyQuery, DirectorateManyQueryVariables>(DirectorateManyDocument, baseOptions);
+        }
+export type DirectorateManyQueryHookResult = ReturnType<typeof useDirectorateManyQuery>;
+export type DirectorateManyLazyQueryHookResult = ReturnType<typeof useDirectorateManyLazyQuery>;
+export type DirectorateManyQueryResult = ApolloReactCommon.QueryResult<DirectorateManyQuery, DirectorateManyQueryVariables>;
 export const DirectorateCreateOneDocument = gql`
     mutation DirectorateCreateOne($title: String!) {
   DirectorateCreateOne(input: {title: $title}) {
@@ -372,113 +479,59 @@ export function useDirectorateUpdateByIdMutation(baseOptions?: ApolloReactHooks.
 export type DirectorateUpdateByIdMutationHookResult = ReturnType<typeof useDirectorateUpdateByIdMutation>;
 export type DirectorateUpdateByIdMutationResult = ApolloReactCommon.MutationResult<DirectorateUpdateByIdMutation>;
 export type DirectorateUpdateByIdMutationOptions = ApolloReactCommon.BaseMutationOptions<DirectorateUpdateByIdMutation, DirectorateUpdateByIdMutationVariables>;
-export const DirectorateByIdDocument = gql`
-    query DirectorateById($id: ObjectId!) {
-  DirectorateById(id: $id) {
+export const UserByIdDocument = gql`
+    query UserById($id: ObjectId!) {
+  UserById(id: $id) {
     _id
-    title
+    firstName
+    lastName
+    email
   }
 }
     `;
-export type DirectorateByIdComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<DirectorateByIdQuery, DirectorateByIdQueryVariables>, 'query'> & ({ variables: DirectorateByIdQueryVariables; skip?: boolean; } | { skip: boolean; });
+export type UserByIdComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<UserByIdQuery, UserByIdQueryVariables>, 'query'> & ({ variables: UserByIdQueryVariables; skip?: boolean; } | { skip: boolean; });
 
-    export const DirectorateByIdComponent = (props: DirectorateByIdComponentProps) => (
-      <ApolloReactComponents.Query<DirectorateByIdQuery, DirectorateByIdQueryVariables> query={DirectorateByIdDocument} {...props} />
+    export const UserByIdComponent = (props: UserByIdComponentProps) => (
+      <ApolloReactComponents.Query<UserByIdQuery, UserByIdQueryVariables> query={UserByIdDocument} {...props} />
     );
     
-export type DirectorateByIdProps<TChildProps = {}> = ApolloReactHoc.DataProps<DirectorateByIdQuery, DirectorateByIdQueryVariables> & TChildProps;
-export function withDirectorateById<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+export type UserByIdProps<TChildProps = {}> = ApolloReactHoc.DataProps<UserByIdQuery, UserByIdQueryVariables> & TChildProps;
+export function withUserById<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
   TProps,
-  DirectorateByIdQuery,
-  DirectorateByIdQueryVariables,
-  DirectorateByIdProps<TChildProps>>) {
-    return ApolloReactHoc.withQuery<TProps, DirectorateByIdQuery, DirectorateByIdQueryVariables, DirectorateByIdProps<TChildProps>>(DirectorateByIdDocument, {
-      alias: 'directorateById',
+  UserByIdQuery,
+  UserByIdQueryVariables,
+  UserByIdProps<TChildProps>>) {
+    return ApolloReactHoc.withQuery<TProps, UserByIdQuery, UserByIdQueryVariables, UserByIdProps<TChildProps>>(UserByIdDocument, {
+      alias: 'userById',
       ...operationOptions
     });
 };
 
 /**
- * __useDirectorateByIdQuery__
+ * __useUserByIdQuery__
  *
- * To run a query within a React component, call `useDirectorateByIdQuery` and pass it any options that fit your needs.
- * When your component renders, `useDirectorateByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * To run a query within a React component, call `useUserByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties 
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useDirectorateByIdQuery({
+ * const { data, loading, error } = useUserByIdQuery({
  *   variables: {
  *      id: // value for 'id'
  *   },
  * });
  */
-export function useDirectorateByIdQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<DirectorateByIdQuery, DirectorateByIdQueryVariables>) {
-        return ApolloReactHooks.useQuery<DirectorateByIdQuery, DirectorateByIdQueryVariables>(DirectorateByIdDocument, baseOptions);
+export function useUserByIdQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<UserByIdQuery, UserByIdQueryVariables>) {
+        return ApolloReactHooks.useQuery<UserByIdQuery, UserByIdQueryVariables>(UserByIdDocument, baseOptions);
       }
-export function useDirectorateByIdLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<DirectorateByIdQuery, DirectorateByIdQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<DirectorateByIdQuery, DirectorateByIdQueryVariables>(DirectorateByIdDocument, baseOptions);
+export function useUserByIdLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<UserByIdQuery, UserByIdQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<UserByIdQuery, UserByIdQueryVariables>(UserByIdDocument, baseOptions);
         }
-export type DirectorateByIdQueryHookResult = ReturnType<typeof useDirectorateByIdQuery>;
-export type DirectorateByIdLazyQueryHookResult = ReturnType<typeof useDirectorateByIdLazyQuery>;
-export type DirectorateByIdQueryResult = ApolloReactCommon.QueryResult<DirectorateByIdQuery, DirectorateByIdQueryVariables>;
-export const DirectorateManyDocument = gql`
-    query DirectorateMany {
-  DirectorateMany {
-    _id
-    title
-    updatedAt
-    updatedBy {
-      _id
-      firstName
-      lastName
-    }
-  }
-}
-    `;
-export type DirectorateManyComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<DirectorateManyQuery, DirectorateManyQueryVariables>, 'query'>;
-
-    export const DirectorateManyComponent = (props: DirectorateManyComponentProps) => (
-      <ApolloReactComponents.Query<DirectorateManyQuery, DirectorateManyQueryVariables> query={DirectorateManyDocument} {...props} />
-    );
-    
-export type DirectorateManyProps<TChildProps = {}> = ApolloReactHoc.DataProps<DirectorateManyQuery, DirectorateManyQueryVariables> & TChildProps;
-export function withDirectorateMany<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  DirectorateManyQuery,
-  DirectorateManyQueryVariables,
-  DirectorateManyProps<TChildProps>>) {
-    return ApolloReactHoc.withQuery<TProps, DirectorateManyQuery, DirectorateManyQueryVariables, DirectorateManyProps<TChildProps>>(DirectorateManyDocument, {
-      alias: 'directorateMany',
-      ...operationOptions
-    });
-};
-
-/**
- * __useDirectorateManyQuery__
- *
- * To run a query within a React component, call `useDirectorateManyQuery` and pass it any options that fit your needs.
- * When your component renders, `useDirectorateManyQuery` returns an object from Apollo Client that contains loading, error, and data properties 
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useDirectorateManyQuery({
- *   variables: {
- *   },
- * });
- */
-export function useDirectorateManyQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<DirectorateManyQuery, DirectorateManyQueryVariables>) {
-        return ApolloReactHooks.useQuery<DirectorateManyQuery, DirectorateManyQueryVariables>(DirectorateManyDocument, baseOptions);
-      }
-export function useDirectorateManyLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<DirectorateManyQuery, DirectorateManyQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<DirectorateManyQuery, DirectorateManyQueryVariables>(DirectorateManyDocument, baseOptions);
-        }
-export type DirectorateManyQueryHookResult = ReturnType<typeof useDirectorateManyQuery>;
-export type DirectorateManyLazyQueryHookResult = ReturnType<typeof useDirectorateManyLazyQuery>;
-export type DirectorateManyQueryResult = ApolloReactCommon.QueryResult<DirectorateManyQuery, DirectorateManyQueryVariables>;
+export type UserByIdQueryHookResult = ReturnType<typeof useUserByIdQuery>;
+export type UserByIdLazyQueryHookResult = ReturnType<typeof useUserByIdLazyQuery>;
+export type UserByIdQueryResult = ApolloReactCommon.QueryResult<UserByIdQuery, UserByIdQueryVariables>;
 export const UserUpdateMyProfileDocument = gql`
     mutation UserUpdateMyProfile($firstName: String!, $lastName: String!, $email: String!) {
   UserUpdateMyProfile(input: {firstName: $firstName, lastName: $lastName, email: $email}) {
@@ -537,56 +590,3 @@ export function useUserUpdateMyProfileMutation(baseOptions?: ApolloReactHooks.Mu
 export type UserUpdateMyProfileMutationHookResult = ReturnType<typeof useUserUpdateMyProfileMutation>;
 export type UserUpdateMyProfileMutationResult = ApolloReactCommon.MutationResult<UserUpdateMyProfileMutation>;
 export type UserUpdateMyProfileMutationOptions = ApolloReactCommon.BaseMutationOptions<UserUpdateMyProfileMutation, UserUpdateMyProfileMutationVariables>;
-export const UserByIdDocument = gql`
-    query UserById($id: ObjectId!) {
-  UserById(id: $id) {
-    _id
-    firstName
-    lastName
-    email
-  }
-}
-    `;
-export type UserByIdComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<UserByIdQuery, UserByIdQueryVariables>, 'query'> & ({ variables: UserByIdQueryVariables; skip?: boolean; } | { skip: boolean; });
-
-    export const UserByIdComponent = (props: UserByIdComponentProps) => (
-      <ApolloReactComponents.Query<UserByIdQuery, UserByIdQueryVariables> query={UserByIdDocument} {...props} />
-    );
-    
-export type UserByIdProps<TChildProps = {}> = ApolloReactHoc.DataProps<UserByIdQuery, UserByIdQueryVariables> & TChildProps;
-export function withUserById<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  UserByIdQuery,
-  UserByIdQueryVariables,
-  UserByIdProps<TChildProps>>) {
-    return ApolloReactHoc.withQuery<TProps, UserByIdQuery, UserByIdQueryVariables, UserByIdProps<TChildProps>>(UserByIdDocument, {
-      alias: 'userById',
-      ...operationOptions
-    });
-};
-
-/**
- * __useUserByIdQuery__
- *
- * To run a query within a React component, call `useUserByIdQuery` and pass it any options that fit your needs.
- * When your component renders, `useUserByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties 
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useUserByIdQuery({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useUserByIdQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<UserByIdQuery, UserByIdQueryVariables>) {
-        return ApolloReactHooks.useQuery<UserByIdQuery, UserByIdQueryVariables>(UserByIdDocument, baseOptions);
-      }
-export function useUserByIdLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<UserByIdQuery, UserByIdQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<UserByIdQuery, UserByIdQueryVariables>(UserByIdDocument, baseOptions);
-        }
-export type UserByIdQueryHookResult = ReturnType<typeof useUserByIdQuery>;
-export type UserByIdLazyQueryHookResult = ReturnType<typeof useUserByIdLazyQuery>;
-export type UserByIdQueryResult = ApolloReactCommon.QueryResult<UserByIdQuery, UserByIdQueryVariables>;

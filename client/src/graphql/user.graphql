@@ -1,3 +1,12 @@
+query UserById($id: ObjectId!) {
+    UserById(id: $id) {
+        _id
+        firstName
+        lastName
+        email
+    }
+}
+
 mutation UserUpdateMyProfile(
     $firstName: String!
     $lastName: String!
