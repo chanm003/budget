@@ -24,6 +24,7 @@ import { routeConfig } from '../../../../combineRoutes';
 import {
     MutationTuple,
     MutationHookOptions,
+    QueryHookOptions,
 } from '@apollo/react-hooks/lib/types';
 import { QueryResult } from '@apollo/react-common/lib/types/types';
 
@@ -66,7 +67,7 @@ interface Props<
     resourceNamePlural: string;
     manyDocument: any;
     useManyQuery: (
-        baseOptions?: any,
+        baseOptions?: QueryHookOptions<ManyQuery, ManyQueryVariables>,
     ) => QueryResult<ManyQuery, ManyQueryVariables>;
     parseManyResponse: (data?: ManyQuery) => T[];
     useRemoveByIdMutation: (
