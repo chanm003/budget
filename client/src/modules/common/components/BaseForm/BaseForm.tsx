@@ -37,7 +37,7 @@ const CustomForm = <FormData extends object>({
 
     useEffect(() => {
         registerFields(formContextValues);
-    }, [formContextValues]);
+    }, [registerFields, formContextValues]);
 
     return (
         <React.Fragment>

@@ -1,25 +1,30 @@
-import React, { useEffect } from 'react';
-import { useToasts } from 'react-toast-notifications';
-import { useParams, useHistory } from 'react-router-dom';
-
-import { Panel } from '../common/components/Panel/Panel';
-import { toastSettings } from '../core/layout/toaster/settings';
+import React from 'react';
 import Form, { FormData } from './Form';
+import BaseCreateOrEdit from '../common/components/BaseCreateOrEdit/BaseCreateOrEdit';
 
 import { routeConfig } from '../../combineRoutes';
 import {
     useDirectorateByIdLazyQuery as useByIdLazyQuery,
     useDirectorateCreateOneMutation as useCreateOneMutation,
     useDirectorateUpdateByIdMutation as useUpdateByIdMutation,
+    DirectorateByIdQueryVariables,
     DirectorateManyDocument as ManyDocument,
     DirectorateByIdQuery as ByIdQuery,
     DirectorateCreateOneMutation as CreateOneMutation,
+    DirectorateCreateOneMutationVariables as CreateOneMutationVariables,
+    DirectorateUpdateByIdMutation as UpdateByIdMutation,
+    DirectorateUpdateByIdMutationVariables as UpdateByIdMutationVariables,
+    Directorate,
 } from '../../generated/graphql';
 
-const parseCreateOneResponse = (data?: CreateOneMutation) =>
-    data?.DirectorateCreateOne;
+const onItemCreatedMessage = (createdItem: Directorate) =>
+    `'${createdItem.title}' has been created.`;
 
-const parseByIdResponse = (data?: ByIdQuery) => data?.DirectorateById;
+const parseCreateOneResponse = (data?: CreateOneMutation) =>
+    data?.DirectorateCreateOne as Directorate;
+
+const parseByIdResponse = (data?: ByIdQuery) =>
+    data?.DirectorateById as Directorate;
 
 const redirectToAllItemsPath = () => routeConfig.DirectorateMany.path;
 
@@ -34,66 +39,29 @@ const identifyEditableFields = (
 };
 
 const CreateOrEdit: React.FC = () => {
-    const { id } = useParams();
-    const history = useHistory();
-    const { addToast } = useToasts();
-    const [createOne] = useCreateOneMutation();
-    const [updateItem] = useUpdateByIdMutation();
-    const [getById, { data }] = useByIdLazyQuery({
-        variables: { id },
-    });
-
-    useEffect(() => {
-        if (id) {
-            getById();
-        }
-    }, [id, getById]);
-
-    const onSubmit = async (formData: FormData) => {
-        if (!id) {
-            const response = await createOne({
-                variables: { ...formData },
-                refetchQueries: [{ query: ManyDocument }],
-            });
-            const createdItem = parseCreateOneResponse(response.data);
-            if (createdItem) {
-                addToast(
-                    `'${createdItem.title}' has been created.`,
-                    toastSettings.success,
-                );
-            }
-        } else {
-            await updateItem({ variables: { id, ...formData } });
-            addToast(
-                `Your changes have been saved.`,
-                toastSettings.success,
-            );
-        }
-        history.push(redirectToAllItemsPath());
-    };
-
-    const itemToEdit = parseByIdResponse(data);
-
-    if (!id) {
-        return (
-            <Panel header="New Form">
-                <Form onSubmit={onSubmit} initialValues={{}} />
-            </Panel>
-        );
-    } else if (id && itemToEdit) {
-        return (
-            <Panel header="Edit Form">
-                <Form
-                    onSubmit={onSubmit}
-                    initialValues={identifyEditableFields(
-                        itemToEdit as FormData,
-                    )}
-                />
-            </Panel>
-        );
-    } else {
-        return null;
-    }
+    return (
+        <BaseCreateOrEdit<
+            Directorate,
+            FormData,
+            ByIdQuery,
+            DirectorateByIdQueryVariables,
+            CreateOneMutation,
+            CreateOneMutationVariables,
+            UpdateByIdMutation,
+            UpdateByIdMutationVariables
+        >
+            Form={Form}
+            identifyEditableFields={identifyEditableFields}
+            manyDocument={ManyDocument}
+            onItemCreatedMessage={onItemCreatedMessage}
+            parseByIdResponse={parseByIdResponse}
+            parseCreateOneResponse={parseCreateOneResponse}
+            redirectToAllItemsPath={redirectToAllItemsPath}
+            useByIdLazyQuery={useByIdLazyQuery}
+            useCreateOneMutation={useCreateOneMutation}
+            useUpdateByIdMutation={useUpdateByIdMutation}
+        />
+    );
 };
 
 export default CreateOrEdit;

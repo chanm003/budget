@@ -1,26 +1,30 @@
-import React, { useEffect } from 'react';
-import { useToasts } from 'react-toast-notifications';
-import { useParams, useHistory } from 'react-router-dom';
-
-import { Panel } from '../common/components/Panel/Panel';
-import { toastSettings } from '../core/layout/toaster/settings';
+import React from 'react';
 import Form, { FormData } from './Form';
+import BaseCreateOrEdit from '../common/components/BaseCreateOrEdit/BaseCreateOrEdit';
 
 import { routeConfig } from '../../combineRoutes';
 import {
     useExecutionMethodByIdLazyQuery as useByIdLazyQuery,
     useExecutionMethodCreateOneMutation as useCreateOneMutation,
     useExecutionMethodUpdateByIdMutation as useUpdateByIdMutation,
+    ExecutionMethodByIdQueryVariables,
     ExecutionMethodManyDocument as ManyDocument,
     ExecutionMethodByIdQuery as ByIdQuery,
     ExecutionMethodCreateOneMutation as CreateOneMutation,
+    ExecutionMethodCreateOneMutationVariables as CreateOneMutationVariables,
+    ExecutionMethodUpdateByIdMutation as UpdateByIdMutation,
+    ExecutionMethodUpdateByIdMutationVariables as UpdateByIdMutationVariables,
+    ExecutionMethod,
 } from '../../generated/graphql';
 
+const onItemCreatedMessage = (createdItem: ExecutionMethod) =>
+    `'${createdItem.title}' has been created.`;
+
 const parseCreateOneResponse = (data?: CreateOneMutation) =>
-    data?.ExecutionMethodCreateOne;
+    data?.ExecutionMethodCreateOne as ExecutionMethod;
 
 const parseByIdResponse = (data?: ByIdQuery) =>
-    data?.ExecutionMethodById;
+    data?.ExecutionMethodById as ExecutionMethod;
 
 const redirectToAllItemsPath = () =>
     routeConfig.ExecutionMethodMany.path;
@@ -36,66 +40,29 @@ const identifyEditableFields = (
 };
 
 const CreateOrEdit: React.FC = () => {
-    const { id } = useParams();
-    const history = useHistory();
-    const { addToast } = useToasts();
-    const [createOne] = useCreateOneMutation();
-    const [updateItem] = useUpdateByIdMutation();
-    const [getById, { data }] = useByIdLazyQuery({
-        variables: { id },
-    });
-
-    useEffect(() => {
-        if (id) {
-            getById();
-        }
-    }, [id, getById]);
-
-    const onSubmit = async (formData: FormData) => {
-        if (!id) {
-            const response = await createOne({
-                variables: { ...formData },
-                refetchQueries: [{ query: ManyDocument }],
-            });
-            const createdItem = parseCreateOneResponse(response.data);
-            if (createdItem) {
-                addToast(
-                    `'${createdItem.title}' has been created.`,
-                    toastSettings.success,
-                );
-            }
-        } else {
-            await updateItem({ variables: { id, ...formData } });
-            addToast(
-                `Your changes have been saved.`,
-                toastSettings.success,
-            );
-        }
-        history.push(redirectToAllItemsPath());
-    };
-
-    const itemToEdit = parseByIdResponse(data);
-
-    if (!id) {
-        return (
-            <Panel header="New Form">
-                <Form onSubmit={onSubmit} initialValues={{}} />
-            </Panel>
-        );
-    } else if (id && itemToEdit) {
-        return (
-            <Panel header="Edit Form">
-                <Form
-                    onSubmit={onSubmit}
-                    initialValues={identifyEditableFields(
-                        itemToEdit as FormData,
-                    )}
-                />
-            </Panel>
-        );
-    } else {
-        return null;
-    }
+    return (
+        <BaseCreateOrEdit<
+            ExecutionMethod,
+            FormData,
+            ByIdQuery,
+            ExecutionMethodByIdQueryVariables,
+            CreateOneMutation,
+            CreateOneMutationVariables,
+            UpdateByIdMutation,
+            UpdateByIdMutationVariables
+        >
+            Form={Form}
+            identifyEditableFields={identifyEditableFields}
+            manyDocument={ManyDocument}
+            onItemCreatedMessage={onItemCreatedMessage}
+            parseByIdResponse={parseByIdResponse}
+            parseCreateOneResponse={parseCreateOneResponse}
+            redirectToAllItemsPath={redirectToAllItemsPath}
+            useByIdLazyQuery={useByIdLazyQuery}
+            useCreateOneMutation={useCreateOneMutation}
+            useUpdateByIdMutation={useUpdateByIdMutation}
+        />
+    );
 };
 
 export default CreateOrEdit;
