@@ -1,20 +1,16 @@
-import React, { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import {
-    Stack,
-    TextField,
-    PrimaryButton,
-} from 'office-ui-fabric-react';
+import React from 'react';
+import { Stack, TextField } from 'office-ui-fabric-react';
 import { validationSchemas } from 'shared';
 
-import {
-    handleTextFieldChange,
-    FormErrors,
-} from '../common/formHelpers';
+import { handleTextFieldChange } from '../common/formHelpers';
 import {
     ExpenditureTypeUpdateByIdMutationVariables as UpdateByIdMutationVariables,
     ExpenditureTypeCreateOneMutationVariables as CreateOneMutationVariables,
 } from '../../generated/graphql';
+import BaseForm, {
+    RenderFieldsFunc,
+    RegisterFieldsFunc,
+} from '../common/components/BaseForm/BaseForm';
 
 const validationSchema =
     validationSchemas.ExpenditureType.yupSchemas.defaultSchema;
@@ -28,59 +24,49 @@ interface Props {
     onSubmit: (formData: FormData) => void;
 }
 
-const CustomForm: React.FC<Props> = props => {
-    const {
-        register,
-        errors,
-        handleSubmit,
-        setValue,
-        triggerValidation,
-    } = useForm({
-        validationSchema,
-        defaultValues: props.initialValues,
-    });
+const registerFields: RegisterFieldsFunc = ({ register }) => {
+    register({ name: 'title' });
+};
 
-    useEffect(() => {
-        register({ name: 'title' });
-    }, [register]);
-
-    const formErrors = errors as FormErrors;
-
-    return (
-        <React.Fragment>
-            <form
-                onSubmit={handleSubmit(data =>
-                    props.onSubmit(data as FormData),
-                )}
-            >
-                <Stack tokens={{ childrenGap: 10 }}>
-                    <Stack horizontal tokens={{ childrenGap: 20 }}>
-                        <Stack.Item grow>
-                            <TextField
-                                name="title"
-                                defaultValue={
-                                    props.initialValues.title
-                                }
-                                label="Title"
-                                placeholder="Title"
-                                autoComplete="off"
-                                onChange={handleTextFieldChange(
-                                    setValue,
-                                    triggerValidation,
-                                )}
-                                errorMessage={
-                                    formErrors.title
-                                        ? formErrors.title.message
-                                        : ''
-                                }
-                            />
-                        </Stack.Item>
-                    </Stack>
+const renderFieldsFunc = (
+    initialFormData: Partial<FormData>,
+): RenderFieldsFunc => {
+    return (formContextValues, formErrors) => {
+        return (
+            <Stack tokens={{ childrenGap: 10 }}>
+                <Stack horizontal tokens={{ childrenGap: 20 }}>
+                    <Stack.Item grow>
+                        <TextField
+                            name="title"
+                            defaultValue={initialFormData.title}
+                            label="Title"
+                            placeholder="Title"
+                            autoComplete="off"
+                            onChange={handleTextFieldChange(
+                                formContextValues,
+                            )}
+                            errorMessage={
+                                formErrors.title
+                                    ? formErrors.title.message
+                                    : ''
+                            }
+                        />
+                    </Stack.Item>
                 </Stack>
-                <br />
-                <PrimaryButton type="submit" text="Save" />
-            </form>
-        </React.Fragment>
+            </Stack>
+        );
+    };
+};
+
+const CustomForm: React.FC<Props> = ({ initialValues, onSubmit }) => {
+    return (
+        <BaseForm<FormData>
+            validationSchema={validationSchema}
+            onSubmit={onSubmit}
+            initialValues={initialValues}
+            registerFields={registerFields}
+            renderFields={renderFieldsFunc(initialValues)}
+        />
     );
 };
 

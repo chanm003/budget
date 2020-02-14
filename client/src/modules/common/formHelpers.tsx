@@ -1,19 +1,20 @@
 import React from 'react';
 import { Message, InputOnChangeData } from 'semantic-ui-react';
+import { FormContextValues } from 'react-hook-form/dist/contextTypes';
 
-type setValueFunc = (
+export type SetValueFunc = (
     name: string,
     value: any,
     shouldValidate?: boolean,
 ) => void | Promise<boolean>;
 
-type triggerValidationFunc = (
+export type TriggerValidationFunc = (
     payload?: string | string[],
 ) => Promise<boolean>;
 
 export const handleCheckboxChange = (
-    setValue: setValueFunc,
-    triggerValidation: triggerValidationFunc,
+    setValue: SetValueFunc,
+    triggerValidation: TriggerValidationFunc,
 ) => async (
     e: React.ChangeEvent<HTMLInputElement>,
     { name, checked }: InputOnChangeData,
@@ -22,10 +23,10 @@ export const handleCheckboxChange = (
     await triggerValidation(name);
 };
 
-export const handleTextFieldChange = (
-    setValue: setValueFunc,
-    triggerValidation: triggerValidationFunc,
-) => async (
+export const handleTextFieldChange = ({
+    setValue,
+    triggerValidation,
+}: FormContextValues) => async (
     event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
     newValue?: string,
 ) => {
@@ -35,8 +36,8 @@ export const handleTextFieldChange = (
 };
 
 export const handleValueChange = (
-    setValue: setValueFunc,
-    triggerValidation: triggerValidationFunc,
+    setValue: SetValueFunc,
+    triggerValidation: TriggerValidationFunc,
 ) => async (
     e: React.ChangeEvent<HTMLInputElement>,
     { name, value }: InputOnChangeData,
