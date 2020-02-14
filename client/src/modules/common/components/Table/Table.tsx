@@ -7,6 +7,9 @@ import {
     DetailsList,
     IColumn,
 } from 'office-ui-fabric-react';
+import { useToasts } from 'react-toast-notifications';
+
+import { toastSettings } from '../../../core/layout/toaster/settings';
 
 import {
     DeleteDialog,
@@ -18,6 +21,11 @@ import Can from '../../../core/security/Can';
 import { useAuth } from '../../../core/authentication/authContext';
 import { User } from '../../../../generated/graphql';
 import { routeConfig } from '../../../../combineRoutes';
+import {
+    MutationTuple,
+    MutationHookOptions,
+} from '@apollo/react-hooks/lib/types';
+import { QueryResult } from '@apollo/react-common/lib/types/types';
 
 function renderActionButtons(
     createItemOperationName: string,
@@ -44,18 +52,51 @@ interface IMongoItem {
     _id: string;
 }
 
-interface Props<T extends IMongoItem> {
-    items: T[];
+interface Props<
+    T extends IMongoItem,
+    ManyQuery,
+    ManyQueryVariables,
+    RemoveByIdMutation,
+    RemoveByIdMutationVariables
+> {
     columns: IColumn[];
-    isLoading: boolean;
-    onDeleteClicked: any;
+    deleteConfirmMessage: (item: T) => string;
+    itemDeletedMessage: (item: T) => string;
     resourceName: string;
     resourceNamePlural: string;
-    deleteDialogState: (item: T) => DeleteDialogState;
+    manyDocument: any;
+    useManyQuery: (
+        baseOptions?: any,
+    ) => QueryResult<ManyQuery, ManyQueryVariables>;
+    parseManyResponse: (data?: ManyQuery) => T[];
+    useRemoveByIdMutation: (
+        baseOptions?: MutationHookOptions<
+            RemoveByIdMutation,
+            RemoveByIdMutationVariables
+        >,
+    ) => MutationTuple<
+        RemoveByIdMutation,
+        RemoveByIdMutationVariables
+    >;
+    parseRemoveByIdResponse: (
+        data?: RemoveByIdMutation,
+    ) => T | undefined;
 }
 
-const ItemsTable = <T extends IMongoItem>(
-    props: Props<T> & { children?: ReactNode },
+const ItemsTable = <
+    T extends IMongoItem,
+    ManyQuery,
+    ManyQueryVariables,
+    RemoveByIdMutation,
+    RemoveByIdMutationVariables
+>(
+    props: Props<
+        T,
+        ManyQuery,
+        ManyQueryVariables,
+        RemoveByIdMutation,
+        RemoveByIdMutationVariables
+    > & { children?: ReactNode },
 ) => {
     const initialDialogState = {
         visible: false,
@@ -63,28 +104,55 @@ const ItemsTable = <T extends IMongoItem>(
         subText: '',
     };
 
+    const {
+        resourceNamePlural,
+        columns,
+        deleteConfirmMessage,
+        useManyQuery,
+        itemDeletedMessage,
+        resourceName,
+        manyDocument,
+        parseManyResponse,
+        parseRemoveByIdResponse,
+        useRemoveByIdMutation,
+    } = props;
+
     const [deleteDialog, setDeleteDialog] = useState<
         DeleteDialogState
     >(initialDialogState);
     const { user } = useAuth();
     const history = useHistory();
-    const {
-        resourceNamePlural,
-        columns,
-        items,
-        isLoading,
-        onDeleteClicked,
-        resourceName,
-    } = props;
+    const { addToast } = useToasts();
+    const { loading, data } = useManyQuery();
+    const [deleteItem] = useRemoveByIdMutation();
 
     const closeDeleteDialog = () =>
         setDeleteDialog(initialDialogState);
 
     const showDeleteDialog = (item: T) =>
-        setDeleteDialog(props.deleteDialogState(item));
+        setDeleteDialog({
+            visible: true,
+            guidToDelete: item._id,
+            subText: deleteConfirmMessage(item),
+        });
 
     const _getKey = (item: any, index?: number): string => {
         return item._id;
+    };
+
+    const onDeleteClicked = async (guid: string) => {
+        const result = await deleteItem({
+            variables: { id: guid } as any,
+            refetchQueries: [{ query: manyDocument }],
+        });
+
+        const removedItem = parseRemoveByIdResponse(result.data);
+        if (removedItem) {
+            addToast(
+                itemDeletedMessage(removedItem),
+                toastSettings.success,
+            );
+        }
     };
 
     const actionButtonColumn: IColumn = {
@@ -113,6 +181,7 @@ const ItemsTable = <T extends IMongoItem>(
         },
     };
 
+    const items = parseManyResponse(data);
     return (
         <LoadingSegment
             heading={resourceNamePlural}
@@ -121,7 +190,7 @@ const ItemsTable = <T extends IMongoItem>(
                 routeConfig[`${resourceName}CreateOne`].path,
                 user,
             )}
-            isLoading={isLoading}
+            isLoading={loading}
         >
             <DetailsList
                 items={items}
