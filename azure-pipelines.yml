@@ -29,6 +29,7 @@ stages:
       displayName: Build an image
       inputs:
         command: build
+        buildContext: $(Build.SourcesDirectory)/
         dockerfile: '$(Build.SourcesDirectory)/client/Dockerfile'
         tags: |
           $(tag)
