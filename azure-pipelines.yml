@@ -31,6 +31,7 @@ stages:
         command: build
         buildContext: $(Build.SourcesDirectory)/
         dockerfile: '$(Build.SourcesDirectory)/client/Dockerfile'
+        repository: chanm003/budget-client
         tags: |
           $(tag)
     - task: Docker@2
